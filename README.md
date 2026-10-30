@@ -20,6 +20,56 @@ backend/    Firebase: Firestore and Storage rules, indexes, Cloud Functions, see
 
 See `frontend/README.md` and `backend/README.md` for how to run each part.
 
+## How to run
+
+### Frontend (Flutter app)
+
+Needs Flutter 3 and an Android emulator or a phone (Android Studio).
+
+```bash
+cd frontend
+flutter pub get
+flutter run
+```
+
+`flutter run` starts the dev version (`lib/main.dart`). To pick a version:
+
+```bash
+flutter run -t lib/main_dev.dart       # dev
+flutter run -t lib/main_staging.dart   # staging
+flutter run -t lib/main_prod.dart      # prod
+```
+
+Checks to run before every PR:
+
+```bash
+dart format .
+flutter analyze
+flutter test
+```
+
+### Backend (Firebase)
+
+Needs Node.js, the Firebase CLI and Java 21 or newer (the emulators need it).
+
+```bash
+cd backend
+npm install -g firebase-tools   # once
+firebase login                  # once
+firebase use --add              # once, pick the Staki Firebase project
+firebase emulators:start        # run Firestore, Auth and Storage locally
+```
+
+The emulator dashboard opens at http://localhost:4000. To try the emulators
+before the real Firebase project exists, use a demo project:
+`firebase emulators:start --project demo-staki`.
+
+Deploy rules and indexes (Uche):
+
+```bash
+firebase deploy --only firestore:rules,firestore:indexes,storage
+```
+
 ## Branching and PRs
 
 - `main` and `staging` are protected. Nobody pushes to them directly.

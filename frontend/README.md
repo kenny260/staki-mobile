@@ -28,17 +28,28 @@ lib/
 Rules: no raw hex in screens (use the tokens in `core/theme`), no `setState` as
 the state approach (use Riverpod), no business logic in UI files.
 
-## Getting started
+## How to run
 
-Run these from the `frontend/` folder.
+Needs Flutter 3 and an Android emulator or a phone (Android Studio).
+Run everything from the `frontend/` folder.
 
 ```bash
 cd frontend
 flutter pub get
-flutter run -t lib/main_dev.dart
+flutter run
+```
+
+`flutter run` starts the dev version (`lib/main.dart`). To pick a version:
+
+```bash
+flutter run -t lib/main_dev.dart       # dev
+flutter run -t lib/main_staging.dart   # staging
+flutter run -t lib/main_prod.dart      # prod
 ```
 
 Android build flavours are not configured yet, so do not pass `--flavor`.
+
+In Android Studio, open the `frontend` folder as the project (not the repo root).
 
 ## Firebase setup (Uche / Tolu)
 
@@ -47,7 +58,7 @@ Android build flavours are not configured yet, so do not pass `--flavor`.
 3. Place `google-services.json` / `GoogleService-Info.plist` locally - they are
    gitignored and must never be committed.
 
-## Testing
+## Checks before every PR
 
 ```bash
 cd frontend
