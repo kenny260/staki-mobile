@@ -20,8 +20,20 @@ coverage/
 # Firebase secrets - NEVER commit these
 google-services.json
 GoogleService-Info.plist
-lib/firebase_options*.dart
+**/lib/firebase_options*.dart
 .firebase/
 *.keystore
 *.jks
 .env
+**/android/.kotlin/
+
+# Firebase backend
+node_modules/
+firebase-debug.log*
+firestore-debug.log*
+ui-debug.log*
+*-service-account*.json
+serviceAccount*.json
+backend/functions/lib/
+backend/functions/venv/
+__pycache__/

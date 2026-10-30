@@ -3,3 +3,5 @@
 # Set branch protection to require 1 approval on staging and main.
 
 *                           @kenny260 @EucTech
+/frontend/                  @kenny260 @EucTech
+/backend/                   @kenny260 @EucTech

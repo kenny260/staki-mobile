@@ -1,0 +1,23 @@
+rules_version = '2';
+
+// Owner-scoped rules. Everything is denied unless a rule below allows it.
+// Never use "allow read, write: if request.auth != null" on a whole collection.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return signedIn() && request.auth.uid == userId;
+    }
+
+    // Each user reads and writes only their own user document.
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    // TODO(Uche): add rules for profiles, consents, momoAccounts, documents,
+    // scores, loans, repayments, lenders, fundings and notifications.
+  }
+}

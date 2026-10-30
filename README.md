@@ -1,66 +1,36 @@
-# Staki Fund (Credit Passport) - Mobile
+# Staki Fund (Credit Passport)
 
-Production-grade Flutter app on Firebase, built screen-for-screen from the approved Figma.
 Staki Fund is the product; the Credit Passport is the 300 to 1000 score it issues.
+Flutter mobile app on Firebase, built screen-for-screen from the approved Figma.
 
 - Figma prototype: https://www.figma.com/design/xggLWgTvOM5EErLe6kJGDt
 - Design specs and tokens: https://www.figma.com/design/JksKsdPrH82niGSvQT3U0K
 
-## Tech stack
-
-Flutter 3 / Dart 3, Riverpod (state), go_router (navigation), freezed (models),
-Firebase (Auth, Firestore, Storage, Messaging), shared_preferences, local_auth.
-
-## Project structure (Clean Architecture)
+## Repository layout
 
 ```
-lib/
-  core/            theme/tokens, router, constants, errors, utils
-  data/            datasources (Firebase), models, repositories
-  domain/          entities, repository contracts, usecases
-  presentation/    features/* (pages, widgets, providers), shared_widgets
-  app.dart         root widget
-  bootstrap.dart   shared startup
-  main.dart        default entry (dev)
-  main_dev.dart / main_staging.dart / main_prod.dart   flavour entries
+frontend/   Flutter app (Clean Architecture: core / data / domain / presentation)
+backend/    Firebase: Firestore and Storage rules, indexes, Cloud Functions, seed data
+.github/    CI, PR template, CODEOWNERS
 ```
 
-Rules: no raw hex in screens (use the tokens in `core/theme`), no `setState` as
-the state approach (use Riverpod), no business logic in UI files.
+- Frontend work happens in `frontend/lib/presentation` and `frontend/lib/core`.
+- Backend work happens in `backend/` and in `frontend/lib/data` and
+  `frontend/lib/domain` (the code the app uses to talk to Firebase).
 
-## Getting started
-
-```bash
-flutter pub get
-flutter run                 # default dev flavour
-# or a specific flavour:
-flutter run --flavor dev -t lib/main_dev.dart
-```
+See `frontend/README.md` and `backend/README.md` for how to run each part.
 
 ## Branching and PRs
 
-Branch off `staging`, open a PR into `staging`, request a review from
-Abdull-Kudus or Binthia, with Uche (@EucTech) as backup (one approval
-needed, never your own PR). `main` is
-protected and only receives `staging` at release.
-
-Branch names: `<type>/<ticket>-<short-description>` (feature, fix, chore, docs,
-test, refactor). Example: `feature/STK-12-login-email-password`.
-
-## Firebase setup (Uche / Tolu)
-
-1. Create dev, staging, prod Firebase projects.
-2. Run `flutterfire configure` for each flavour to generate `firebase_options`.
-3. Place `google-services.json` / `GoogleService-Info.plist` locally - they are
-   gitignored and must never be committed.
-
-## Testing
-
-```bash
-flutter analyze
-dart format .
-flutter test --coverage
-```
+- `main` and `staging` are protected. Nobody pushes to them directly.
+- Branch off `staging`, open a PR into `staging`, request a review from
+  Abdull-Kudus or Binthia, with Uche (@EucTech) as backup. One approval is
+  needed, and nobody merges their own PR. CI must be green.
+- `main` only receives `staging` at release.
+- Branch names: `<type>/<ticket>-<short-description>` (feature, fix, chore,
+  docs, test, refactor). Example: `feature/STK-12-login-email-password`.
+- Commits: conventional commits, small and often. Example:
+  `feat(auth): add email/password login form`.
 
 ## Team
 
