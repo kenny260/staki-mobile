@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
+import 'package:staki_mobile/presentation/features/credit_passport/pages/assessment_page.dart';
+import 'package:staki_mobile/presentation/features/credit_passport/pages/breakdown_page.dart';
+import 'package:staki_mobile/presentation/features/credit_passport/pages/score_page.dart';
 import 'package:staki_mobile/presentation/shared_widgets/placeholder_page.dart';
 
 /// Central navigation. One route per Figma section for now, each pointing at a
@@ -51,13 +53,20 @@ class AppRouter {
         ),
       ),
       // 05 Credit Passport (owner: Chris)
+
       GoRoute(
         path: '/credit-passport',
-        builder: (_, __) => const PlaceholderPage(
-          screenCode: 'C02_Score',
-          title: 'Credit Passport',
-          owner: 'Chris',
-        ),
+        builder: (_, __) => const ScorePage(), // C02_Score
+        routes: [
+          GoRoute(
+            path: 'breakdown', // /credit-passport/breakdown
+            builder: (_, __) => const BreakdownPage(), // C03_Breakdown
+          ),
+          GoRoute(
+            path: 'assessment', // /credit-passport/assessment
+            builder: (_, __) => const AssessmentPage(), // C01 states
+          ),
+        ],
       ),
       // 06 Loan Application (owner: Chris)
       GoRoute(
@@ -105,8 +114,7 @@ class AppRouter {
         ),
       ),
     ],
-    errorBuilder: (_, state) => Scaffold(
-      body: Center(child: Text('Route not found: ${state.uri}')),
-    ),
+    errorBuilder: (_, state) =>
+        Scaffold(body: Center(child: Text('Route not found: ${state.uri}'))),
   );
 }
