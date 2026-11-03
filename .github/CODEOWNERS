@@ -1,7 +1,6 @@
-# Code reviewers: Abdull-Kudus or Binthia, with Uche (@EucTech) as backup.
-# Any one approval is enough. Replace @kenny260 with the right handles if needed.
+# Code reviewers: Abdull-Kudus, Binthia or Uche. Any one approval is enough.
 # Set branch protection to require 1 approval on staging and main.
 
-*                           @kenny260 @EucTech
-/frontend/                  @kenny260 @EucTech
-/backend/                   @kenny260 @EucTech
+*                           @kenny260 @Abdull-Kudus @EucTech
+/frontend/                  @kenny260 @Abdull-Kudus @EucTech
+/backend/                   @kenny260 @Abdull-Kudus @EucTech
