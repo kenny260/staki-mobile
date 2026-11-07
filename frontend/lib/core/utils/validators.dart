@@ -27,4 +27,27 @@ class Validators {
     if (digits.length < 9) return 'Enter a valid Rwandan number';
     return null;
   }
+
+  // --- Phone helpers used by A05/A06 (Binthia) ---
+
+  /// Strips non-digits, a leading 250 and a leading 0 -> 9 national digits.
+  static String normalizeRwandaPhone(String raw) {
+    var d = raw.replaceAll(RegExp(r'\D'), '');
+    if (d.startsWith('250')) d = d.substring(3);
+    if (d.startsWith('0')) d = d.substring(1);
+    return d;
+  }
+
+  /// Rwandan mobile numbers are 9 digits starting with 7 (MTN 78x, Airtel 73x).
+  static bool isValidRwandaPhone(String raw) {
+    final d = normalizeRwandaPhone(raw);
+    return d.length == 9 && d.startsWith('7');
+  }
+
+  /// "+250 784 002 213"
+  static String displayRwandaPhone(String raw) {
+    final d = normalizeRwandaPhone(raw);
+    if (d.length != 9) return '+250 $d';
+    return '+250 ${d.substring(0, 3)} ${d.substring(3, 6)} ${d.substring(6)}';
+  }
 }
