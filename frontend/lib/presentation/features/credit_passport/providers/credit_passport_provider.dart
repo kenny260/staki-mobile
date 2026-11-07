@@ -16,8 +16,11 @@ class MockCreditPassportRepository implements CreditPassportRepository {
   /// Change this value to preview each C01 state while building:
   /// processing, needsInfo, complete, failed.
   @override
-  Stream<AssessmentStatus> watchAssessmentStatus() =>
-      Stream.value(AssessmentStatus.processing);
+  Stream<AssessmentStatus> watchAssessmentStatus() async* {
+    yield AssessmentStatus.processing;
+    await Future<void>.delayed(const Duration(seconds: 3));
+    yield AssessmentStatus.complete;
+  }
 
   @override
   Stream<CreditScore?> watchScore() => Stream.value(

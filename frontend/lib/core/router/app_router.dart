@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:staki_mobile/presentation/features/consent/pages/consent_intro_page.dart';
+import 'package:staki_mobile/presentation/features/consent/pages/momo_connect_page.dart';
+import 'package:staki_mobile/presentation/features/consent/pages/momo_connected_page.dart';
+import 'package:staki_mobile/presentation/features/consent/pages/momo_connecting_page.dart';
+import 'package:staki_mobile/presentation/features/consent/pages/momo_consent_page.dart';
+import 'package:staki_mobile/presentation/features/consent/pages/momo_eligible_page.dart';
+import 'package:staki_mobile/presentation/features/consent/pages/momo_error_page.dart';
+import 'package:staki_mobile/presentation/features/consent/pages/momo_not_eligible_page.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/pages/assessment_page.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/pages/breakdown_page.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/pages/score_page.dart';
@@ -37,11 +45,39 @@ class AppRouter {
       // 03 Data Consent & MoMo (owner: Chris)
       GoRoute(
         path: '/consent',
-        builder: (_, __) => const PlaceholderPage(
-          screenCode: 'O01_Consent',
-          title: 'Data Consent & MoMo',
-          owner: 'Chris',
-        ),
+        builder: (_, __) => const ConsentIntroPage(), // O01_Consent
+        routes: [
+          GoRoute(
+            path: 'momo',
+            builder: (_, __) => const MomoConsentPage(), // O02 / O02b
+            routes: [
+              GoRoute(
+                path: 'connect',
+                builder: (_, __) => const MomoConnectPage(), // M01
+              ),
+              GoRoute(
+                path: 'connecting',
+                builder: (_, __) => const MomoConnectingPage(), // M02
+              ),
+              GoRoute(
+                path: 'connected',
+                builder: (_, __) => const MomoConnectedPage(), // M03
+              ),
+              GoRoute(
+                path: 'error',
+                builder: (_, __) => const MomoErrorPage(), // M04
+              ),
+              GoRoute(
+                path: 'not-eligible',
+                builder: (_, __) => const MomoNotEligiblePage(), // M05
+              ),
+              GoRoute(
+                path: 'eligible',
+                builder: (_, __) => const MomoEligiblePage(), // M06
+              ),
+            ],
+          ),
+        ],
       ),
       // 04 Document Upload (owner: Chris)
       GoRoute(
@@ -53,7 +89,6 @@ class AppRouter {
         ),
       ),
       // 05 Credit Passport (owner: Chris)
-
       GoRoute(
         path: '/credit-passport',
         builder: (_, __) => const ScorePage(), // C02_Score
