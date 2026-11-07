@@ -56,8 +56,11 @@ class OptionChips extends StatelessWidget {
 }
 
 class _Pill extends StatelessWidget {
-  const _Pill(
-      {required this.text, required this.selected, required this.onTap,});
+  const _Pill({
+    required this.text,
+    required this.selected,
+    required this.onTap,
+  });
 
   final String text;
   final bool selected;

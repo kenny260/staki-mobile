@@ -6,7 +6,8 @@ import 'package:staki_mobile/presentation/shared_widgets/shared_widgets.dart';
 Widget _wrap(Widget child) => MaterialApp(
       theme: AppTheme.light,
       home: Scaffold(
-          body: Padding(padding: const EdgeInsets.all(16), child: child),),
+        body: Padding(padding: const EdgeInsets.all(16), child: child),
+      ),
     );
 
 void main() {
@@ -94,7 +95,9 @@ void main() {
               BottomNavItem(label: 'Home', icon: Icons.home_outlined),
               BottomNavItem(label: 'Passport', icon: Icons.badge_outlined),
               BottomNavItem(
-                  label: 'Loans', icon: Icons.account_balance_outlined,),
+                label: 'Loans',
+                icon: Icons.account_balance_outlined,
+              ),
               BottomNavItem(label: 'Profile', icon: Icons.person_outline),
             ],
             selectedIndex: 0,
@@ -120,7 +123,9 @@ void main() {
         const Column(
           children: [
             ScreenHeader(
-                title: 'Your Credit Passport', subtitle: 'Score · 742',),
+              title: 'Your Credit Passport',
+              subtitle: 'Score · 742',
+            ),
             KeyValueRow(label: 'Amount', value: '500,000 RWF'),
           ],
         ),
