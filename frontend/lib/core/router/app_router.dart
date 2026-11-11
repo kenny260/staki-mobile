@@ -5,6 +5,8 @@ import 'package:staki_mobile/core/router/app_routes.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/pages/assessment_page.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/pages/breakdown_page.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/pages/score_page.dart';
+import 'package:staki_mobile/presentation/features/documents/pages/document_preview_page.dart';
+import 'package:staki_mobile/presentation/features/documents/pages/documents_page.dart';
 import 'package:staki_mobile/presentation/features/edge_cases/pages/edge_case_gallery_page.dart';
 import 'package:staki_mobile/presentation/features/onboarding/pages/a01_splash_page.dart';
 import 'package:staki_mobile/presentation/features/onboarding/pages/a02_welcome_page.dart';
@@ -107,13 +109,15 @@ final routerProvider = Provider<GoRouter>((ref) {
           owner: 'Chris',
         ),
       ),
-      route(
-        AppRoutes.documents,
-        () => const PlaceholderPage(
-          screenCode: 'D01_Documents',
-          title: 'Document Upload',
-          owner: 'Chris',
-        ),
+      GoRoute(
+        path: AppRoutes.documents,
+        builder: (context, state) => const DocumentsPage(), // D01 / D05
+        routes: [
+          GoRoute(
+            path: 'preview', // D04
+            builder: (context, state) => const DocumentPreviewPage(),
+          ),
+        ],
       ),
       route(
         AppRoutes.lenderOnboarding,
