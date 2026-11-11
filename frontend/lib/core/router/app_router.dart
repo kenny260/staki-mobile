@@ -8,6 +8,12 @@ import 'package:staki_mobile/presentation/features/credit_passport/pages/score_p
 import 'package:staki_mobile/presentation/features/documents/pages/document_preview_page.dart';
 import 'package:staki_mobile/presentation/features/documents/pages/documents_page.dart';
 import 'package:staki_mobile/presentation/features/edge_cases/pages/edge_case_gallery_page.dart';
+import 'package:staki_mobile/presentation/features/loans/pages/funding_options_page.dart';
+import 'package:staki_mobile/presentation/features/loans/pages/loan_amount_page.dart';
+import 'package:staki_mobile/presentation/features/loans/pages/loan_purpose_page.dart';
+import 'package:staki_mobile/presentation/features/loans/pages/loan_review_page.dart';
+import 'package:staki_mobile/presentation/features/loans/pages/loan_submitted_page.dart';
+import 'package:staki_mobile/presentation/features/loans/pages/loan_term_page.dart';
 import 'package:staki_mobile/presentation/features/onboarding/pages/a01_splash_page.dart';
 import 'package:staki_mobile/presentation/features/onboarding/pages/a02_welcome_page.dart';
 import 'package:staki_mobile/presentation/features/onboarding/pages/a03_role_select_page.dart';
@@ -127,13 +133,35 @@ final routerProvider = Provider<GoRouter>((ref) {
           owner: 'Chris',
         ),
       ),
-      route(
-        '/loans',
-        () => const PlaceholderPage(
-          screenCode: 'L01_Eligibility',
-          title: 'Funding Eligibility & Loan Application',
-          owner: 'Chris',
-        ),
+      GoRoute(
+        path: '/loans',
+        builder: (context, state) => const FundingOptionsPage(), // L01
+        routes: [
+          GoRoute(
+            path: 'amount', // L02
+            builder: (context, state) => LoanAmountPage(
+              editing: state.uri.queryParameters['edit'] == '1',
+            ),
+          ),
+          GoRoute(
+            path: 'term', // L03
+            builder: (context, state) => LoanTermPage(
+              editing: state.uri.queryParameters['edit'] == '1',
+            ),
+          ),
+          GoRoute(
+            path: 'purpose', // L04
+            builder: (context, state) => const LoanPurposePage(),
+          ),
+          GoRoute(
+            path: 'review', // L05
+            builder: (context, state) => const LoanReviewPage(),
+          ),
+          GoRoute(
+            path: 'submitted', // L06
+            builder: (context, state) => const LoanSubmittedPage(),
+          ),
+        ],
       ),
       route(
         '/loan-active',
