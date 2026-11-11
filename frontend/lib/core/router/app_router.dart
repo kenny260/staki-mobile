@@ -8,6 +8,15 @@ import 'package:staki_mobile/presentation/features/credit_passport/pages/score_p
 import 'package:staki_mobile/presentation/features/documents/pages/document_preview_page.dart';
 import 'package:staki_mobile/presentation/features/documents/pages/documents_page.dart';
 import 'package:staki_mobile/presentation/features/edge_cases/pages/edge_case_gallery_page.dart';
+import 'package:staki_mobile/presentation/features/lender/pages/lender_kyc_page.dart';
+import 'package:staki_mobile/presentation/features/lender/pages/lender_otp_page.dart';
+import 'package:staki_mobile/presentation/features/lender/pages/lender_phone_page.dart';
+import 'package:staki_mobile/presentation/features/lender/pages/lender_pin_page.dart';
+import 'package:staki_mobile/presentation/features/lender/pages/lender_profile_type_page.dart';
+import 'package:staki_mobile/presentation/features/lender/pages/lender_risk_page.dart';
+import 'package:staki_mobile/presentation/features/lender/pages/lender_structure_page.dart';
+import 'package:staki_mobile/presentation/features/lender/pages/lender_success_page.dart';
+import 'package:staki_mobile/presentation/features/lender/pages/lender_welcome_page.dart';
 import 'package:staki_mobile/presentation/features/loans/pages/funding_options_page.dart';
 import 'package:staki_mobile/presentation/features/loans/pages/loan_amount_page.dart';
 import 'package:staki_mobile/presentation/features/loans/pages/loan_purpose_page.dart';
@@ -125,13 +134,43 @@ final routerProvider = Provider<GoRouter>((ref) {
           ),
         ],
       ),
-      route(
-        AppRoutes.lenderOnboarding,
-        () => const PlaceholderPage(
-          screenCode: 'LO01_Welcome',
-          title: 'Lender Onboarding',
-          owner: 'Chris',
-        ),
+      GoRoute(
+        path: AppRoutes.lenderOnboarding,
+        builder: (context, state) => const LenderWelcomePage(), // LO01
+        routes: [
+          GoRoute(
+            path: 'phone', // LO02
+            builder: (context, state) => const LenderPhonePage(),
+          ),
+          GoRoute(
+            path: 'otp', // LO03
+            builder: (context, state) => const LenderOtpPage(),
+          ),
+          GoRoute(
+            path: 'pin', // LO04
+            builder: (context, state) => const LenderPinPage(),
+          ),
+          GoRoute(
+            path: 'profile', // LO05
+            builder: (context, state) => const LenderProfileTypePage(),
+          ),
+          GoRoute(
+            path: 'kyc', // LO06
+            builder: (context, state) => const LenderKycPage(),
+          ),
+          GoRoute(
+            path: 'risk', // LO07
+            builder: (context, state) => const LenderRiskPage(),
+          ),
+          GoRoute(
+            path: 'structure', // LO08
+            builder: (context, state) => const LenderStructurePage(),
+          ),
+          GoRoute(
+            path: 'success', // LO09
+            builder: (context, state) => const LenderSuccessPage(),
+          ),
+        ],
       ),
       GoRoute(
         path: '/loans',
