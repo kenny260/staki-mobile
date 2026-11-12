@@ -17,6 +17,10 @@ import 'package:staki_mobile/presentation/features/lender/pages/lender_risk_page
 import 'package:staki_mobile/presentation/features/lender/pages/lender_structure_page.dart';
 import 'package:staki_mobile/presentation/features/lender/pages/lender_success_page.dart';
 import 'package:staki_mobile/presentation/features/lender/pages/lender_welcome_page.dart';
+import 'package:staki_mobile/presentation/features/loan_lifecycle/pages/loan_details_page.dart';
+import 'package:staki_mobile/presentation/features/loan_lifecycle/pages/repay_amount_page.dart';
+import 'package:staki_mobile/presentation/features/loan_lifecycle/pages/repay_confirm_page.dart';
+import 'package:staki_mobile/presentation/features/loan_lifecycle/pages/repay_success_page.dart';
 import 'package:staki_mobile/presentation/features/loans/pages/funding_options_page.dart';
 import 'package:staki_mobile/presentation/features/loans/pages/loan_amount_page.dart';
 import 'package:staki_mobile/presentation/features/loans/pages/loan_purpose_page.dart';
@@ -202,13 +206,23 @@ final routerProvider = Provider<GoRouter>((ref) {
           ),
         ],
       ),
-      route(
-        '/loan-active',
-        () => const PlaceholderPage(
-          screenCode: 'L07_LoanActive',
-          title: 'Loan Lifecycle & Repayment',
-          owner: 'Chris',
-        ),
+      GoRoute(
+        path: '/loan-active',
+        builder: (context, state) => const LoanDetailsPage(), // L07 all stages
+        routes: [
+          GoRoute(
+            path: 'repay', // L08
+            builder: (context, state) => const RepayAmountPage(),
+          ),
+          GoRoute(
+            path: 'confirm', // L09
+            builder: (context, state) => const RepayConfirmPage(),
+          ),
+          GoRoute(
+            path: 'success', // L10
+            builder: (context, state) => const RepaySuccessPage(),
+          ),
+        ],
       ),
       route(
         '/marketplace',
