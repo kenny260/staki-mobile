@@ -27,6 +27,16 @@ import 'package:staki_mobile/presentation/features/loans/pages/loan_purpose_page
 import 'package:staki_mobile/presentation/features/loans/pages/loan_review_page.dart';
 import 'package:staki_mobile/presentation/features/loans/pages/loan_submitted_page.dart';
 import 'package:staki_mobile/presentation/features/loans/pages/loan_term_page.dart';
+import 'package:staki_mobile/presentation/features/marketplace/pages/allocation_detail_page.dart';
+import 'package:staki_mobile/presentation/features/marketplace/pages/fund_amount_page.dart';
+import 'package:staki_mobile/presentation/features/marketplace/pages/fund_confirm_page.dart';
+import 'package:staki_mobile/presentation/features/marketplace/pages/fund_review_page.dart';
+import 'package:staki_mobile/presentation/features/marketplace/pages/fund_success_page.dart';
+import 'package:staki_mobile/presentation/features/marketplace/pages/ledger_page.dart';
+import 'package:staki_mobile/presentation/features/marketplace/pages/notifications_page.dart';
+import 'package:staki_mobile/presentation/features/marketplace/pages/opportunities_page.dart';
+import 'package:staki_mobile/presentation/features/marketplace/pages/opportunity_detail_page.dart';
+import 'package:staki_mobile/presentation/features/marketplace/pages/portfolio_page.dart';
 import 'package:staki_mobile/presentation/features/onboarding/pages/a01_splash_page.dart';
 import 'package:staki_mobile/presentation/features/onboarding/pages/a02_welcome_page.dart';
 import 'package:staki_mobile/presentation/features/onboarding/pages/a03_role_select_page.dart';
@@ -224,13 +234,51 @@ final routerProvider = Provider<GoRouter>((ref) {
           ),
         ],
       ),
-      route(
-        '/marketplace',
-        () => const PlaceholderPage(
-          screenCode: 'LE01_Opportunities',
-          title: 'Lender Marketplace & Portfolio',
-          owner: 'Chris',
-        ),
+      GoRoute(
+        path: '/marketplace',
+        builder: (context, state) => const OpportunitiesPage(), // LE01
+        routes: [
+          GoRoute(
+            path: 'opportunity/:id', // LE02
+            builder: (context, state) => OpportunityDetailPage(
+              opportunityId: state.pathParameters['id'] ?? '',
+            ),
+          ),
+          GoRoute(
+            path: 'fund', // LE03
+            builder: (context, state) => const FundAmountPage(),
+          ),
+          GoRoute(
+            path: 'review', // LE04
+            builder: (context, state) => const FundReviewPage(),
+          ),
+          GoRoute(
+            path: 'confirm', // LE05
+            builder: (context, state) => const FundConfirmPage(),
+          ),
+          GoRoute(
+            path: 'success', // LE06
+            builder: (context, state) => const FundSuccessPage(),
+          ),
+          GoRoute(
+            path: 'portfolio', // LE07
+            builder: (context, state) => const PortfolioPage(),
+          ),
+          GoRoute(
+            path: 'notifications', // LE08
+            builder: (context, state) => const NotificationsPage(),
+          ),
+          GoRoute(
+            path: 'ledger', // LE09
+            builder: (context, state) => const LedgerPage(),
+          ),
+          GoRoute(
+            path: 'allocation/:id', // LE10
+            builder: (context, state) => AllocationDetailPage(
+              allocationId: state.pathParameters['id'] ?? '',
+            ),
+          ),
+        ],
       ),
       // Section 10 (Binthia)
       route(AppRoutes.settings, () => const S01SettingsPage()),
