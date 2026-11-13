@@ -2,6 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/router/app_routes.dart';
+import 'package:staki_mobile/presentation/features/consent/pages/consent_intro_page.dart';
+import 'package:staki_mobile/presentation/features/consent/pages/momo_connect_page.dart';
+import 'package:staki_mobile/presentation/features/consent/pages/momo_connected_page.dart';
+import 'package:staki_mobile/presentation/features/consent/pages/momo_connecting_page.dart';
+import 'package:staki_mobile/presentation/features/consent/pages/momo_consent_page.dart';
+import 'package:staki_mobile/presentation/features/consent/pages/momo_eligible_page.dart';
+import 'package:staki_mobile/presentation/features/consent/pages/momo_error_page.dart';
+import 'package:staki_mobile/presentation/features/consent/pages/momo_not_eligible_page.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/pages/assessment_page.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/pages/breakdown_page.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/pages/score_page.dart';
@@ -130,13 +138,41 @@ final routerProvider = Provider<GoRouter>((ref) {
           owner: 'Tolu',
         ),
       ),
-      route(
-        AppRoutes.consent,
-        () => const PlaceholderPage(
-          screenCode: 'O01_Consent',
-          title: 'Data Consent & MoMo',
-          owner: 'Chris',
-        ),
+      GoRoute(
+        path: AppRoutes.consent,
+        builder: (context, state) => const ConsentIntroPage(), // O01
+        routes: [
+          GoRoute(
+            path: 'momo', // O02 / O02b
+            builder: (context, state) => const MomoConsentPage(),
+            routes: [
+              GoRoute(
+                path: 'connect', // M01
+                builder: (context, state) => const MomoConnectPage(),
+              ),
+              GoRoute(
+                path: 'connecting', // M02
+                builder: (context, state) => const MomoConnectingPage(),
+              ),
+              GoRoute(
+                path: 'connected', // M03
+                builder: (context, state) => const MomoConnectedPage(),
+              ),
+              GoRoute(
+                path: 'error', // M04
+                builder: (context, state) => const MomoErrorPage(),
+              ),
+              GoRoute(
+                path: 'not-eligible', // M05
+                builder: (context, state) => const MomoNotEligiblePage(),
+              ),
+              GoRoute(
+                path: 'eligible', // M06
+                builder: (context, state) => const MomoEligiblePage(),
+              ),
+            ],
+          ),
+        ],
       ),
       GoRoute(
         path: AppRoutes.documents,
