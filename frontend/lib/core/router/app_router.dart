@@ -8,6 +8,25 @@ import 'package:staki_mobile/presentation/features/credit_passport/pages/score_p
 import 'package:staki_mobile/presentation/features/documents/pages/document_preview_page.dart';
 import 'package:staki_mobile/presentation/features/documents/pages/documents_page.dart';
 import 'package:staki_mobile/presentation/features/edge_cases/pages/edge_case_gallery_page.dart';
+import 'package:staki_mobile/presentation/features/lender/pages/lender_kyc_page.dart';
+import 'package:staki_mobile/presentation/features/lender/pages/lender_otp_page.dart';
+import 'package:staki_mobile/presentation/features/lender/pages/lender_phone_page.dart';
+import 'package:staki_mobile/presentation/features/lender/pages/lender_pin_page.dart';
+import 'package:staki_mobile/presentation/features/lender/pages/lender_profile_type_page.dart';
+import 'package:staki_mobile/presentation/features/lender/pages/lender_risk_page.dart';
+import 'package:staki_mobile/presentation/features/lender/pages/lender_structure_page.dart';
+import 'package:staki_mobile/presentation/features/lender/pages/lender_success_page.dart';
+import 'package:staki_mobile/presentation/features/lender/pages/lender_welcome_page.dart';
+import 'package:staki_mobile/presentation/features/loan_lifecycle/pages/loan_details_page.dart';
+import 'package:staki_mobile/presentation/features/loan_lifecycle/pages/repay_amount_page.dart';
+import 'package:staki_mobile/presentation/features/loan_lifecycle/pages/repay_confirm_page.dart';
+import 'package:staki_mobile/presentation/features/loan_lifecycle/pages/repay_success_page.dart';
+import 'package:staki_mobile/presentation/features/loans/pages/funding_options_page.dart';
+import 'package:staki_mobile/presentation/features/loans/pages/loan_amount_page.dart';
+import 'package:staki_mobile/presentation/features/loans/pages/loan_purpose_page.dart';
+import 'package:staki_mobile/presentation/features/loans/pages/loan_review_page.dart';
+import 'package:staki_mobile/presentation/features/loans/pages/loan_submitted_page.dart';
+import 'package:staki_mobile/presentation/features/loans/pages/loan_term_page.dart';
 import 'package:staki_mobile/presentation/features/onboarding/pages/a01_splash_page.dart';
 import 'package:staki_mobile/presentation/features/onboarding/pages/a02_welcome_page.dart';
 import 'package:staki_mobile/presentation/features/onboarding/pages/a03_role_select_page.dart';
@@ -119,29 +138,91 @@ final routerProvider = Provider<GoRouter>((ref) {
           ),
         ],
       ),
-      route(
-        AppRoutes.lenderOnboarding,
-        () => const PlaceholderPage(
-          screenCode: 'LO01_Welcome',
-          title: 'Lender Onboarding',
-          owner: 'Chris',
-        ),
+      GoRoute(
+        path: AppRoutes.lenderOnboarding,
+        builder: (context, state) => const LenderWelcomePage(), // LO01
+        routes: [
+          GoRoute(
+            path: 'phone', // LO02
+            builder: (context, state) => const LenderPhonePage(),
+          ),
+          GoRoute(
+            path: 'otp', // LO03
+            builder: (context, state) => const LenderOtpPage(),
+          ),
+          GoRoute(
+            path: 'pin', // LO04
+            builder: (context, state) => const LenderPinPage(),
+          ),
+          GoRoute(
+            path: 'profile', // LO05
+            builder: (context, state) => const LenderProfileTypePage(),
+          ),
+          GoRoute(
+            path: 'kyc', // LO06
+            builder: (context, state) => const LenderKycPage(),
+          ),
+          GoRoute(
+            path: 'risk', // LO07
+            builder: (context, state) => const LenderRiskPage(),
+          ),
+          GoRoute(
+            path: 'structure', // LO08
+            builder: (context, state) => const LenderStructurePage(),
+          ),
+          GoRoute(
+            path: 'success', // LO09
+            builder: (context, state) => const LenderSuccessPage(),
+          ),
+        ],
       ),
-      route(
-        '/loans',
-        () => const PlaceholderPage(
-          screenCode: 'L01_Eligibility',
-          title: 'Funding Eligibility & Loan Application',
-          owner: 'Chris',
-        ),
+      GoRoute(
+        path: '/loans',
+        builder: (context, state) => const FundingOptionsPage(), // L01
+        routes: [
+          GoRoute(
+            path: 'amount', // L02
+            builder: (context, state) => LoanAmountPage(
+              editing: state.uri.queryParameters['edit'] == '1',
+            ),
+          ),
+          GoRoute(
+            path: 'term', // L03
+            builder: (context, state) => LoanTermPage(
+              editing: state.uri.queryParameters['edit'] == '1',
+            ),
+          ),
+          GoRoute(
+            path: 'purpose', // L04
+            builder: (context, state) => const LoanPurposePage(),
+          ),
+          GoRoute(
+            path: 'review', // L05
+            builder: (context, state) => const LoanReviewPage(),
+          ),
+          GoRoute(
+            path: 'submitted', // L06
+            builder: (context, state) => const LoanSubmittedPage(),
+          ),
+        ],
       ),
-      route(
-        '/loan-active',
-        () => const PlaceholderPage(
-          screenCode: 'L07_LoanActive',
-          title: 'Loan Lifecycle & Repayment',
-          owner: 'Chris',
-        ),
+      GoRoute(
+        path: '/loan-active',
+        builder: (context, state) => const LoanDetailsPage(), // L07 all stages
+        routes: [
+          GoRoute(
+            path: 'repay', // L08
+            builder: (context, state) => const RepayAmountPage(),
+          ),
+          GoRoute(
+            path: 'confirm', // L09
+            builder: (context, state) => const RepayConfirmPage(),
+          ),
+          GoRoute(
+            path: 'success', // L10
+            builder: (context, state) => const RepaySuccessPage(),
+          ),
+        ],
       ),
       route(
         '/marketplace',
