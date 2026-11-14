@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/router/app_routes.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/shared_widgets/shared_widgets.dart';
 
 void showLifecycleMessage(BuildContext context, String message) {
@@ -41,7 +42,7 @@ class LifecycleScaffold extends StatelessWidget {
             ScreenHeader(
               title: title,
               onBack: () => _back(context),
-              trailing: const Icon(Icons.person, color: AppColors.textMuted),
+              trailing: const Icon(AppIcons.user, color: AppColors.textMuted),
             ),
             const Divider(height: 1, color: AppColors.border),
             Expanded(
@@ -259,7 +260,7 @@ class MethodCard extends StatelessWidget {
               ),
               if (selected)
                 const Icon(
-                  Icons.check_circle,
+                  AppIcons.checkCircle,
                   size: 20,
                   color: AppColors.success,
                 ),

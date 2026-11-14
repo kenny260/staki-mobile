@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/marketplace/market_routes.dart';
 import 'package:staki_mobile/presentation/features/marketplace/providers/market_models.dart';
 import 'package:staki_mobile/presentation/features/marketplace/providers/market_providers.dart';
@@ -27,7 +28,7 @@ class PortfolioPage extends ConsumerWidget {
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.person, color: AppColors.textMuted),
+            const Icon(AppIcons.user, color: AppColors.textMuted),
             IconButton(
               tooltip: 'Notifications',
               onPressed: () =>
@@ -36,7 +37,7 @@ class PortfolioPage extends ConsumerWidget {
                 clipBehavior: Clip.none,
                 children: [
                   const Icon(
-                    Icons.notifications,
+                    AppIcons.bell,
                     color: AppColors.textMuted,
                   ),
                   if (unread)
@@ -44,7 +45,7 @@ class PortfolioPage extends ConsumerWidget {
                       right: 0,
                       top: 0,
                       child: Icon(
-                        Icons.circle,
+                        AppIcons.circle,
                         size: 9,
                         color: AppColors.danger,
                       ),
@@ -73,8 +74,8 @@ class PortfolioPage extends ConsumerWidget {
                 child: _Tile(
                   label: 'ACTIVE FUNDING',
                   value: moneyRwf(data.activeFunding),
-                  background: AppColors.warningBg,
-                  labelColor: AppColors.warningText,
+                  background: AppColors.primarySoft,
+                  labelColor: AppColors.primary,
                   valueColor: AppColors.primary,
                 ),
               ),
@@ -117,7 +118,7 @@ class PortfolioPage extends ConsumerWidget {
                   style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w800,
-                    color: AppColors.warningText,
+                    color: AppColors.primary,
                   ),
                 ),
               ),
@@ -222,7 +223,7 @@ class _AllocationCard extends StatelessWidget {
                       color: AppColors.surfaceAlt,
                     ),
                     child: const Icon(
-                      Icons.apartment,
+                      AppIcons.buildings,
                       size: 16,
                       color: AppColors.primary,
                     ),
@@ -257,7 +258,7 @@ class _AllocationCard extends StatelessWidget {
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: late ? AppColors.warningBg : AppColors.successBg,
+                      color: late ? AppColors.primarySoft : AppColors.successBg,
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
@@ -323,7 +324,7 @@ class _StatusCell extends StatelessWidget {
         Row(
           children: [
             Icon(
-              late ? Icons.warning_amber_rounded : Icons.check_circle,
+              late ? AppIcons.warning : AppIcons.checkCircle,
               size: 12,
               color: color,
             ),

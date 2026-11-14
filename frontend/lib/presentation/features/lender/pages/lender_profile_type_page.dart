@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/lender/lender_routes.dart';
 import 'package:staki_mobile/presentation/features/lender/providers/lender_models.dart';
 import 'package:staki_mobile/presentation/features/lender/providers/lender_providers.dart';
@@ -14,9 +15,9 @@ class LenderProfileTypePage extends ConsumerWidget {
   const LenderProfileTypePage({super.key});
 
   static const _icons = <InvestorType, IconData>{
-    InvestorType.individual: Icons.person,
-    InvestorType.diaspora: Icons.public,
-    InvestorType.institutional: Icons.apartment,
+    InvestorType.individual: AppIcons.user,
+    InvestorType.diaspora: AppIcons.globe,
+    InvestorType.institutional: AppIcons.buildings,
   };
 
   Future<void> _continue(BuildContext context, WidgetRef ref) async {
@@ -59,7 +60,7 @@ class LenderProfileTypePage extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: 12),
             child: LenderOptionCard(
-              icon: _icons[type] ?? Icons.person,
+              icon: _icons[type] ?? AppIcons.user,
               title: type.title,
               subtitle: type.subtitle,
               selected: selected == type,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/lender/lender_routes.dart';
 import 'package:staki_mobile/presentation/features/lender/providers/lender_providers.dart';
 import 'package:staki_mobile/presentation/features/lender/widgets/lender_widgets.dart';
@@ -61,7 +62,7 @@ class _LenderStructurePageState extends ConsumerState<LenderStructurePage> {
         ),
       ),
       children: [
-        const AmberBadge(icon: Icons.info, color: AppColors.info),
+        const AmberBadge(icon: AppIcons.info, color: AppColors.info),
         const SizedBox(height: 20),
         const LenderHeading('How Staki fund works'),
         const SizedBox(height: 16),

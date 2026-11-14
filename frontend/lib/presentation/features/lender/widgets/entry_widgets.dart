@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 
 /// Six boxes showing the digits typed into a hidden text field.
 class OtpBoxes extends StatelessWidget {
@@ -184,7 +185,7 @@ class PinPad extends StatelessWidget {
                   child: const SizedBox(
                     height: 52,
                     child: Icon(
-                      Icons.backspace_outlined,
+                      AppIcons.backspace,
                       size: 22,
                       color: AppColors.textSecondary,
                     ),

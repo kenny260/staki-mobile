@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/consent/widgets/action_buttons.dart';
 import 'package:staki_mobile/presentation/features/consent/widgets/consent_app_bar.dart';
 import 'package:staki_mobile/presentation/features/consent/widgets/consent_layout.dart';
@@ -12,14 +13,17 @@ class MomoNotEligiblePage extends StatelessWidget {
   const MomoNotEligiblePage({super.key});
 
   static const _reasons = <(IconData, String)>[
-    (Icons.history, 'Not enough account history may be available.'),
-    (Icons.show_chart, 'There may not be enough transaction activity.'),
     (
-      Icons.shield_outlined,
+      AppIcons.clockCounterClockwise,
+      'Not enough account history may be available.'
+    ),
+    (AppIcons.chartLineUp, 'There may not be enough transaction activity.'),
+    (
+      AppIcons.shieldCheck,
       'Account information may not have been fully verified.',
     ),
     (
-      Icons.smartphone,
+      AppIcons.deviceMobile,
       'The connection may have been incomplete, or required '
           'information is missing.',
     ),
@@ -36,20 +40,23 @@ class MomoNotEligiblePage extends StatelessWidget {
           children: [
             PrimaryActionButton(
               label: 'Upload a MoMo statement',
-              leadingIcon: Icons.description_outlined,
+              leadingIcon: AppIcons.fileText,
               onPressed: () => unawaited(context.push('/documents')),
             ),
             const SizedBox(height: 12),
             SecondaryActionButton(
               label: 'Try again',
-              leadingIcon: Icons.refresh,
+              leadingIcon: AppIcons.arrowsClockwise,
               onPressed: () =>
                   context.pushReplacement('/consent/momo/connecting'),
             ),
           ],
         ),
         children: [
-          const StatusBadge(icon: Icons.error, color: AppColors.warning),
+          const StatusBadge(
+            icon: AppIcons.warningCircle,
+            color: AppColors.warning,
+          ),
           const SizedBox(height: 24),
           const ConsentHeading("We can't assess this MTN MoMo account yet."),
           const SizedBox(height: 12),

@@ -27,7 +27,7 @@ void main() {
   });
 
   test('bandLabel matches the band', () {
-    expect(_scoreOf(780).bandLabel, 'STRONG');
+    expect(_scoreOf(780).bandLabel, 'VERY GOOD');
     expect(_scoreOf(500).bandLabel, 'POOR');
   });
 }

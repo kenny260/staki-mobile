@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/consent/widgets/action_buttons.dart';
 import 'package:staki_mobile/presentation/features/consent/widgets/consent_app_bar.dart';
 import 'package:staki_mobile/presentation/features/consent/widgets/consent_layout.dart';
@@ -25,7 +26,7 @@ class MomoEligiblePage extends StatelessWidget {
               unawaited(context.push('/credit-passport/assessment')),
         ),
         children: const [
-          StatusBadge(icon: Icons.check_circle, color: AppColors.success),
+          StatusBadge(icon: AppIcons.checkCircle, color: AppColors.success),
           SizedBox(height: 24),
           ConsentHeading('Your account is ready for assessment', center: true),
           SizedBox(height: 12),

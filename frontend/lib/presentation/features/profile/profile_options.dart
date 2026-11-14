@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/domain/entities/borrower_type.dart';
 
 /// Option lists and per-type copy for Section 02 (from the Figma frames).
@@ -152,10 +153,10 @@ abstract final class ProfileOptions {
       };
 
   static IconData icon(BorrowerType type) => switch (type) {
-        BorrowerType.business => Icons.storefront_outlined,
-        BorrowerType.startup => Icons.rocket_launch_outlined,
-        BorrowerType.student => Icons.school_outlined,
-        BorrowerType.salaried => Icons.badge_outlined,
-        BorrowerType.other => Icons.person_outline,
+        BorrowerType.business => AppIcons.storefront,
+        BorrowerType.startup => AppIcons.rocket,
+        BorrowerType.student => AppIcons.graduationCap,
+        BorrowerType.salaried => AppIcons.identificationCard,
+        BorrowerType.other => AppIcons.user,
       };
 }

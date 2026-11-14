@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/core/theme/text_styles.dart';
 
 /// Checkbox + label (Figma CHECKBOXES): 18 x 18 box, radius 5. Checked =
@@ -52,7 +53,7 @@ class AppCheckboxTile extends StatelessWidget {
                 ),
                 child: value
                     ? const Icon(
-                        Icons.check,
+                        AppIcons.check,
                         size: 12,
                         color: AppColors.onPrimary,
                       )

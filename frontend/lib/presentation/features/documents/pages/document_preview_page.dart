@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/router/app_routes.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/documents/providers/document_models.dart';
 import 'package:staki_mobile/presentation/features/documents/providers/document_providers.dart';
 import 'package:staki_mobile/presentation/shared_widgets/shared_widgets.dart';
@@ -146,7 +147,7 @@ class _PreviewCard extends StatelessWidget {
   Widget _fallback() {
     return const Center(
       child: Icon(
-        Icons.insert_drive_file_outlined,
+        AppIcons.file,
         size: 56,
         color: AppColors.textMuted,
       ),
@@ -232,7 +233,7 @@ class _CheckRow extends StatelessWidget {
               ),
             ),
           ),
-          const Icon(Icons.check, size: 16, color: AppColors.success),
+          const Icon(AppIcons.check, size: 16, color: AppColors.success),
         ],
       ),
     );

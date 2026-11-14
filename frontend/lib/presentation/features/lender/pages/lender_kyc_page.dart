@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/lender/lender_routes.dart';
 import 'package:staki_mobile/presentation/features/lender/providers/lender_models.dart';
 import 'package:staki_mobile/presentation/features/lender/providers/lender_providers.dart';
@@ -41,12 +42,12 @@ class LenderKycPage extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              leading: const Icon(Icons.photo_camera),
+              leading: const Icon(AppIcons.camera),
               title: const Text('Take a photo'),
               onTap: () => Navigator.of(sheetContext).pop(ImageSource.camera),
             ),
             ListTile(
-              leading: const Icon(Icons.image_outlined),
+              leading: const Icon(AppIcons.image),
               title: const Text('Choose from gallery'),
               onTap: () => Navigator.of(sheetContext).pop(ImageSource.gallery),
             ),
@@ -100,7 +101,7 @@ class LenderKycPage extends ConsumerWidget {
             : null,
       ),
       children: [
-        const AmberBadge(icon: Icons.verified_user, color: AppColors.primary),
+        const AmberBadge(icon: AppIcons.shieldCheck, color: AppColors.primary),
         const SizedBox(height: 20),
         const LenderHeading('Verify your identity'),
         const SizedBox(height: 6),
@@ -110,7 +111,7 @@ class LenderKycPage extends ConsumerWidget {
         ),
         const SizedBox(height: 20),
         UploadTile(
-          icon: Icons.account_balance,
+          icon: AppIcons.bank,
           title: 'Upload Government ID',
           subtitle: 'National ID or Passport',
           fileName: draft.idFileName,
@@ -120,7 +121,7 @@ class LenderKycPage extends ConsumerWidget {
         ),
         const SizedBox(height: 14),
         UploadTile(
-          icon: Icons.person,
+          icon: AppIcons.user,
           title: 'Take a selfie',
           subtitle: 'To match with your ID',
           fileName: draft.selfieFileName,

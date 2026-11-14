@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/marketplace/market_routes.dart';
 import 'package:staki_mobile/presentation/features/marketplace/providers/market_models.dart';
 import 'package:staki_mobile/presentation/features/marketplace/providers/market_providers.dart';
@@ -120,17 +121,17 @@ class OpportunityDetailPage extends ConsumerWidget {
           child: Column(
             children: [
               _FactorRow(
-                Icons.show_chart,
+                AppIcons.chartLineUp,
                 'Cash-flow consistency',
                 o.cashFlow,
               ),
               _FactorRow(
-                Icons.bar_chart,
+                AppIcons.chartBar,
                 'Affordability ratio',
                 o.affordability,
               ),
               _FactorRow(
-                Icons.check_circle,
+                AppIcons.checkCircle,
                 'Repayment history',
                 o.repaymentHistory,
               ),
@@ -146,7 +147,7 @@ class OpportunityDetailPage extends ConsumerWidget {
             child: Row(
               children: [
                 const Icon(
-                  Icons.check_circle,
+                  AppIcons.checkCircle,
                   size: 16,
                   color: AppColors.success,
                 ),
@@ -200,7 +201,7 @@ class _ScoreCard extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.w800,
-                    color: AppColors.warning,
+                    color: AppColors.primary,
                   ),
                 ),
               ],
@@ -211,7 +212,7 @@ class _ScoreCard extends StatelessWidget {
             height: 56,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: AppColors.warning, width: 4),
+              border: Border.all(color: AppColors.primary, width: 4),
             ),
           ),
         ],

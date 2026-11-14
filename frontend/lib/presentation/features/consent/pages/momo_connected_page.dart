@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/consent/providers/consent_providers.dart';
 import 'package:staki_mobile/presentation/features/consent/widgets/action_buttons.dart';
 import 'package:staki_mobile/presentation/features/consent/widgets/consent_app_bar.dart';
@@ -36,7 +37,7 @@ class MomoConnectedPage extends ConsumerWidget {
         ),
         children: [
           const StatusBadge(
-            icon: Icons.verified_user,
+            icon: AppIcons.shieldCheck,
             color: AppColors.success,
           ),
           const SizedBox(height: 24),
@@ -86,7 +87,7 @@ class _AccountTile extends StatelessWidget {
               ),
               const Row(
                 children: [
-                  Icon(Icons.circle, size: 6, color: AppColors.success),
+                  Icon(AppIcons.circle, size: 6, color: AppColors.success),
                   SizedBox(width: 4),
                   Text(
                     'Connected',

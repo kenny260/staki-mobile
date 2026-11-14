@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/consent/providers/consent_providers.dart';
 import 'package:staki_mobile/presentation/features/consent/widgets/action_buttons.dart';
 import 'package:staki_mobile/presentation/features/consent/widgets/consent_app_bar.dart';
@@ -27,7 +28,7 @@ class ConsentIntroPage extends ConsumerWidget {
       body: ConsentLayout(
         bottom: PrimaryActionButton(
           label: 'Continue',
-          trailingIcon: Icons.chevron_right,
+          trailingIcon: AppIcons.caretRight,
           onPressed: () => unawaited(context.push('/consent/momo')),
         ),
         children: [
@@ -64,7 +65,7 @@ class ConsentIntroPage extends ConsumerWidget {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: const Icon(
-                Icons.account_balance,
+                AppIcons.bank,
                 size: 20,
                 color: AppColors.primary,
               ),
@@ -99,7 +100,7 @@ class _ShieldBadge extends StatelessWidget {
         border: Border.all(color: AppColors.border),
       ),
       child: const Icon(
-        Icons.verified_user,
+        AppIcons.shieldCheck,
         size: 20,
         color: AppColors.primary,
       ),

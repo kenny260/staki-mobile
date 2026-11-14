@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/constants/spacing.dart';
 import 'package:staki_mobile/core/router/app_routes.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/core/theme/text_styles.dart';
 import 'package:staki_mobile/core/utils/validators.dart';
 import 'package:staki_mobile/presentation/features/onboarding/providers/onboarding_providers.dart';
@@ -29,7 +30,7 @@ class S01SettingsPage extends ConsumerWidget {
               ListTile(
                 title: Text(entry.value),
                 trailing: entry.key == current
-                    ? const Icon(Icons.check, color: AppColors.primary)
+                    ? const Icon(AppIcons.check, color: AppColors.primary)
                     : null,
                 onTap: () => Navigator.of(context).pop(entry.key),
               ),
@@ -101,7 +102,7 @@ class S01SettingsPage extends ConsumerWidget {
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(
-                          Icons.person,
+                          AppIcons.user,
                           color: AppColors.onPrimary,
                         ),
                       ),

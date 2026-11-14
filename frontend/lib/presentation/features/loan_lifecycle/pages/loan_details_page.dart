@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/loan_lifecycle/lifecycle_routes.dart';
 import 'package:staki_mobile/presentation/features/loan_lifecycle/providers/lifecycle_models.dart';
 import 'package:staki_mobile/presentation/features/loan_lifecycle/providers/lifecycle_providers.dart';
@@ -51,14 +52,14 @@ class LoanDetailsPage extends ConsumerWidget {
       ),
       data: (account) => switch (account.stage) {
         LoanStage.submitted => _message(
-            Icons.schedule,
+            AppIcons.clock,
             AppColors.info,
             'Application submitted',
             '${account.partner} is reviewing your loan application and '
                 'Credit Passport. We will notify you once a decision is made.',
           ),
         LoanStage.underReview => _message(
-            Icons.schedule,
+            AppIcons.clock,
             AppColors.info,
             'Application under review',
             '${account.partner} is reviewing your loan application and '
@@ -69,7 +70,7 @@ class LoanDetailsPage extends ConsumerWidget {
             onSign: () => unawaited(_sign(context, ref)),
           ),
         LoanStage.disbursementPending => _message(
-            Icons.download,
+            AppIcons.downloadSimple,
             AppColors.info,
             'Disbursement in progress',
             'Your approved funds are being sent through the regulated '
@@ -77,7 +78,7 @@ class LoanDetailsPage extends ConsumerWidget {
                 'account.',
           ),
         LoanStage.disbursed => _message(
-            Icons.check_circle,
+            AppIcons.checkCircle,
             AppColors.success,
             'Funds Disbursed',
             '${account.partner} has successfully deposited the funds to '
@@ -88,7 +89,7 @@ class LoanDetailsPage extends ConsumerWidget {
             ),
           ),
         LoanStage.declined => _message(
-            Icons.error,
+            AppIcons.warningCircle,
             AppColors.danger,
             'Application declined',
             '${account.partner} was unable to approve this specific loan '
@@ -170,7 +171,7 @@ class _ApprovedView extends StatelessWidget {
             color: AppColors.successBg,
             borderRadius: BorderRadius.circular(16),
           ),
-          child: const Icon(Icons.check, color: AppColors.success),
+          child: const Icon(AppIcons.check, color: AppColors.success),
         ),
         const SizedBox(height: 16),
         const Text(
@@ -205,7 +206,7 @@ class _ApprovedView extends StatelessWidget {
               Row(
                 children: [
                   const Icon(
-                    Icons.account_balance,
+                    AppIcons.bank,
                     size: 18,
                     color: AppColors.primary,
                   ),
@@ -364,7 +365,7 @@ class _Dashboard extends StatelessWidget {
             ),
             child: const Row(
               children: [
-                Icon(Icons.description, size: 18, color: AppColors.textMuted),
+                Icon(AppIcons.fileText, size: 18, color: AppColors.textMuted),
                 SizedBox(width: 12),
                 Expanded(
                   child: Text(
@@ -375,7 +376,11 @@ class _Dashboard extends StatelessWidget {
                     ),
                   ),
                 ),
-                Icon(Icons.download, size: 18, color: AppColors.textMuted),
+                Icon(
+                  AppIcons.downloadSimple,
+                  size: 18,
+                  color: AppColors.textMuted,
+                ),
               ],
             ),
           ),
@@ -522,7 +527,7 @@ class _RepaidBox extends StatelessWidget {
       ),
       child: const Column(
         children: [
-          Icon(Icons.check_circle, color: AppColors.success, size: 28),
+          Icon(AppIcons.checkCircle, color: AppColors.success, size: 28),
           SizedBox(height: 8),
           Text(
             'Loan fully repaid',
@@ -571,7 +576,7 @@ class _PaymentRow extends StatelessWidget {
               color: AppColors.successBg,
             ),
             child: const Icon(
-              Icons.north_east,
+              AppIcons.arrowUpRight,
               size: 16,
               color: AppColors.success,
             ),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/marketplace/market_routes.dart';
 import 'package:staki_mobile/presentation/features/marketplace/providers/market_models.dart';
 import 'package:staki_mobile/presentation/features/marketplace/providers/market_providers.dart';
@@ -81,7 +82,7 @@ class FundReviewPage extends ConsumerWidget {
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w800,
-                  color: AppColors.warningText,
+                  color: AppColors.primary,
                 ),
               ),
             ],
@@ -92,7 +93,7 @@ class FundReviewPage extends ConsumerWidget {
           width: double.infinity,
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: AppColors.warningBg,
+            color: AppColors.primarySoft,
             borderRadius: BorderRadius.circular(16),
           ),
           child: const Column(
@@ -101,9 +102,9 @@ class FundReviewPage extends ConsumerWidget {
               Row(
                 children: [
                   Icon(
-                    Icons.warning_amber_rounded,
+                    AppIcons.warning,
                     size: 16,
-                    color: AppColors.warningText,
+                    color: AppColors.primary,
                   ),
                   SizedBox(width: 8),
                   Text(
@@ -111,7 +112,7 @@ class FundReviewPage extends ConsumerWidget {
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w800,
-                      color: AppColors.warningText,
+                      color: AppColors.primary,
                     ),
                   ),
                 ],
@@ -125,7 +126,7 @@ class FundReviewPage extends ConsumerWidget {
                 style: TextStyle(
                   fontSize: 11,
                   height: 1.5,
-                  color: AppColors.warningText,
+                  color: AppColors.primary,
                 ),
               ),
             ],

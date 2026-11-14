@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:staki_mobile/core/constants/spacing.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/core/theme/text_styles.dart';
 
 /// Small grey section label ("SECURITY").
@@ -101,7 +102,7 @@ class SettingsRow extends StatelessWidget {
               if (onTap != null && !isDestructive) ...[
                 const SizedBox(width: 6),
                 const Icon(
-                  Icons.chevron_right_rounded,
+                  AppIcons.caretRight,
                   size: 18,
                   color: AppColors.textMuted,
                 ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:staki_mobile/core/constants/spacing.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/core/theme/text_styles.dart';
 import 'package:staki_mobile/presentation/features/settings/providers/settings_providers.dart';
 import 'package:staki_mobile/presentation/shared_widgets/shared_widgets.dart';
@@ -70,7 +71,7 @@ class S02DataPermissionsPage extends ConsumerWidget {
                   ),
                   const SizedBox(height: AppSpacing.lg),
                   _SourceCard(
-                    icon: Icons.phone_android_rounded,
+                    icon: AppIcons.deviceMobile,
                     tint: AppColors.warningBg,
                     iconColor: AppColors.warning,
                     title: 'MTN MoMo',
@@ -90,7 +91,7 @@ class S02DataPermissionsPage extends ConsumerWidget {
                         : () => n.setMomo(connected: true),
                   ),
                   _SourceCard(
-                    icon: Icons.account_balance_outlined,
+                    icon: AppIcons.bank,
                     tint: AppColors.infoBg,
                     iconColor: AppColors.info,
                     title: 'Bank Account',
@@ -104,7 +105,7 @@ class S02DataPermissionsPage extends ConsumerWidget {
                     onAction: () => n.setBank(connected: !p.bankConnected),
                   ),
                   _SourceCard(
-                    icon: Icons.description_outlined,
+                    icon: AppIcons.fileText,
                     tint: AppColors.primarySoft,
                     iconColor: AppColors.primary,
                     title: 'Documents',

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 
 class DataSourceCard extends StatelessWidget {
   const DataSourceCard({
@@ -65,7 +66,7 @@ class DataSourceCard extends StatelessWidget {
                     ),
                   ),
                   const Icon(
-                    Icons.chevron_right,
+                    AppIcons.caretRight,
                     color: AppColors.textSecondary,
                   ),
                 ],

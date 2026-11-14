@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/constants/spacing.dart';
 import 'package:staki_mobile/core/router/app_routes.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/core/theme/text_styles.dart';
 import 'package:staki_mobile/presentation/shared_widgets/shared_widgets.dart';
 
@@ -18,7 +19,7 @@ class A08BiometricPage extends StatelessWidget {
       // TODO(Tolu): request biometrics with local_auth, then continue.
       onCta: () => context.push(AppRoutes.accountCreated),
       bottomExtra: Padding(
-        padding: const EdgeInsets.only(bottom: AppSpacing.s3),
+        padding: const EdgeInsets.only(top: AppSpacing.s3),
         child: TextButton(
           onPressed: () => context.push(AppRoutes.accountCreated),
           child: const Text('Not now'),
@@ -34,7 +35,7 @@ class A08BiometricPage extends StatelessWidget {
               borderRadius: BorderRadius.circular(30),
             ),
             child: const Icon(
-              Icons.fingerprint,
+              AppIcons.fingerprint,
               size: 48,
               color: AppColors.primary,
             ),
@@ -57,17 +58,17 @@ class A08BiometricPage extends StatelessWidget {
         ),
         const SizedBox(height: AppSpacing.lg),
         const _Benefit(
-          icon: Icons.bolt_rounded,
+          icon: AppIcons.lightning,
           title: 'Log in instantly',
           subtitle: 'No PIN needed on trusted devices',
         ),
         const _Benefit(
-          icon: Icons.shield_outlined,
+          icon: AppIcons.shieldCheck,
           title: 'Just as secure',
           subtitle: "Backed by your device's secure enclave",
         ),
         const _Benefit(
-          icon: Icons.undo_rounded,
+          icon: AppIcons.arrowCounterClockwise,
           title: 'Revocable anytime',
           subtitle: 'Remove biometrics from your settings',
         ),

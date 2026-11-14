@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 
 /// Primary full-width button. Pass `onPressed: null` for the disabled state.
 class AppButton extends StatelessWidget {
@@ -36,7 +37,7 @@ class AppButton extends StatelessWidget {
                 Flexible(child: Text(label, overflow: TextOverflow.ellipsis)),
                 if (showArrow) ...[
                   const SizedBox(width: 6),
-                  const Icon(Icons.arrow_forward_rounded, size: 18),
+                  const Icon(AppIcons.arrowRight, size: 18),
                 ],
               ],
             ),

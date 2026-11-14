@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/marketplace/providers/market_models.dart';
 import 'package:staki_mobile/presentation/features/marketplace/providers/market_providers.dart';
 import 'package:staki_mobile/presentation/features/marketplace/widgets/market_widgets.dart';
@@ -67,7 +68,7 @@ class _FilterSheetState extends ConsumerState<_FilterSheet> {
                   ),
                   IconButton(
                     tooltip: 'Close',
-                    icon: const Icon(Icons.close, color: AppColors.primary),
+                    icon: const Icon(AppIcons.x, color: AppColors.primary),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                 ],

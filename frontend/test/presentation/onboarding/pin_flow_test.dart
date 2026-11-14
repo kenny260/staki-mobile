@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/core/theme/app_theme.dart';
 import 'package:staki_mobile/presentation/features/onboarding/widgets/pin_entry_view.dart';
 import 'package:staki_mobile/presentation/shared_widgets/shared_widgets.dart';
@@ -59,7 +60,7 @@ void main() {
     );
 
     await _type(tester, '12');
-    await tester.tap(find.byIcon(Icons.backspace_outlined));
+    await tester.tap(find.byIcon(AppIcons.backspace));
     await tester.pump();
     await _type(tester, '345');
     await tester.pump(const Duration(milliseconds: 300));

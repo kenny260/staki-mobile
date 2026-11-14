@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/marketplace/market_routes.dart';
 import 'package:staki_mobile/presentation/features/marketplace/providers/market_models.dart';
 import 'package:staki_mobile/presentation/features/marketplace/providers/market_providers.dart';
@@ -62,27 +63,27 @@ class _NotificationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final (icon, color, background) = switch (item.kind) {
       NotificationKind.success => (
-          Icons.check_circle,
+          AppIcons.checkCircle,
           AppColors.success,
           AppColors.successBg,
         ),
       NotificationKind.info => (
-          Icons.check_circle,
+          AppIcons.checkCircle,
           AppColors.info,
           AppColors.infoBg,
         ),
       NotificationKind.warning => (
-          Icons.warning_amber_rounded,
+          AppIcons.warning,
           AppColors.warning,
           AppColors.warningBg,
         ),
       NotificationKind.neutral => (
-          Icons.show_chart,
+          AppIcons.chartLineUp,
           AppColors.textSecondary,
           AppColors.surface,
         ),
       NotificationKind.kyc => (
-          Icons.apartment,
+          AppIcons.buildings,
           AppColors.info,
           AppColors.infoBg,
         ),
