@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/constants/spacing.dart';
 import 'package:staki_mobile/core/router/app_routes.dart';
+import 'package:staki_mobile/core/theme/app_colors.dart';
 import 'package:staki_mobile/core/theme/text_styles.dart';
 import 'package:staki_mobile/presentation/shared_widgets/shared_widgets.dart';
 
@@ -16,22 +17,50 @@ class A02WelcomePage extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.screenPadding),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const StakiLogo(size: 24),
-              const Spacer(),
-              const Text(
-                'Turn your financial activity into opportunity.',
-                style: AppTextStyles.display,
+              const Padding(
+                padding: EdgeInsets.only(top: AppSpacing.lg),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: StakiLogo(),
+                ),
               ),
-              const SizedBox(height: AppSpacing.md),
-              const Text(
-                'Build your Staki fund profile, understand your financial '
-                'standing and explore funding through trusted partners.',
-                style: AppTextStyles.body,
+              const Spacer(),
+              Text.rich(
+                TextSpan(
+                  text: 'Turn your financial activity into ',
+                  children: [
+                    TextSpan(
+                      text: 'opportunity.',
+                      style: AppTextStyles.display.copyWith(
+                        color: AppColors.primary,
+                      ),
+                    ),
+                  ],
+                ),
+                textAlign: TextAlign.center,
+                style: AppTextStyles.display.copyWith(
+                  fontSize: 32,
+                  height: 1.15,
+                  letterSpacing: -0.6,
+                ),
+              ),
+              const SizedBox(height: 20),
+              const Center(
+                child: SizedBox(
+                  width: 300,
+                  child: Text(
+                    'Build your Staki fund profile, understand your financial '
+                    'standing and access funding through trusted partners.',
+                    textAlign: TextAlign.center,
+                    style: AppTextStyles.body,
+                  ),
+                ),
               ),
               const SizedBox(height: AppSpacing.lg),
               const Wrap(
+                alignment: WrapAlignment.center,
                 spacing: AppSpacing.sm,
                 runSpacing: AppSpacing.sm,
                 children: [
