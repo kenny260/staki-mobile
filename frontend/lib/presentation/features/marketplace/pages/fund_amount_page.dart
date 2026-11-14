@@ -76,7 +76,7 @@ class FundAmountPage extends ConsumerWidget {
                     child: LabelValue(
                       'AVAILABLE TO ALLOCATE',
                       moneyRwf(balance),
-                      valueColor: AppColors.warningText,
+                      valueColor: AppColors.primary,
                     ),
                   ),
                 ],
@@ -101,7 +101,7 @@ class FundAmountPage extends ConsumerWidget {
             padding: const EdgeInsets.only(bottom: 6, left: 12, right: 12),
             decoration: const BoxDecoration(
               border: Border(
-                bottom: BorderSide(color: AppColors.warning, width: 2),
+                bottom: BorderSide(color: AppColors.primary, width: 2),
               ),
             ),
             child: Text(
@@ -120,7 +120,7 @@ class FundAmountPage extends ConsumerWidget {
           min: minAmount.toDouble(),
           max: maxAmount.toDouble(),
           divisions: span >= allocationStep ? span ~/ allocationStep : null,
-          activeColor: AppColors.warning,
+          activeColor: AppColors.primary,
           inactiveColor: AppColors.border,
           semanticFormatterCallback: (v) => moneyRwf(v.round()),
           onChanged: (v) =>
