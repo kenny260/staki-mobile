@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:staki_mobile/core/constants/spacing.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/core/theme/text_styles.dart';
 import 'package:staki_mobile/presentation/shared_widgets/shared_widgets.dart';
 
@@ -63,7 +64,7 @@ class S03PrivacyPage extends StatelessWidget {
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(
-                      Icons.shield_outlined,
+                      AppIcons.shieldCheck,
                       size: 20,
                       color: AppColors.info,
                     ),

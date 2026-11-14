@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/marketplace/market_routes.dart';
 import 'package:staki_mobile/presentation/features/marketplace/providers/market_models.dart';
 import 'package:staki_mobile/presentation/features/marketplace/providers/market_providers.dart';
@@ -44,7 +45,7 @@ class AllocationDetailPage extends ConsumerWidget {
         Row(
           children: [
             Icon(
-              late ? Icons.warning_amber_rounded : Icons.check_circle,
+              late ? AppIcons.warning : AppIcons.checkCircle,
               size: 14,
               color: statusColor,
             ),

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/constants/spacing.dart';
 import 'package:staki_mobile/core/router/app_routes.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/domain/entities/user_role.dart';
 import 'package:staki_mobile/presentation/features/onboarding/providers/onboarding_providers.dart';
 import 'package:staki_mobile/presentation/shared_widgets/shared_widgets.dart';
@@ -36,7 +37,7 @@ class A03RoleSelectPage extends ConsumerWidget {
       onCta: onContinue,
       children: [
         RadioCard(
-          icon: Icons.account_balance_wallet_outlined,
+          icon: AppIcons.wallet,
           badgeLabel: 'Borrower',
           title: 'I need funding',
           subtitle: 'Build your financial profile, get a Staki fund score and '
@@ -46,7 +47,7 @@ class A03RoleSelectPage extends ConsumerWidget {
         ),
         const SizedBox(height: AppSpacing.md),
         RadioCard(
-          icon: Icons.trending_up_rounded,
+          icon: AppIcons.trendUp,
           badgeLabel: 'Lender / Investor',
           title: 'I want to fund',
           subtitle: 'Browse pre-scored, verified borrowers and fund '

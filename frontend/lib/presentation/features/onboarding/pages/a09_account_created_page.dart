@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/constants/spacing.dart';
 import 'package:staki_mobile/core/router/app_routes.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/core/theme/text_styles.dart';
 import 'package:staki_mobile/domain/entities/user_role.dart';
 import 'package:staki_mobile/presentation/features/onboarding/providers/onboarding_providers.dart';
@@ -33,7 +34,7 @@ class A09AccountCreatedPage extends ConsumerWidget {
               borderRadius: BorderRadius.circular(28),
             ),
             child: const Icon(
-              Icons.check_rounded,
+              AppIcons.check,
               size: 44,
               color: AppColors.success,
             ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 
 class ConsentAppBar extends StatelessWidget implements PreferredSizeWidget {
   const ConsentAppBar({super.key, this.title = ''});
@@ -35,7 +36,7 @@ class ConsentAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: 0,
       leading: IconButton(
         tooltip: 'Back',
-        icon: const Icon(Icons.chevron_left, color: AppColors.primary),
+        icon: const Icon(AppIcons.caretLeft, color: AppColors.primary),
         onPressed: () => _goBack(context),
       ),
     );

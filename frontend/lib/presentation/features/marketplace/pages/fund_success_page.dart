@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/marketplace/market_routes.dart';
 import 'package:staki_mobile/presentation/features/marketplace/providers/market_models.dart';
 import 'package:staki_mobile/presentation/features/marketplace/providers/market_providers.dart';
@@ -37,7 +38,7 @@ class FundSuccessPage extends ConsumerWidget {
                           color: AppColors.onPrimary.withValues(alpha: 0.1),
                         ),
                         child: const Icon(
-                          Icons.verified_user,
+                          AppIcons.shieldCheck,
                           size: 38,
                           color: AppColors.success,
                         ),
@@ -89,14 +90,14 @@ class FundSuccessPage extends ConsumerWidget {
               padding: const EdgeInsets.fromLTRB(24, 8, 24, 16),
               child: FilledButton.icon(
                 onPressed: () => context.go(MarketRoutes.portfolio),
-                icon: const Icon(Icons.work, size: 18),
+                icon: const Icon(AppIcons.briefcase, size: 18),
                 label: const Text(
                   'View Portfolio',
                   style: TextStyle(fontWeight: FontWeight.w700),
                 ),
                 style: FilledButton.styleFrom(
                   minimumSize: const Size.fromHeight(52),
-                  backgroundColor: AppColors.warning,
+                  backgroundColor: AppColors.onPrimary,
                   foregroundColor: AppColors.primary,
                   shape: const StadiumBorder(),
                 ),

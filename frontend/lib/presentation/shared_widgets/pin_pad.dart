@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:staki_mobile/core/constants/spacing.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/core/theme/text_styles.dart';
 
 /// PIN dots: 20 x 20 circles, filled when typed.
@@ -127,7 +128,7 @@ class PinPad extends StatelessWidget {
           _digit('0'),
           _key(
             const Icon(
-              Icons.backspace_outlined,
+              AppIcons.backspace,
               color: AppColors.textSecondary,
             ),
             onBackspace,

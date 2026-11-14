@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/lender/lender_routes.dart';
 import 'package:staki_mobile/presentation/features/lender/providers/lender_models.dart';
 import 'package:staki_mobile/presentation/features/lender/providers/lender_providers.dart';
@@ -74,7 +75,7 @@ class _LenderPhonePageState extends ConsumerState<LenderPhonePage> {
         ),
       ),
       children: [
-        const AmberBadge(icon: Icons.smartphone),
+        const AmberBadge(icon: AppIcons.deviceMobile),
         const SizedBox(height: 20),
         const LenderHeading('Enter your phone number'),
         const SizedBox(height: 6),

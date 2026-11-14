@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/loan_lifecycle/lifecycle_routes.dart';
 import 'package:staki_mobile/presentation/features/loan_lifecycle/providers/lifecycle_models.dart';
 import 'package:staki_mobile/presentation/features/loan_lifecycle/providers/lifecycle_providers.dart';
@@ -70,7 +71,7 @@ class RepayAmountPage extends ConsumerWidget {
         const SectionTitle('Payment Method'),
         const SizedBox(height: 12),
         MethodCard(
-          icon: Icons.phone_android,
+          icon: AppIcons.deviceMobile,
           iconColor: AppColors.warning,
           title: 'MTN MoMo',
           subtitle: '078 ••• ••67',
@@ -79,7 +80,7 @@ class RepayAmountPage extends ConsumerWidget {
         ),
         const SizedBox(height: 12),
         MethodCard(
-          icon: Icons.account_balance,
+          icon: AppIcons.bank,
           iconColor: AppColors.info,
           title: 'Bank Transfer',
           subtitle: 'Transfer from bank app',

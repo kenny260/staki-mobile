@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/marketplace/market_routes.dart';
 import 'package:staki_mobile/presentation/features/marketplace/providers/market_models.dart';
 import 'package:staki_mobile/presentation/shared_widgets/shared_widgets.dart';
@@ -132,7 +133,7 @@ class SectorLabel extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Icon(Icons.apartment, size: 14, color: AppColors.textMuted),
+        const Icon(AppIcons.buildings, size: 14, color: AppColors.textMuted),
         const SizedBox(width: 6),
         Flexible(
           child: Text(
@@ -168,7 +169,7 @@ class ScorePill extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.shield, size: 12, color: AppColors.primary),
+          const Icon(AppIcons.shield, size: 12, color: AppColors.primary),
           const SizedBox(width: 4),
           Text(
             '$score',
@@ -198,7 +199,7 @@ class FundingBar extends StatelessWidget {
         value: fraction,
         minHeight: 6,
         backgroundColor: AppColors.surfaceAlt,
-        color: color ?? AppColors.warning,
+        color: color ?? AppColors.primary,
       ),
     );
   }
@@ -390,7 +391,11 @@ class _Verification extends StatelessWidget {
         const SizedBox(height: 3),
         Row(
           children: [
-            const Icon(Icons.check_circle, size: 12, color: AppColors.success),
+            const Icon(
+              AppIcons.checkCircle,
+              size: 12,
+              color: AppColors.success,
+            ),
             const SizedBox(width: 4),
             Flexible(
               child: Text(
@@ -410,7 +415,7 @@ class _Verification extends StatelessWidget {
   }
 }
 
-/// Filter chip with an amber border when selected (LE01b).
+/// Filter chip with an primary border when selected (LE01b).
 class FilterPill extends StatelessWidget {
   const FilterPill({
     required this.label,
@@ -434,10 +439,10 @@ class FilterPill extends StatelessWidget {
         child: Ink(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
           decoration: BoxDecoration(
-            color: selected ? AppColors.warningBg : AppColors.surface,
+            color: selected ? AppColors.primarySoft : AppColors.surface,
             borderRadius: BorderRadius.circular(14),
             border: Border.all(
-              color: selected ? AppColors.warning : AppColors.border,
+              color: selected ? AppColors.primary : AppColors.border,
             ),
           ),
           child: Text(
@@ -445,7 +450,7 @@ class FilterPill extends StatelessWidget {
             style: TextStyle(
               fontSize: 12,
               fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
-              color: selected ? AppColors.warningText : AppColors.textPrimary,
+              color: selected ? AppColors.primary : AppColors.textPrimary,
             ),
           ),
         ),
@@ -483,15 +488,15 @@ class AckRow extends StatelessWidget {
                 height: 22,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: checked ? AppColors.warning : AppColors.background,
+                  color: checked ? AppColors.primary : AppColors.background,
                   border: Border.all(
-                    color: checked ? AppColors.warning : AppColors.borderMid,
+                    color: checked ? AppColors.primary : AppColors.borderMid,
                     width: 1.5,
                   ),
                 ),
                 child: checked
                     ? const Icon(
-                        Icons.check,
+                        AppIcons.check,
                         size: 14,
                         color: AppColors.onPrimary,
                       )
@@ -565,10 +570,10 @@ class LedgerRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (icon, color) = switch (entry.kind) {
-      LedgerKind.repayment => (Icons.south_west, AppColors.success),
-      LedgerKind.deposit => (Icons.south_west, AppColors.info),
-      LedgerKind.allocation => (Icons.description, AppColors.warning),
-      LedgerKind.disbursed => (Icons.north_east, AppColors.info),
+      LedgerKind.repayment => (AppIcons.arrowDownLeft, AppColors.success),
+      LedgerKind.deposit => (AppIcons.arrowDownLeft, AppColors.info),
+      LedgerKind.allocation => (AppIcons.fileText, AppColors.primary),
+      LedgerKind.disbursed => (AppIcons.arrowUpRight, AppColors.info),
     };
     final incoming = entry.amount >= 0;
     final note = entry.note;

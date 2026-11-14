@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/documents/providers/document_models.dart';
 import 'package:staki_mobile/presentation/features/documents/widgets/status_chip.dart';
 
@@ -53,7 +54,7 @@ class DocumentCard extends StatelessWidget {
                   color: _badgeColor.withValues(alpha: 0.12),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(Icons.description, size: 20, color: _badgeColor),
+                child: Icon(AppIcons.fileText, size: 20, color: _badgeColor),
               ),
               const SizedBox(width: 12),
               Expanded(

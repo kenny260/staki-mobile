@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/providers/credit_passport_models.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/providers/credit_passport_provider.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/widgets/passport_app_bar.dart';
@@ -181,7 +182,7 @@ class _ProcessingView extends ConsumerWidget {
               border: Border.all(color: AppColors.primary, width: 2),
             ),
             child: const Icon(
-              Icons.monitor_heart_outlined,
+              AppIcons.pulse,
               size: 36,
               color: AppColors.primary,
             ),
@@ -243,7 +244,7 @@ class _CheckRow extends StatelessWidget {
     switch (check.state) {
       case CheckState.done:
         leading = const Icon(
-          Icons.check_circle,
+          AppIcons.checkCircle,
           size: 18,
           color: AppColors.success,
         );
@@ -257,7 +258,7 @@ class _CheckRow extends StatelessWidget {
           ),
         );
       case CheckState.pending:
-        leading = const Icon(Icons.circle, size: 8, color: AppColors.border);
+        leading = const Icon(AppIcons.circle, size: 8, color: AppColors.border);
     }
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
@@ -297,7 +298,10 @@ class _NeedsInfoView extends ConsumerWidget {
       ),
       children: [
         const SizedBox(height: 16),
-        const _IconBadge(icon: Icons.error, color: AppColors.warning),
+        const _IconBadge(
+          icon: AppIcons.warningCircle,
+          color: AppColors.warning,
+        ),
         const SizedBox(height: 24),
         const _Heading('Additional information required', size: 18),
         const SizedBox(height: 12),
@@ -321,7 +325,7 @@ class _NeedsInfoView extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Icon(
-                  Icons.description,
+                  AppIcons.fileText,
                   size: 18,
                   color: AppColors.warning,
                 ),
@@ -366,7 +370,7 @@ class _CompleteView extends StatelessWidget {
     return _StatusLayout(
       bottom: _PrimaryButton(
         label: 'View my Passport',
-        icon: Icons.arrow_forward,
+        icon: AppIcons.arrowRight,
         onTap: () => context.go('/credit-passport'),
       ),
       children: [
@@ -380,7 +384,7 @@ class _CompleteView extends StatelessWidget {
               color: AppColors.success.withValues(alpha: 0.12),
             ),
             child: const Icon(
-              Icons.verified_user,
+              AppIcons.shieldCheck,
               size: 40,
               color: AppColors.success,
             ),
@@ -416,12 +420,16 @@ class _FailedView extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           // TODO(chris): re-trigger the assessment once the backend exists.
-          _PrimaryButton(label: 'Try Again', icon: Icons.refresh, onTap: () {}),
+          _PrimaryButton(
+            label: 'Try Again',
+            icon: AppIcons.arrowsClockwise,
+            onTap: () {},
+          ),
           const SizedBox(height: 12),
           OutlinedButton.icon(
             // TODO(chris): route to S04_Support when it exists.
             onPressed: () {},
-            icon: const Icon(Icons.help_outline, size: 18),
+            icon: const Icon(AppIcons.question, size: 18),
             label: const Text('Contact Support'),
             style: OutlinedButton.styleFrom(
               minimumSize: const Size.fromHeight(52),
@@ -434,7 +442,7 @@ class _FailedView extends StatelessWidget {
       ),
       children: [
         const SizedBox(height: 16),
-        const _IconBadge(icon: Icons.error, color: AppColors.danger),
+        const _IconBadge(icon: AppIcons.warningCircle, color: AppColors.danger),
         const SizedBox(height: 24),
         const _Heading('Assessment could not be\ncompleted'),
         const SizedBox(height: 12),
@@ -473,7 +481,7 @@ class _FailedView extends StatelessWidget {
                       const Padding(
                         padding: EdgeInsets.only(top: 6, right: 10),
                         child: Icon(
-                          Icons.circle,
+                          AppIcons.circle,
                           size: 5,
                           color: AppColors.textMuted,
                         ),

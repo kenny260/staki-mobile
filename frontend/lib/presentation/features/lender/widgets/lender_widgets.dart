@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/lender/lender_routes.dart';
 import 'package:staki_mobile/presentation/shared_widgets/shared_widgets.dart';
 
@@ -93,7 +94,7 @@ class LenderBody extends StatelessWidget {
       );
 }
 
-/// Rounded square icon at the top of a screen (amber tint).
+/// Rounded square icon at the top of a screen (primary tint).
 class AmberBadge extends StatelessWidget {
   const AmberBadge({required this.icon, super.key, this.color});
 
@@ -102,7 +103,7 @@ class AmberBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tint = color ?? AppColors.warning;
+    final tint = color ?? AppColors.primary;
     return Container(
       width: 44,
       height: 44,
@@ -115,7 +116,7 @@ class AmberBadge extends StatelessWidget {
   }
 }
 
-/// Tappable option with an amber border when selected (LO05).
+/// Tappable option with an primary border when selected (LO05).
 class LenderOptionCard extends StatelessWidget {
   const LenderOptionCard({
     required this.icon,
@@ -143,10 +144,10 @@ class LenderOptionCard extends StatelessWidget {
         child: Ink(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: selected ? AppColors.warningBg : AppColors.background,
+            color: selected ? AppColors.primarySoft : AppColors.background,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: selected ? AppColors.warning : AppColors.border,
+              color: selected ? AppColors.primary : AppColors.border,
               width: selected ? 1.5 : 1,
             ),
           ),
@@ -158,13 +159,13 @@ class LenderOptionCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: selected
-                      ? AppColors.warning.withValues(alpha: 0.2)
+                      ? AppColors.primary.withValues(alpha: 0.2)
                       : AppColors.surfaceAlt,
                 ),
                 child: Icon(
                   icon,
                   size: 20,
-                  color: selected ? AppColors.warning : AppColors.textSecondary,
+                  color: selected ? AppColors.primary : AppColors.textSecondary,
                 ),
               ),
               const SizedBox(width: 14),
@@ -228,15 +229,15 @@ class AcknowledgeRow extends StatelessWidget {
                 height: 22,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: checked ? AppColors.warning : AppColors.background,
+                  color: checked ? AppColors.primary : AppColors.background,
                   border: Border.all(
-                    color: checked ? AppColors.warning : AppColors.borderMid,
+                    color: checked ? AppColors.primary : AppColors.borderMid,
                     width: 1.5,
                   ),
                 ),
                 child: checked
                     ? const Icon(
-                        Icons.check,
+                        AppIcons.check,
                         size: 14,
                         color: AppColors.onPrimary,
                       )
@@ -307,7 +308,7 @@ class UploadTile extends StatelessWidget {
                 color: uploaded ? AppColors.successBg : AppColors.background,
               ),
               child: Icon(
-                uploaded ? Icons.check : icon,
+                uploaded ? AppIcons.check : icon,
                 size: 18,
                 color: uploaded ? AppColors.success : AppColors.primary,
               ),

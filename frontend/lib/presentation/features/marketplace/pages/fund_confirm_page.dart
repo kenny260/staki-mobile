@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/marketplace/market_routes.dart';
 import 'package:staki_mobile/presentation/features/marketplace/providers/market_models.dart';
 import 'package:staki_mobile/presentation/features/marketplace/providers/market_providers.dart';
@@ -91,7 +92,7 @@ class _FundConfirmPageState extends ConsumerState<FundConfirmPage> {
               Row(
                 children: [
                   Icon(
-                    Icons.account_balance,
+                    AppIcons.bank,
                     size: 16,
                     color: AppColors.primary,
                   ),

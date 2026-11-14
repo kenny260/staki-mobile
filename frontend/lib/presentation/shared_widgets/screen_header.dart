@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:staki_mobile/core/constants/spacing.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/core/theme/text_styles.dart';
 
 /// Top navigation header (Figma TOP NAVIGATION): 36 x 36 back button
@@ -45,7 +46,7 @@ class ScreenHeader extends StatelessWidget {
                     border: Border.all(color: AppColors.border),
                   ),
                   child: const Icon(
-                    Icons.chevron_left_rounded,
+                    AppIcons.caretLeft,
                     size: 22,
                     color: AppColors.textPrimary,
                   ),
