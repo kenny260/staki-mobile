@@ -10,8 +10,8 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('780'), findsOneWidget);
-    expect(find.text('STRONG'), findsOneWidget);
+    expect(find.text('742'), findsOneWidget);
+    expect(find.text('VERY GOOD'), findsOneWidget);
     expect(find.text('Cash-flow strength'), findsOneWidget);
   });
 }
