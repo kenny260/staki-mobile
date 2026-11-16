@@ -15,6 +15,17 @@ service cloud.firestore {
     // Each user reads and writes only their own user document.
     match /users/{userId} {
       allow read, write: if isOwner(userId);
+
+      // Uploaded document records. The file itself lives on Cloudinary.
+      // Owners can only submit for review; only reviewers (Admin SDK) can
+      // set verified or needsAttention.
+      match /documents/{documentId} {
+        allow read, delete: if isOwner(userId);
+        allow create, update: if isOwner(userId)
+          && request.resource.data.status == 'underReview'
+          && request.resource.data.url is string
+          && request.resource.data.url.matches('https://res[.]cloudinary[.]com/ybzufhwg/.*');
+      }
     }
 
     // TODO(Uche): add rules for profiles, consents, momoAccounts, documents,
