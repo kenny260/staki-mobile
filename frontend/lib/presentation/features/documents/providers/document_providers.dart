@@ -1,12 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:staki_mobile/data/repositories/firestore_document_repository.dart';
 import 'package:staki_mobile/presentation/features/documents/providers/document_models.dart';
 import 'package:staki_mobile/presentation/features/documents/providers/document_picker.dart';
 import 'package:staki_mobile/presentation/features/documents/providers/document_repository.dart';
 
-// TEMP mock. To preview the upload error, use:
-// MockDocumentRepository(failUploads: true)
+// Files upload to Cloudinary, records live in Firestore.
+// For offline UI work or tests, override with MockDocumentRepository()
+// (or MockDocumentRepository(failUploads: true) to preview the error state).
 final documentRepositoryProvider = Provider<DocumentRepository>(
-  (ref) => MockDocumentRepository(),
+  (ref) => FirestoreDocumentRepository(),
 );
 
 final documentPickerProvider = Provider<DocumentPicker>(
