@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:staki_mobile/core/constants/cloudinary_config.dart';
 
@@ -50,7 +51,8 @@ class CloudinaryDataSource {
     final http.Response response;
     try {
       response = await http.Response.fromStream(await _client.send(request));
-    } on Exception {
+    } on Exception catch (e) {
+      debugPrint('Cloudinary upload failed: $e');
       throw const CloudinaryException(
         'No connection. Check your internet and try again.',
       );
