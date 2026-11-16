@@ -7,13 +7,10 @@ firestore.indexes.json   composite indexes
 storage.rules            rules for uploaded documents
 functions/               Cloud Functions (scoring, auth bootstrap, notifications)
 seed/                    demo and staging data scripts
-docs/data-model.md       Firestore data model and ERD
 ```
 
 Project: `staki-bc71f` (Firestore in `africa-south1`). Files and images are
 stored on Cloudinary, not Firebase Storage, so `storage.rules` is unused.
-See [docs/data-model.md](docs/data-model.md) for every collection, its
-fields and who may write it.
 
 ## How to run
 

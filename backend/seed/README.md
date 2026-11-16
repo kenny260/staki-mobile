@@ -6,8 +6,6 @@ Never put real personal data here.
 - `data.js` - the demo records. Values match the app's mock repositories.
 - `seed.js` - writes them to Firestore and creates the demo logins.
 
-The data model and ERD are in [`../docs/data-model.md`](../docs/data-model.md).
-
 ## Run it
 
 ```bash

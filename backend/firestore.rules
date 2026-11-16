@@ -4,7 +4,7 @@ rules_version = '2';
 // Never use "allow read, write: if request.auth != null" on a whole collection.
 //
 // "Server only" means the Admin SDK (Cloud Functions, seed script), which
-// skips these rules. The data model is in backend/docs/data-model.md.
+// skips these rules.
 service cloud.firestore {
   match /databases/{database}/documents {
 
