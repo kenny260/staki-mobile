@@ -2,8 +2,14 @@ rules_version = '2';
 
 // Owner-scoped rules. Everything is denied unless a rule below allows it.
 // Never use "allow read, write: if request.auth != null" on a whole collection.
+//
+// "Server only" means the Admin SDK (Cloud Functions, seed script), which
+// skips these rules.
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    // ---------- helpers ----------
+
     function signedIn() {
       return request.auth != null;
     }
@@ -12,12 +18,180 @@ service cloud.firestore {
       return signedIn() && request.auth.uid == userId;
     }
 
-    // Each user reads and writes only their own user document.
-    match /users/{userId} {
-      allow read, write: if isOwner(userId);
+    function incoming() {
+      return request.resource.data;
     }
 
-    // TODO(Uche): add rules for profiles, consents, momoAccounts, documents,
-    // scores, loans, repayments, lenders, fundings and notifications.
+    function existing() {
+      return resource.data;
+    }
+
+    // True when the update only touches the listed fields.
+    function onlyChanges(fields) {
+      return incoming().diff(existing()).affectedKeys().hasOnly(fields);
+    }
+
+    // True when none of the listed fields change on update.
+    function keeps(fields) {
+      return !incoming().diff(existing()).affectedKeys().hasAny(fields);
+    }
+
+    function isCloudinaryUrl(value) {
+      return value is string
+        && value.matches('https://res[.]cloudinary[.]com/ybzufhwg/.*');
+    }
+
+    function isMoney(value) {
+      return value is int && value >= 0;
+    }
+
+    // ---------- users ----------
+
+    match /users/{userId} {
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId)
+        && incoming().role in ['borrower', 'lender'];
+      // Role is fixed once chosen.
+      allow update: if isOwner(userId) && keeps(['role']);
+      allow delete: if false;
+
+      // Uploaded document records. The file itself lives on Cloudinary.
+      // Owners can only submit for review; only reviewers (server) can
+      // set verified or needsAttention.
+      match /documents/{documentId} {
+        allow read, delete: if isOwner(userId);
+        allow create, update: if isOwner(userId)
+          && documentId in ['national_id', 'momo_statement',
+              'business_registration', 'bank_statement',
+              'proof_of_enrollment']
+          && incoming().status == 'underReview'
+          && isCloudinaryUrl(incoming().url);
+      }
+
+      // Created by the server; the owner can only mark them read.
+      match /notifications/{notificationId} {
+        allow read: if isOwner(userId);
+        allow update: if isOwner(userId)
+          && onlyChanges(['read'])
+          && incoming().read == true;
+        allow create, delete: if false;
+      }
+    }
+
+    // ---------- borrower profile ----------
+
+    match /profiles/{userId} {
+      allow read: if isOwner(userId);
+      allow create, update: if isOwner(userId)
+        && incoming().borrowerType in
+            ['business', 'startup', 'student', 'salaried', 'other']
+        && incoming().answers is map;
+      allow delete: if false;
+    }
+
+    // ---------- consent ledger (audit trail, never deleted) ----------
+
+    match /consents/{consentId} {
+      allow read: if signedIn() && existing().userId == request.auth.uid;
+      allow create: if signedIn()
+        && incoming().userId == request.auth.uid
+        && incoming().type == 'momo'
+        && incoming().granted == true
+        && incoming().revokedAt == null;
+      // The only allowed change is revoking.
+      allow update: if signedIn()
+        && existing().userId == request.auth.uid
+        && existing().granted == true
+        && onlyChanges(['granted', 'revokedAt'])
+        && incoming().granted == false
+        && incoming().revokedAt is timestamp;
+      allow delete: if false;
+    }
+
+    // ---------- MoMo wallet (written by the server after verification) ----
+
+    match /momoAccounts/{userId} {
+      allow read: if isOwner(userId);
+      allow write: if false;
+    }
+
+    // ---------- Credit Passport score (scoring engine only) ----------
+
+    match /scores/{userId} {
+      allow read: if isOwner(userId);
+      allow write: if false;
+    }
+
+    // ---------- loans ----------
+
+    match /loans/{loanId} {
+      allow read: if signedIn() && existing().borrowerId == request.auth.uid;
+      // Borrowers submit; every later stage change is made by the server.
+      allow create: if signedIn()
+        && incoming().borrowerId == request.auth.uid
+        && incoming().stage == 'submitted'
+        && isMoney(incoming().amount)
+        && incoming().amount >= 50000
+        && incoming().termMonths in [3, 6, 9, 12]
+        && incoming().purpose in ['workingCapital', 'inventory',
+            'equipment', 'education', 'emergency', 'other']
+        && incoming().paidAmount == 0;
+      allow update, delete: if false;
+    }
+
+    match /repayments/{repaymentId} {
+      allow read: if signedIn() && existing().borrowerId == request.auth.uid;
+      // The server confirms the payment and updates the loan.
+      allow create: if signedIn()
+        && incoming().borrowerId == request.auth.uid
+        && get(/databases/$(database)/documents/loans/$(incoming().loanId))
+            .data.borrowerId == request.auth.uid
+        && incoming().status == 'pending'
+        && incoming().method in ['momo', 'bank']
+        && isMoney(incoming().amount)
+        && incoming().amount > 0;
+      allow update, delete: if false;
+    }
+
+    // ---------- lender side ----------
+
+    // Anonymised listings: no borrower identity is stored here.
+    match /opportunities/{opportunityId} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
+    match /lenders/{userId} {
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId)
+        && incoming().kycStatus == 'pending'
+        && incoming().investorType in
+            ['individual', 'diaspora', 'institutional']
+        && incoming().riskAcknowledged == true
+        && incoming().structureAccepted == true
+        && !('walletBalance' in incoming());
+      // KYC result and wallet balance are set by the server only.
+      allow update: if isOwner(userId)
+        && keeps(['kycStatus', 'walletBalance']);
+      allow delete: if false;
+
+      match /ledger/{entryId} {
+        allow read: if isOwner(userId);
+        allow write: if false;
+      }
+    }
+
+    match /fundings/{fundingId} {
+      allow read: if signedIn() && existing().lenderId == request.auth.uid;
+      // Lender requests an allocation; the server moves the money and
+      // updates the opportunity, wallet and status.
+      allow create: if signedIn()
+        && incoming().lenderId == request.auth.uid
+        && incoming().status == 'pending'
+        && isMoney(incoming().amount)
+        && incoming().amount >= 100000
+        && exists(/databases/$(database)/documents/opportunities/$(incoming().opportunityId));
+      allow update, delete: if false;
+    }
   }
 }

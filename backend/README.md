@@ -9,6 +9,9 @@ functions/               Cloud Functions (scoring, auth bootstrap, notifications
 seed/                    demo and staging data scripts
 ```
 
+Project: `staki-bc71f` (Firestore in `africa-south1`). Files and images are
+stored on Cloudinary, not Firebase Storage, so `storage.rules` is unused.
+
 ## How to run
 
 Needs Node.js, the Firebase CLI and Java 21 or newer (the emulators need it). Run everything from the `backend/` folder.
