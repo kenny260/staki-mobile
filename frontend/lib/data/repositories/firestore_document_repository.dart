@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:staki_mobile/core/constants/app_config.dart';
+import 'package:staki_mobile/core/constants/dev_account.dart';
 import 'package:staki_mobile/data/datasources/cloudinary_datasource.dart';
 import 'package:staki_mobile/presentation/features/documents/providers/document_models.dart';
 import 'package:staki_mobile/presentation/features/documents/providers/document_repository.dart';
@@ -48,10 +50,17 @@ class FirestoreDocumentRepository implements DocumentRepository {
   final FirebaseAuth _auth;
   final CloudinaryDataSource _cloudinary;
 
-  /// TEMP: signs in anonymously until the real login flow exists, so
-  /// Firestore rules have a user to check against.
+  /// Firestore rules need a signed-in user. TEMP: until the real login
+  /// flow exists, dev builds sign in as the seeded demo borrower.
   Future<String> _uid() async {
-    final user = _auth.currentUser ?? (await _auth.signInAnonymously()).user;
+    var user = _auth.currentUser;
+    if (user == null && AppConfig.instance.flavor == Flavor.dev) {
+      final credential = await _auth.signInWithEmailAndPassword(
+        email: DevAccount.email,
+        password: DevAccount.password,
+      );
+      user = credential.user;
+    }
     if (user == null) {
       throw const DocumentException('Please sign in to manage documents.');
     }
