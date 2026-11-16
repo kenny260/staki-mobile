@@ -17,10 +17,11 @@ coverage/
 # OS
 .DS_Store
 
+# Firebase client config (google-services.json, GoogleService-Info.plist,
+# lib/firebase_options.dart) IS committed so everyone can build. It only holds
+# public app IDs; Firestore security rules protect the data.
+
 # Firebase secrets - NEVER commit these
-google-services.json
-GoogleService-Info.plist
-**/lib/firebase_options*.dart
 .firebase/
 *.keystore
 *.jks

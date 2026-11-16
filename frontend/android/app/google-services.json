@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "77896440147",
+    "project_id": "staki-bc71f",
+    "storage_bucket": "staki-bc71f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:77896440147:android:32c4b015252e88f2f4e9a6",
+        "android_client_info": {
+          "package_name": "rw.staki.staki_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "77896440147-4n17bteh20i5onbva5nfdlchf2vakofl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "rw.staki.staki_mobile",
+            "certificate_hash": "2b1764b0f4c6a87fcef12ab9e3d36fe7ce0550b0"
+          }
+        },
+        {
+          "client_id": "77896440147-ak2uaium8hni0udefc244a7etf3mgjmj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdQIUx9nXn_qv5EcsL45s_cvXGjppyCPc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "77896440147-ak2uaium8hni0udefc244a7etf3mgjmj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "77896440147-kr41mgbhaasrvj9qc61onf1vja7m7lkj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "rw.staki.stakiMobile"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
