@@ -62,8 +62,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '77896440147',
     projectId: 'staki-bc71f',
     storageBucket: 'staki-bc71f.firebasestorage.app',
-    androidClientId: '77896440147-4n17bteh20i5onbva5nfdlchf2vakofl.apps.googleusercontent.com',
-    iosClientId: '77896440147-kr41mgbhaasrvj9qc61onf1vja7m7lkj.apps.googleusercontent.com',
+    androidClientId:
+        '77896440147-4n17bteh20i5onbva5nfdlchf2vakofl.apps.googleusercontent.com',
+    iosClientId:
+        '77896440147-kr41mgbhaasrvj9qc61onf1vja7m7lkj.apps.googleusercontent.com',
     iosBundleId: 'rw.staki.stakiMobile',
   );
 }
