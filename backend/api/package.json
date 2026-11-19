@@ -1,0 +1,21 @@
+{
+  "name": "staki-api",
+  "private": true,
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "dev": "vercel dev"
+  },
+  "dependencies": {
+    "firebase-admin": "^14.5.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "@vercel/node": "^32.0.0",
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.0"
+  }
+}

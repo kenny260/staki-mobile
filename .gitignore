@@ -38,3 +38,6 @@ serviceAccount*.json
 backend/functions/lib/
 backend/functions/venv/
 __pycache__/
+
+# Scoring research
+backend/scoring-research/synthetic_users.json
