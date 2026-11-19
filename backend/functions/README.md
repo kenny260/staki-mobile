@@ -1,10 +1,28 @@
 # Cloud Functions
 
-Not initialised yet. From the `backend/` folder run `firebase init functions`
-and choose TypeScript (or Python), keeping the code in this `functions/` folder.
+TypeScript, Firebase Functions v2.
 
-Planned functions:
+| Function | Trigger | Owner |
+|---|---|---|
+| `computeCreditPassport` | Callable from the app (C01) | Abdull-Kudus |
 
-- Credit Passport scoring, eligibility, repayment schedule, matching (Abdull-Kudus)
-- Profile bootstrap on sign-up, consent writes, push notifications (Tolu)
-- CRUD helpers for profiles, documents, loans and lenders (Uche)
+## Run
+
+```bash
+cd backend/functions
+npm install
+npm test          # scoring unit tests + synthetic calibration
+npm run build
+npm run serve     # emulators (needs Java 21+)
+```
+
+Generate the calibration dataset first so the distribution checks run:
+
+```bash
+cd backend/scoring-research
+python generate_synthetic.py
+```
+
+Deploying needs the Firebase project on the Blaze plan.
+
+The scoring model is documented in `backend/scoring-research/MODEL_CARD.md`.
