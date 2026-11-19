@@ -10,8 +10,8 @@ enum AuthFailureCode {
   accountExistsWithDifferentCredential,
   cancelled,
   notSignedIn,
-  unknown,
   roleRequired,
+  unknown,
 }
 
 /// Pure Dart failure, safe to use in domain and presentation.
