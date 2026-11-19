@@ -11,6 +11,7 @@ enum AuthFailureCode {
   cancelled,
   notSignedIn,
   unknown,
+  roleRequired,
 }
 
 /// Pure Dart failure, safe to use in domain and presentation.

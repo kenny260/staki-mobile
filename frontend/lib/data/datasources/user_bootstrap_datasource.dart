@@ -39,4 +39,6 @@ class UserBootstrapDatasource {
       _db.collection('users').doc(uid).update({
         'fcmTokens': FieldValue.arrayRemove([token]),
       });
+  Future<bool> userExists(String uid) async =>
+      (await _db.collection('users').doc(uid).get()).exists;
 }
