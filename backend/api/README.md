@@ -10,25 +10,26 @@ no spending cap.
 | Endpoint | What it does | Owner |
 |---|---|---|
 | `POST /api/credit-passport` | Scores the signed-in borrower, writes `scores/{uid}` | Abdull-Kudus |
-| `POST /api/bootstrap-profile` (planned) | Creates `profiles/{uid}` right after sign-up | Tolu |
-| Consents and push notifications (planned) | Consent writes, FCM pushes | Tolu |
 | Eligibility, repayment, matching (planned) | Loan decision logic | Abdull-Kudus |
 
 Send the user's Firebase ID token as `Authorization: Bearer <token>`.
 
 ## Adding an endpoint
 
-1. Every file in `api/` is one endpoint: `api/bootstrap-profile.ts` is served
-   at `POST /api/bootstrap-profile`. Copy `api/credit-passport.ts` as a template.
+Only logic the client must not be trusted with goes here (for example the
+score). Auth, profile creation on sign-up and consent writes run in the app
+on Firebase Auth and Firestore with the owner-scoped rules, no server needed.
+
+1. Every file in `api/` is one endpoint: `api/eligibility.ts` is served
+   at `POST /api/eligibility`. Copy `api/credit-passport.ts` as a template.
 2. Put the logic in `src/` and keep the handler thin. Use `db()` and `auth()`
    from `src/firebase.ts`; the Firebase Admin setup is already done there.
 3. Check the caller: read `Authorization: Bearer <ID token>` and call
    `auth().verifyIdToken(token)`. Return `401` if it is missing or invalid.
 4. Add tests in `test/` and run `npm run typecheck` and `npm test`.
 
-There are no automatic triggers like Cloud Functions' "on user created".
-The app calls the endpoint itself, for example right after sign-up.
-Push notifications are sent with `firebase-admin` messaging from an endpoint.
+There are no automatic triggers like Cloud Functions' "on user created";
+the app calls the endpoint itself.
 
 For local runs, put the service account JSON in the `FIREBASE_SERVICE_ACCOUNT`
 environment variable. Ask Abdull-Kudus or Uche for it privately; never commit it.
