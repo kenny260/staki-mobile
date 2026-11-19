@@ -113,6 +113,14 @@ service cloud.firestore {
     match /momoAccounts/{userId} {
       allow read: if isOwner(userId);
       allow write: if false;
+
+      // Wallet history read by the scoring API (backend/api). Written by
+      // the server or the seed only, so a borrower cannot edit the
+      // history their Credit Passport score is built from.
+      match /transactions/{txId} {
+        allow read: if isOwner(userId);
+        allow write: if false;
+      }
     }
 
     // ---------- Credit Passport score (scoring engine only) ----------
