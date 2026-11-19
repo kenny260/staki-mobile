@@ -1,6 +1,6 @@
 # Credit Passport scoring model — rules-v1
 
-Owner: Abdull-Kudus. Code: `backend/functions/src/scoring/`.
+Owner: Abdull-Kudus. Code: `backend/api/src/scoring/`.
 
 ## What it does
 
@@ -68,7 +68,7 @@ a misleadingly low number.
 
 `python generate_synthetic.py` creates 600 borrowers (seed 42) across the five
 borrower types, each with a hidden profile (strong / average / weak).
-`npm test` in `backend/functions` scores them and checks:
+`npm test` in `backend/api` scores them and checks:
 
 | Check | Result (rules-v1) |
 |---|---|

@@ -35,11 +35,11 @@ jobs:
       - name: Run tests
         run: flutter test --coverage
 
-  functions:
+  scoring-api:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: backend/functions
+        working-directory: backend/api
     steps:
       - uses: actions/checkout@v4
 
@@ -47,7 +47,7 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: backend/functions/package-lock.json
+          cache-dependency-path: backend/api/package-lock.json
 
       - uses: actions/setup-python@v5
         with:
