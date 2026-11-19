@@ -5,7 +5,7 @@ firebase.json            Firebase config for this folder
 firestore.rules          owner-scoped Firestore security rules
 firestore.indexes.json   composite indexes
 storage.rules            rules for uploaded documents
-functions/               Cloud Functions (scoring, auth bootstrap, notifications)
+api/                     server API on Vercel (scoring, auth bootstrap, notifications)
 seed/                    demo and staging data scripts
 ```
 
@@ -34,11 +34,12 @@ Deploy rules and indexes (Uche):
 firebase deploy --only firestore:rules,firestore:indexes,storage
 ```
 
-Start Cloud Functions (first time only, from `backend/`):
+## Server code goes in `api/`, not Cloud Functions
 
-```bash
-firebase init functions         # choose TypeScript or Python, folder: functions
-```
+We do not use Firebase Cloud Functions. They need the Blaze plan, which has no
+spending cap. Do **not** run `firebase init functions`. All server code
+(scoring, profile bootstrap, consents, notifications) goes in `backend/api`
+and deploys free to Vercel. See `api/README.md` for how to add an endpoint.
 
 Service-account keys stay on your machine and are gitignored. `.firebaserc`
 (the project alias) is safe to commit.
