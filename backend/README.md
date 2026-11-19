@@ -5,7 +5,7 @@ firebase.json            Firebase config for this folder
 firestore.rules          owner-scoped Firestore security rules
 firestore.indexes.json   composite indexes
 storage.rules            rules for uploaded documents
-api/                     server API on Vercel (scoring, auth bootstrap, notifications)
+api/                     server API on Vercel (scoring, eligibility, repayment, matching)
 seed/                    demo and staging data scripts
 ```
 
@@ -37,9 +37,11 @@ firebase deploy --only firestore:rules,firestore:indexes,storage
 ## Server code goes in `api/`, not Cloud Functions
 
 We do not use Firebase Cloud Functions. They need the Blaze plan, which has no
-spending cap. Do **not** run `firebase init functions`. All server code
-(scoring, profile bootstrap, consents, notifications) goes in `backend/api`
-and deploys free to Vercel. See `api/README.md` for how to add an endpoint.
+spending cap. Do **not** run `firebase init functions`. Server-only logic
+(scoring, eligibility, repayment, matching) goes in `backend/api` and deploys
+free to Vercel. Auth (email/password, Google), profile creation on sign-up and
+consent writes run in the Flutter app on Firebase Auth and Firestore, which
+are free on Spark. See `api/README.md` for how to add an endpoint.
 
 Service-account keys stay on your machine and are gitignored. `.firebaserc`
 (the project alias) is safe to commit.
