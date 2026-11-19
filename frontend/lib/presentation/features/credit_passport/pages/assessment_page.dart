@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/router/app_routes.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/data/datasources/scoring_datasource.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/providers/credit_passport_models.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/providers/credit_passport_provider.dart';
@@ -15,12 +16,6 @@ class AssessmentPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen<AsyncValue<ScoringResult>>(scoringResultProvider, (_, next) {
-      final result = next.valueOrNull;
-      if (result != null && result.status == AssessmentStatus.complete) {
-        context.go(AppRoutes.creditPassport); // C02
-      }
-    });
     final result = ref.watch(scoringResultProvider);
 
     return Scaffold(
@@ -33,7 +28,7 @@ class AssessmentPage extends ConsumerWidget {
             : const _FailedView(),
         data: (r) => r.status == AssessmentStatus.needsInfo
             ? const _NeedsInfoView()
-            : const _ProcessingView(), // brief, until C02 opens
+            : const _CompleteView(),
       ),
     );
   }
@@ -182,7 +177,7 @@ class _ProcessingView extends ConsumerWidget {
               border: Border.all(color: AppColors.primary, width: 2),
             ),
             child: const Icon(
-              Icons.monitor_heart_outlined,
+              AppIcons.pulse,
               size: 36,
               color: AppColors.primary,
             ),
@@ -244,7 +239,7 @@ class _CheckRow extends StatelessWidget {
     switch (check.state) {
       case CheckState.done:
         leading = const Icon(
-          Icons.check_circle,
+          AppIcons.checkCircle,
           size: 18,
           color: AppColors.success,
         );
@@ -258,7 +253,7 @@ class _CheckRow extends StatelessWidget {
           ),
         );
       case CheckState.pending:
-        leading = const Icon(Icons.circle, size: 8, color: AppColors.border);
+        leading = const Icon(AppIcons.circle, size: 8, color: AppColors.border);
     }
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
@@ -299,7 +294,8 @@ class _NeedsInfoView extends ConsumerWidget {
       ),
       children: [
         const SizedBox(height: 16),
-        const _IconBadge(icon: Icons.error, color: AppColors.warning),
+        const _IconBadge(
+            icon: AppIcons.warningCircle, color: AppColors.warning,),
         const SizedBox(height: 24),
         const _Heading('Additional information required', size: 18),
         const SizedBox(height: 12),
@@ -323,7 +319,7 @@ class _NeedsInfoView extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Icon(
-                  Icons.description,
+                  AppIcons.fileText,
                   size: 18,
                   color: AppColors.warning,
                 ),
@@ -377,13 +373,13 @@ class _FailedView extends ConsumerWidget {
         children: [
           _PrimaryButton(
             label: 'Try Again',
-            icon: Icons.refresh,
+            icon: AppIcons.arrowsClockwise,
             onTap: () => ref.invalidate(scoringResultProvider),
           ),
           const SizedBox(height: 12),
           OutlinedButton.icon(
             onPressed: () => context.go(AppRoutes.support),
-            icon: const Icon(Icons.help_outline, size: 18),
+            icon: const Icon(AppIcons.question, size: 18),
             label: const Text('Contact Support'),
             style: OutlinedButton.styleFrom(
               minimumSize: const Size.fromHeight(52),
@@ -396,7 +392,7 @@ class _FailedView extends ConsumerWidget {
       ),
       children: [
         const SizedBox(height: 16),
-        const _IconBadge(icon: Icons.error, color: AppColors.danger),
+        const _IconBadge(icon: AppIcons.warningCircle, color: AppColors.danger),
         const SizedBox(height: 24),
         const _Heading('Assessment could not be\ncompleted'),
         const SizedBox(height: 12),
@@ -435,7 +431,7 @@ class _FailedView extends ConsumerWidget {
                       const Padding(
                         padding: EdgeInsets.only(top: 6, right: 10),
                         child: Icon(
-                          Icons.circle,
+                          AppIcons.circle,
                           size: 5,
                           color: AppColors.textMuted,
                         ),
@@ -476,13 +472,55 @@ class _SessionExpiredView extends StatelessWidget {
       ),
       children: const [
         SizedBox(height: 16),
-        _IconBadge(icon: Icons.lock_clock, color: AppColors.warning),
+        _IconBadge(icon: AppIcons.clock, color: AppColors.warning),
         SizedBox(height: 24),
         _Heading('Session expired'),
         SizedBox(height: 12),
         _Body(
           'For your security, please sign in again to continue building '
           'your Credit Passport.',
+        ),
+      ],
+    );
+  }
+}
+
+// ---------- C01c_Complete ----------
+class _CompleteView extends StatelessWidget {
+  const _CompleteView();
+
+  @override
+  Widget build(BuildContext context) {
+    return _StatusLayout(
+      bottom: _PrimaryButton(
+        label: 'View my Passport',
+        icon: AppIcons.arrowRight,
+        onTap: () => context.go(AppRoutes.creditPassport),
+      ),
+      children: [
+        const SizedBox(height: 48),
+        Center(
+          child: Container(
+            width: 96,
+            height: 96,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: AppColors.success.withValues(alpha: 0.12),
+            ),
+            child: const Icon(
+              AppIcons.shieldCheck,
+              size: 40,
+              color: AppColors.success,
+            ),
+          ),
+        ),
+        const SizedBox(height: 24),
+        const Center(child: _Heading('Assessment Complete', center: true)),
+        const SizedBox(height: 12),
+        const _Body(
+          'Your financial data has been successfully verified. Your Credit '
+          'Passport is ready.',
+          center: true,
         ),
       ],
     );

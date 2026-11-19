@@ -84,11 +84,18 @@ void main() {
     });
   });
 
-  testWidgets('complete goes to the score screen', (tester) async {
+  testWidgets('complete shows C01c and View my Passport opens the score', (
+    tester,
+  ) async {
     final datasource = _FakeDatasource(() async => _complete);
     await _show(tester, datasource);
-    expect(find.text('SCORE SCREEN'), findsOneWidget);
+    expect(find.text('Assessment Complete'), findsOneWidget);
+    expect(find.text('SCORE SCREEN'), findsNothing);
     expect(datasource.calls, 1);
+
+    await tester.tap(find.text('View my Passport'));
+    await tester.pumpAndSettle();
+    expect(find.text('SCORE SCREEN'), findsOneWidget);
   });
 
   testWidgets('needsInfo shows the additional information screen', (
