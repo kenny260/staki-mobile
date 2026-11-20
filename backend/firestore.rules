@@ -1,10 +1,6 @@
 rules_version = '2';
 
-// Owner-scoped rules. Everything is denied unless a rule below allows it.
-// Never use "allow read, write: if request.auth != null" on a whole collection.
-//
-// "Server only" means the Admin SDK (Cloud Functions, seed script), which
-// skips these rules.
+// Deny by default; "server only" = Admin SDK (scoring API, seed), which skips these rules.
 service cloud.firestore {
   match /databases/{database}/documents {
 
@@ -55,9 +51,7 @@ service cloud.firestore {
       allow update: if isOwner(userId) && keeps(['role']);
       allow delete: if false;
 
-      // Uploaded document records. The file itself lives on Cloudinary.
-      // Owners can only submit for review; only reviewers (server) can
-      // set verified or needsAttention.
+      // Document records (files on Cloudinary); owners submit for review, server verifies.
       match /documents/{documentId} {
         allow read, delete: if isOwner(userId);
         allow create, update: if isOwner(userId)
@@ -114,9 +108,7 @@ service cloud.firestore {
       allow read: if isOwner(userId);
       allow write: if false;
 
-      // Wallet history read by the scoring API (backend/api). Written by
-      // the server or the seed only, so a borrower cannot edit the
-      // history their Credit Passport score is built from.
+      // MoMo history for the scoring API; server-only writes so it can't be faked.
       match /transactions/{txId} {
         allow read: if isOwner(userId);
         allow write: if false;
@@ -191,8 +183,7 @@ service cloud.firestore {
 
     match /fundings/{fundingId} {
       allow read: if signedIn() && existing().lenderId == request.auth.uid;
-      // Lender requests an allocation; the server moves the money and
-      // updates the opportunity, wallet and status.
+      // Lender requests an allocation; the server moves the money and updates status.
       allow create: if signedIn()
         && incoming().lenderId == request.auth.uid
         && incoming().status == 'pending'
