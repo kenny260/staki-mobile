@@ -120,6 +120,77 @@ const momoAccounts = {
   },
 };
 
+// momoAccounts/{uid}/transactions/{id}
+// Read by the scoring API (backend/api), which only looks at the 12 months
+// ending in the current month. Dates are therefore counted back from the day
+// the seed runs, so the demo score stays the same whenever it is seeded.
+// Amounts are fixed (RWF, always positive). Expected score: Very Good.
+const MOMO_OPENING_BALANCE = 150000;
+
+// One normal month: [day, direction, category, amount].
+const MOMO_MONTH = [
+  [2, 'in', 'transfer', 240000],
+  [4, 'out', 'merchant', 110000],
+  [8, 'out', 'bill', 18500],
+  [11, 'out', 'airtime', 5000],
+  [15, 'in', 'transfer', 180000],
+  [17, 'out', 'merchant', 135000],
+  [21, 'out', 'cashout', 95000],
+  [25, 'out', 'transfer', 55000],
+];
+
+// Month-to-month differences, oldest month first, so the history is not
+// perfectly flat.
+const MOMO_INFLOW_SCALE = [0.9, 1.0, 1.1, 0.85, 1.05, 1.15, 0.95, 1.0, 1.2, 0.9, 1.05, 1.1];
+const MOMO_EXTRA_INFLOW_MONTHS = [2, 5, 8, 11]; // a third payment in
+const MOMO_NO_BILL_MONTHS = [3]; // missed bill and airtime that month
+
+const roundTo500 = (x) => Math.round(x / 500) * 500;
+const isoDay = (y, m, d) =>
+  `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+
+function buildMomoTransactions(now = new Date()) {
+  const txs = {};
+  let balance = MOMO_OPENING_BALANCE;
+  let count = 0;
+
+  for (let i = 0; i < 12; i++) {
+    const back = 11 - i;
+    const month = new Date(
+      Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - back, 1),
+    );
+    const plan = MOMO_MONTH.filter(
+      ([, , category]) =>
+        !(MOMO_NO_BILL_MONTHS.includes(i) &&
+          (category === 'bill' || category === 'airtime')),
+    );
+    if (MOMO_EXTRA_INFLOW_MONTHS.includes(i)) {
+      plan.push([27, 'in', 'transfer', 60000]);
+    }
+
+    for (const [day, direction, category, base] of plan) {
+      const amount =
+        direction === 'in' ? roundTo500(base * MOMO_INFLOW_SCALE[i]) : base;
+      balance += direction === 'in' ? amount : -amount;
+      // Never date a transaction in the future during the current month.
+      const d = back === 0 ? Math.min(day, now.getUTCDate()) : day;
+      // Zero-padded IDs keep Firestore's ID order equal to date order.
+      txs[`TX-${String(++count).padStart(3, '0')}`] = {
+        date: isoDay(month.getUTCFullYear(), month.getUTCMonth(), d),
+        amount,
+        direction,
+        category,
+        balanceAfter: balance,
+      };
+    }
+  }
+  return txs;
+}
+
+const transactions = {
+  [BORROWER_UID]: buildMomoTransactions(),
+};
+
 const scores = {
   [BORROWER_UID]: {
     value: 742,
@@ -440,5 +511,6 @@ module.exports = {
   subcollections: {
     users: { documents, notifications },
     lenders: { ledger },
+    momoAccounts: { transactions },
   },
 };

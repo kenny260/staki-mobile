@@ -38,6 +38,12 @@ These are demo-only accounts with fake data.
   attention, under review), MoMo consent and wallet, credit score 742,
   one active Bank of Kigali loan (RWF 500,000, 6 months, 3 repayments),
   2 notifications.
+- Borrower MoMo history: about 100 transactions over the 12 months
+  ending in the month you run the seed, under
+  `momoAccounts/demo-borrower/transactions`. The scoring API
+  (`backend/api`) reads these. With the current demo data they score
+  758 (Very Good). Dates are counted back from the day you seed, so
+  re-run the seed if the demo is months old.
 - Lender: verified individual lender with RWF 5,000,000 wallet,
   3 fundings (one late), 3 ledger entries, 5 notifications.
 - Marketplace: opportunities OPP-1042, OPP-0891, OPP-1095, OPP-0777.
