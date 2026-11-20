@@ -21,8 +21,6 @@ import 'package:staki_mobile/domain/usecases/sign_out.dart';
 import 'package:staki_mobile/domain/usecases/watch_auth_state.dart';
 import 'package:staki_mobile/presentation/features/onboarding/providers/onboarding_providers.dart';
 
-// If the app already has providers for FirebaseAuth / FirebaseFirestore,
-// delete these two and reuse those.
 final firebaseAuthProvider =
     Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
 
@@ -82,7 +80,6 @@ final authStateProvider = StreamProvider<AppUser?>(
 );
 
 /// Role chosen on A03, as the string the Firestore rules expect.
-/// If selectedRoleProvider already holds a String, drop the `.name`.
 final signUpRoleProvider = Provider<String?>(
   (ref) => ref.watch(selectedRoleProvider)?.name,
 );
