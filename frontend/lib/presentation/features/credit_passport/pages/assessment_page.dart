@@ -295,7 +295,9 @@ class _NeedsInfoView extends ConsumerWidget {
       children: [
         const SizedBox(height: 16),
         const _IconBadge(
-            icon: AppIcons.warningCircle, color: AppColors.warning,),
+          icon: AppIcons.warningCircle,
+          color: AppColors.warning,
+        ),
         const SizedBox(height: 24),
         const _Heading('Additional information required', size: 18),
         const SizedBox(height: 12),
