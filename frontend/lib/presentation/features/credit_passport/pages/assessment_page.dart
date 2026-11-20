@@ -1,45 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:staki_mobile/core/router/app_routes.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
 import 'package:staki_mobile/core/theme/app_icons.dart';
+import 'package:staki_mobile/data/datasources/scoring_datasource.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/providers/credit_passport_models.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/providers/credit_passport_provider.dart';
+import 'package:staki_mobile/presentation/features/credit_passport/providers/scoring_providers.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/widgets/passport_app_bar.dart';
 
+/// C01: asks the server for the score once, then moves on by the result.
 class AssessmentPage extends ConsumerWidget {
   const AssessmentPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final status = ref.watch(assessmentStatusProvider);
+    final result = ref.watch(scoringResultProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.surface,
+      backgroundColor: AppColors.background,
       appBar: const PassportAppBar(title: 'Assessment'),
-      body: status.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (_, __) => const Center(
-          child: Text('Could not check your assessment. Please try again.'),
-        ),
-        data: (s) {
-          switch (s) {
-            case AssessmentStatus.processing:
-              return const _ProcessingView();
-            case AssessmentStatus.needsInfo:
-              return const _NeedsInfoView();
-            case AssessmentStatus.complete:
-              return const _CompleteView();
-            case AssessmentStatus.failed:
-              return const _FailedView();
-          }
-        },
+      body: result.when(
+        loading: () => const _ProcessingView(),
+        error: (error, _) => error is ScoringSessionExpiredException
+            ? const _SessionExpiredView()
+            : const _FailedView(),
+        data: (r) => r.status == AssessmentStatus.needsInfo
+            ? const _NeedsInfoView()
+            : const _CompleteView(),
       ),
     );
   }
 }
 
-/// Shared layout: scrollable content with optional pinned bottom actions.
+/// Scrollable content with an optional pinned bottom area.
 class _StatusLayout extends StatelessWidget {
   const _StatusLayout({required this.children, this.bottom});
 
@@ -150,15 +145,15 @@ class _PrimaryButton extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          if (icon != null) ...[Icon(icon, size: 18), const SizedBox(width: 8)],
           Text(label, style: const TextStyle(fontWeight: FontWeight.w700)),
-          if (icon != null) ...[const SizedBox(width: 8), Icon(icon, size: 18)],
         ],
       ),
     );
   }
 }
 
-// ---------- C01_Processing ----------
+// ---------- C01_Processing (while the server works) ----------
 class _ProcessingView extends ConsumerWidget {
   const _ProcessingView();
 
@@ -207,7 +202,7 @@ class _ProcessingView extends ConsumerWidget {
           width: double.infinity,
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: AppColors.surfaceAlt,
+            color: AppColors.surface,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(color: AppColors.border),
           ),
@@ -290,11 +285,12 @@ class _NeedsInfoView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // The API does not say which document is the problem yet.
     final issue = ref.watch(needsInfoIssueProvider);
     return _StatusLayout(
       bottom: _PrimaryButton(
         label: 'Update Document',
-        onTap: () => context.go('/documents'),
+        onTap: () => context.go(AppRoutes.documents),
       ),
       children: [
         const SizedBox(height: 16),
@@ -315,7 +311,7 @@ class _NeedsInfoView extends ConsumerWidget {
             width: double.infinity,
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: AppColors.warning.withValues(alpha: 0.08),
+              color: AppColors.warningBg,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
                 color: AppColors.warning.withValues(alpha: 0.3),
@@ -339,7 +335,7 @@ class _NeedsInfoView extends ConsumerWidget {
                         style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w700,
-                          color: AppColors.danger,
+                          color: AppColors.dangerText,
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -347,7 +343,7 @@ class _NeedsInfoView extends ConsumerWidget {
                         issue.message,
                         style: const TextStyle(
                           fontSize: 11,
-                          color: AppColors.danger,
+                          color: AppColors.dangerText,
                         ),
                       ),
                     ],
@@ -361,50 +357,8 @@ class _NeedsInfoView extends ConsumerWidget {
   }
 }
 
-// ---------- C01c_Complete ----------
-class _CompleteView extends StatelessWidget {
-  const _CompleteView();
-
-  @override
-  Widget build(BuildContext context) {
-    return _StatusLayout(
-      bottom: _PrimaryButton(
-        label: 'View my Passport',
-        icon: AppIcons.arrowRight,
-        onTap: () => context.go('/credit-passport'),
-      ),
-      children: [
-        const SizedBox(height: 48),
-        Center(
-          child: Container(
-            width: 96,
-            height: 96,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: AppColors.success.withValues(alpha: 0.12),
-            ),
-            child: const Icon(
-              AppIcons.shieldCheck,
-              size: 40,
-              color: AppColors.success,
-            ),
-          ),
-        ),
-        const SizedBox(height: 24),
-        const Center(child: _Heading('Assessment Complete', center: true)),
-        const SizedBox(height: 12),
-        const _Body(
-          'Your financial data has been successfully verified. Your Credit '
-          'Passport is ready.',
-          center: true,
-        ),
-      ],
-    );
-  }
-}
-
 // ---------- C01d_Failed ----------
-class _FailedView extends StatelessWidget {
+class _FailedView extends ConsumerWidget {
   const _FailedView();
 
   static const _tips = [
@@ -414,21 +368,19 @@ class _FailedView extends StatelessWidget {
   ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return _StatusLayout(
       bottom: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // TODO(chris): re-trigger the assessment once the backend exists.
           _PrimaryButton(
             label: 'Try Again',
             icon: AppIcons.arrowsClockwise,
-            onTap: () {},
+            onTap: () => ref.invalidate(scoringResultProvider),
           ),
           const SizedBox(height: 12),
           OutlinedButton.icon(
-            // TODO(chris): route to S04_Support when it exists.
-            onPressed: () {},
+            onPressed: () => context.go(AppRoutes.support),
             icon: const Icon(AppIcons.question, size: 18),
             label: const Text('Contact Support'),
             style: OutlinedButton.styleFrom(
@@ -456,7 +408,7 @@ class _FailedView extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: AppColors.surfaceAlt,
+            color: AppColors.surface,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(color: AppColors.border),
           ),
@@ -501,6 +453,76 @@ class _FailedView extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ],
+    );
+  }
+}
+
+// ---------- E06 session expired ----------
+// TODO(chris): swap for Binthia's shared E06 state screen once I have seen
+// state_screen.dart.
+class _SessionExpiredView extends StatelessWidget {
+  const _SessionExpiredView();
+
+  @override
+  Widget build(BuildContext context) {
+    return _StatusLayout(
+      bottom: _PrimaryButton(
+        label: 'Sign in',
+        onTap: () => context.go(AppRoutes.login),
+      ),
+      children: const [
+        SizedBox(height: 16),
+        _IconBadge(icon: AppIcons.clock, color: AppColors.warning),
+        SizedBox(height: 24),
+        _Heading('Session expired'),
+        SizedBox(height: 12),
+        _Body(
+          'For your security, please sign in again to continue building '
+          'your Credit Passport.',
+        ),
+      ],
+    );
+  }
+}
+
+// ---------- C01c_Complete ----------
+class _CompleteView extends StatelessWidget {
+  const _CompleteView();
+
+  @override
+  Widget build(BuildContext context) {
+    return _StatusLayout(
+      bottom: _PrimaryButton(
+        label: 'View my Passport',
+        icon: AppIcons.arrowRight,
+        onTap: () => context.go(AppRoutes.creditPassport),
+      ),
+      children: [
+        const SizedBox(height: 48),
+        Center(
+          child: Container(
+            width: 96,
+            height: 96,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: AppColors.success.withValues(alpha: 0.12),
+            ),
+            child: const Icon(
+              AppIcons.shieldCheck,
+              size: 40,
+              color: AppColors.success,
+            ),
+          ),
+        ),
+        const SizedBox(height: 24),
+        const Center(child: _Heading('Assessment Complete', center: true)),
+        const SizedBox(height: 12),
+        const _Body(
+          'Your financial data has been successfully verified. Your Credit '
+          'Passport is ready.',
+          center: true,
         ),
       ],
     );
