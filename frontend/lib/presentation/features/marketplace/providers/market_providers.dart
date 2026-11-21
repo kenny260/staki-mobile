@@ -1,12 +1,21 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:staki_mobile/data/repositories/firestore_marketplace_repository.dart';
+import 'package:staki_mobile/presentation/features/auth/providers/auth_providers.dart';
 import 'package:staki_mobile/presentation/features/marketplace/providers/market_models.dart';
 import 'package:staki_mobile/presentation/features/marketplace/providers/market_repository.dart';
 
-// TEMP mock. To preview the allocation error, use:
-// MockMarketplaceRepository(failAllocate: true)
-final marketplaceRepositoryProvider = Provider<MarketplaceRepository>(
-  (ref) => MockMarketplaceRepository(),
-);
+/// The marketplace reads and writes Firestore for a signed-in lender. With
+/// nobody signed in the in-memory repository keeps the screens usable. To
+/// preview the allocation error, use
+/// MockMarketplaceRepository(failAllocate: true).
+final marketplaceRepositoryProvider = Provider<MarketplaceRepository>((ref) {
+  final user = ref.watch(authStateProvider).valueOrNull;
+  if (user == null) return MockMarketplaceRepository();
+  return FirestoreMarketplaceRepository(
+    firestore: ref.watch(firestoreProvider),
+    uid: user.uid,
+  );
+});
 
 final opportunitiesProvider = FutureProvider<List<Opportunity>>(
   (ref) => ref.watch(marketplaceRepositoryProvider).fetchOpportunities(),
