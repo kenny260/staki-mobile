@@ -136,7 +136,11 @@ service cloud.firestore {
         && incoming().purpose in ['workingCapital', 'inventory',
             'equipment', 'education', 'emergency', 'other']
         && incoming().paidAmount == 0;
-      allow update, delete: if false;
+      allow update: if false;
+      // A borrower can withdraw an application before review starts.
+      allow delete: if signedIn()
+        && existing().borrowerId == request.auth.uid
+        && existing().stage == 'submitted';
     }
 
     match /repayments/{repaymentId} {
