@@ -1,13 +1,21 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:staki_mobile/data/repositories/firestore_lender_repository.dart';
+import 'package:staki_mobile/presentation/features/auth/providers/auth_providers.dart';
 import 'package:staki_mobile/presentation/features/lender/providers/lender_models.dart';
 import 'package:staki_mobile/presentation/features/lender/providers/lender_picker.dart';
 import 'package:staki_mobile/presentation/features/lender/providers/lender_repository.dart';
 
-// TEMP mock. To preview the submit error, use:
-// MockLenderRepository(failSubmit: true)
-final lenderRepositoryProvider = Provider<LenderRepository>(
-  (ref) => MockLenderRepository(),
-);
+/// Registrations are saved to Firestore for a signed-in lender. With nobody
+/// signed in the in-memory repository keeps the screens usable. To preview
+/// the submit error, use MockLenderRepository(failSubmit: true).
+final lenderRepositoryProvider = Provider<LenderRepository>((ref) {
+  final user = ref.watch(authStateProvider).valueOrNull;
+  if (user == null) return MockLenderRepository();
+  return FirestoreLenderRepository(
+    firestore: ref.watch(firestoreProvider),
+    uid: user.uid,
+  );
+});
 
 final kycPickerProvider = Provider<KycPicker>((ref) => pickKycPhoto);
 
