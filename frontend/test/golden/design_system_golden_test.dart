@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -10,15 +11,41 @@ import 'package:staki_mobile/presentation/shared_widgets/shared_widgets.dart';
 /// First run (creates the image):  flutter test --update-goldens test/golden
 /// Later runs compare against it:  flutter test
 ///
-/// Until the golden image exists this test is skipped, so CI stays green.
-/// Generate the image on the SAME OS as CI (Linux), or font rendering
-/// differs and the comparison fails.
+/// Font smoothing differs slightly between Windows, macOS and the Linux CI,
+/// so the comparison allows up to 2% of pixels to differ. A real layout or
+/// colour change moves far more pixels than that and still fails.
 const _goldenPath = 'goldens/design_system_widgets.png';
 const _goldenOnDisk = 'test/golden/$_goldenPath';
+
+/// Accepts tiny anti-aliasing differences between operating systems.
+class _TolerantComparator extends LocalFileComparator {
+  _TolerantComparator(super.testFile);
+
+  static const _maxDiff = 0.02;
+
+  @override
+  Future<bool> compare(Uint8List imageBytes, Uri golden) async {
+    final result = await GoldenFileComparator.compareLists(
+      imageBytes,
+      await getGoldenBytes(golden),
+    );
+    if (result.passed || result.diffPercent <= _maxDiff) return true;
+    throw FlutterError(await generateFailureOutput(result, golden, basedir));
+  }
+}
 
 void main() {
   final shouldSkip =
       !autoUpdateGoldenFiles && !File(_goldenOnDisk).existsSync();
+
+  setUpAll(() {
+    final current = goldenFileComparator;
+    if (current is LocalFileComparator) {
+      goldenFileComparator = _TolerantComparator(
+        current.basedir.resolve('design_system_golden_test.dart'),
+      );
+    }
+  });
 
   testWidgets(
     'design system widgets match the golden',
