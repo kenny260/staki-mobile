@@ -53,6 +53,7 @@ import 'package:staki_mobile/presentation/features/marketplace/pages/notificatio
 import 'package:staki_mobile/presentation/features/marketplace/pages/opportunities_page.dart';
 import 'package:staki_mobile/presentation/features/marketplace/pages/opportunity_detail_page.dart';
 import 'package:staki_mobile/presentation/features/marketplace/pages/portfolio_page.dart';
+import 'package:staki_mobile/presentation/features/notifications/providers/push_providers.dart';
 import 'package:staki_mobile/presentation/features/onboarding/pages/a01_splash_page.dart';
 import 'package:staki_mobile/presentation/features/onboarding/pages/a02_welcome_page.dart';
 import 'package:staki_mobile/presentation/features/onboarding/pages/a03_role_select_page.dart';
@@ -82,6 +83,7 @@ import 'package:staki_mobile/presentation/features/settings/pages/s03_privacy_pa
 import 'package:staki_mobile/presentation/features/settings/pages/s04_support_page.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
+  ref.read(pushSyncProvider);
   final authRefresh = _AuthRefresh(ref);
   ref.onDispose(authRefresh.dispose);
   GoRoute route(String path, Widget Function() page) => GoRoute(
