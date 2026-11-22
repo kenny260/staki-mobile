@@ -1,7 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:staki_mobile/core/errors/auth_failure.dart';
+import 'package:staki_mobile/core/router/app_routes.dart';
 import 'package:staki_mobile/domain/entities/app_user.dart';
 import 'package:staki_mobile/presentation/features/auth/providers/auth_providers.dart';
+
+// TODO(tolu): confirm the two home routes with Chris and Binthia.
+const _lenderHome = '/marketplace';
+const _borrowerHome = AppRoutes.creditPassport;
 
 class AuthActionState {
   const AuthActionState({this.isLoading = false, this.failure});
@@ -11,8 +16,8 @@ class AuthActionState {
 }
 
 /// Pages call these methods and show `failure?.message`.
-/// Navigation is NOT done here: the router redirect reacts to
-/// authStateProvider.
+/// Pages navigate themselves after a success; the router redirect is the
+/// safety net.
 class AuthController extends StateNotifier<AuthActionState> {
   AuthController(this._ref) : super(const AuthActionState());
 
@@ -98,7 +103,37 @@ class AuthController extends StateNotifier<AuthActionState> {
     await _run(() async {
       verified = await _ref.read(checkEmailVerifiedProvider)();
     });
+    // Re-read the user so the router sees emailVerified == true.
+    if (verified && mounted) _ref.invalidate(authStateProvider);
     return verified;
+  }
+
+  /// Called by A09 "Account created" so a restart skips onboarding.
+  Future<bool> completeOnboarding() => _run(() async {
+        final user = _ref.read(authRepositoryProvider).currentUser;
+        if (user == null) {
+          throw const AuthFailure(
+            AuthFailureCode.notSignedIn,
+            'You are signed out.',
+          );
+        }
+        await _ref.read(markOnboardingCompleteProvider)(user.uid);
+      });
+
+  /// Where the signed-in user belongs right now. Uses the current Firebase
+  /// user directly, because the auth stream may not have emitted yet.
+  Future<String> landingLocation() async {
+    final user = _ref.read(authRepositoryProvider).currentUser;
+    if (user == null) return AppRoutes.login;
+    if (!user.emailVerified) return AppRoutes.verifyEmail;
+    try {
+      final account = await _ref.read(getUserAccountProvider)(user.uid);
+      if (account == null) return AppRoutes.roleSelect;
+      if (!account.onboardingComplete) return AppRoutes.phone;
+      return account.role == 'lender' ? _lenderHome : _borrowerHome;
+    } on AuthFailure {
+      return AppRoutes.login;
+    }
   }
 
   Future<bool> signOut() => _run(() => _ref.read(signOutProvider)());

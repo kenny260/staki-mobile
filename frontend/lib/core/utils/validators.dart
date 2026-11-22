@@ -50,4 +50,28 @@ class Validators {
     if (d.length != 9) return '+250 $d';
     return '+250 ${d.substring(0, 3)} ${d.substring(3, 6)} ${d.substring(6)}';
   }
+
+  /// Registration rule: 8+ chars, at least one letter and one number.
+  static String? newPassword(String? v) {
+    final value = v ?? '';
+    if (value.isEmpty) return 'Enter a password.';
+    if (value.length < 8) return 'Password must be at least 8 characters.';
+    if (!RegExp('[A-Za-z]').hasMatch(value)) {
+      return 'Password must contain at least one letter.';
+    }
+    if (!RegExp(r'\d').hasMatch(value)) {
+      return 'Password must contain at least one number.';
+    }
+    return null;
+  }
+
+  /// Login only checks presence; the server decides if it is correct.
+  static String? requiredPassword(String? v) =>
+      (v == null || v.isEmpty) ? 'Enter your password.' : null;
+
+  static String? confirmPassword(String? v, String original) {
+    if (v == null || v.isEmpty) return 'Confirm your password.';
+    if (v != original) return 'Passwords do not match.';
+    return null;
+  }
 }

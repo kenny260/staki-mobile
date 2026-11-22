@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/router/app_routes.dart';
+import 'package:staki_mobile/presentation/features/auth/pages/forgot_password_page.dart';
+import 'package:staki_mobile/presentation/features/auth/pages/login_page.dart';
+import 'package:staki_mobile/presentation/features/auth/pages/register_page.dart';
+import 'package:staki_mobile/presentation/features/auth/pages/verify_email_page.dart';
 import 'package:staki_mobile/presentation/features/consent/pages/consent_intro_page.dart';
 import 'package:staki_mobile/presentation/features/consent/pages/momo_connect_page.dart';
 import 'package:staki_mobile/presentation/features/consent/pages/momo_connected_page.dart';
@@ -72,7 +76,6 @@ import 'package:staki_mobile/presentation/features/settings/pages/s01_settings_p
 import 'package:staki_mobile/presentation/features/settings/pages/s02_data_permissions_page.dart';
 import 'package:staki_mobile/presentation/features/settings/pages/s03_privacy_page.dart';
 import 'package:staki_mobile/presentation/features/settings/pages/s04_support_page.dart';
-import 'package:staki_mobile/presentation/shared_widgets/placeholder_page.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   GoRoute route(String path, Widget Function() page) => GoRoute(
@@ -129,15 +132,11 @@ final routerProvider = Provider<GoRouter>((ref) {
       route(AppRoutes.salaried, () => const P30SalaryEmploymentPage()),
       route(AppRoutes.salariedIncome, () => const P31SalaryIncomePage()),
       route(AppRoutes.otherInfo, () => const P40OtherInfoPage()),
-      // Placeholders until the owner builds the real screen
-      route(
-        AppRoutes.login,
-        () => const PlaceholderPage(
-          screenCode: 'Login',
-          title: 'Login (email, password, Google)',
-          owner: 'Tolu',
-        ),
-      ),
+      // Auth (Tolu)
+      route(AppRoutes.login, () => const LoginPage()),
+      route(AppRoutes.register, () => const RegisterPage()),
+      route(AppRoutes.forgotPassword, () => const ForgotPasswordPage()),
+      route(AppRoutes.verifyEmail, () => const VerifyEmailPage()),
       GoRoute(
         path: AppRoutes.consent,
         builder: (context, state) => const ConsentIntroPage(), // O01

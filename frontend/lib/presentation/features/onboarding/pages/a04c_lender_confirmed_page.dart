@@ -15,7 +15,7 @@ class A04cLenderConfirmedPage extends StatelessWidget {
       title: 'Welcome, Lender',
       message: "Next, we'll set up your lender account and verify your "
           'credentials to get you started.',
-      onContinue: () => context.push(AppRoutes.phone),
+      onContinue: () => context.push(AppRoutes.register),
     );
   }
 }

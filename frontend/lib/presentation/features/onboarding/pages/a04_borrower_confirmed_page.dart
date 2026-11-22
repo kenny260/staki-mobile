@@ -15,7 +15,7 @@ class A04BorrowerConfirmedPage extends StatelessWidget {
       title: 'Welcome, Borrower',
       message: "Next, we'll help you create your account and start building "
           'your Staki fund profile.',
-      onContinue: () => context.push(AppRoutes.phone),
+      onContinue: () => context.push(AppRoutes.register),
     );
   }
 }
