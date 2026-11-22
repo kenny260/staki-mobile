@@ -4,6 +4,8 @@ import 'package:staki_mobile/core/constants/spacing.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
 import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/core/theme/text_styles.dart';
+import 'package:staki_mobile/presentation/features/consent/providers/consent_models.dart';
+import 'package:staki_mobile/presentation/features/consent/providers/consent_providers.dart';
 import 'package:staki_mobile/presentation/features/settings/providers/settings_providers.dart';
 import 'package:staki_mobile/presentation/shared_widgets/shared_widgets.dart';
 
@@ -32,9 +34,26 @@ class S02DataPermissionsPage extends ConsumerWidget {
         ],
       ),
     );
-    if (ok ?? false) {
-      // TODO(Uche): write the revoke to the consent ledger (timestamped).
-      ref.read(dataPermissionsProvider.notifier).setMomo(connected: false);
+    if (!(ok ?? false)) return;
+    // Records the revoke in the consent ledger (granted -> false with a
+    // timestamp). Signed-out previews use the in-memory repository.
+    try {
+      await ref.read(consentRepositoryProvider).revokeConsent(momoConsentType);
+    } on Object {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('We could not revoke access. Try again.'),
+          ),
+        );
+      }
+      return;
+    }
+    ref.read(dataPermissionsProvider.notifier).setMomo(connected: false);
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('MTN MoMo access revoked.')),
+      );
     }
   }
 
