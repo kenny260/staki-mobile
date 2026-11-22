@@ -38,6 +38,9 @@ abstract final class AppRoutes {
 
   // Owned by teammates (placeholders until their sections land)
   static const login = '/login'; // Tolu
+  static const String register = '/auth/register';
+  static const String forgotPassword = '/auth/forgot-password';
+  static const String verifyEmail = '/auth/verify-email';
   static const consent = '/consent'; // Chris, Section 03
   static const lenderOnboarding = '/lender/onboarding'; // Chris, Section 08
   static const documents = '/documents'; // Chris, Section 04
