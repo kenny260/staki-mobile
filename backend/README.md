@@ -7,6 +7,7 @@ firestore.indexes.json   composite indexes
 storage.rules            rules for uploaded documents
 api/                     server API on Vercel (scoring, eligibility, repayment, matching)
 seed/                    demo and staging data scripts
+rules-tests/             unit tests for firestore.rules (emulator)
 ```
 
 Project: `staki-bc71f` (Firestore in `africa-south1`). Files and images are
@@ -33,6 +34,21 @@ Deploy rules and indexes (Uche):
 ```bash
 firebase deploy --only firestore:rules,firestore:indexes,storage
 ```
+
+## Testing
+
+`rules-tests/` checks that `firestore.rules` allows and refuses the right
+writes: owner-only access, the role that can't change, server-only scores and
+MoMo data, the consent ledger, loans and repayments. The tests start a
+Firestore emulator on the `demo-staki` project, so they never touch real data.
+Java 21 or newer is needed for the emulator.
+
+```bash
+cd backend/rules-tests && npm install && npm test
+```
+
+Run them before deploying rules. When you change a rule, add or update the
+test for it in the matching file under `rules-tests/test/`.
 
 ## Server code goes in `api/`, not Cloud Functions
 
