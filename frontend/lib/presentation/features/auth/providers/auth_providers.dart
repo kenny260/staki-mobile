@@ -12,6 +12,8 @@ import 'package:staki_mobile/domain/repositories/auth_repository.dart';
 import 'package:staki_mobile/domain/repositories/user_repository.dart';
 import 'package:staki_mobile/domain/usecases/check_email_verified.dart';
 import 'package:staki_mobile/domain/usecases/ensure_user_document.dart';
+import 'package:staki_mobile/domain/usecases/get_user_account.dart';
+import 'package:staki_mobile/domain/usecases/mark_onboarding_complete.dart';
 import 'package:staki_mobile/domain/usecases/register_email.dart';
 import 'package:staki_mobile/domain/usecases/send_email_verification.dart';
 import 'package:staki_mobile/domain/usecases/send_password_reset.dart';
@@ -70,6 +72,12 @@ final watchAuthStateProvider = Provider(
 );
 final ensureUserDocumentProvider = Provider(
   (ref) => EnsureUserDocument(ref.watch(userRepositoryProvider)),
+);
+final getUserAccountProvider = Provider(
+  (ref) => GetUserAccount(ref.watch(userRepositoryProvider)),
+);
+final markOnboardingCompleteProvider = Provider(
+  (ref) => MarkOnboardingComplete(ref.watch(userRepositoryProvider)),
 );
 
 // ---------- state ----------

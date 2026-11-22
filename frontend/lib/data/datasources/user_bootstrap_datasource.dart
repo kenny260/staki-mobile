@@ -25,6 +25,7 @@ class UserBootstrapDatasource {
       'provider': user.provider,
       'createdAt': FieldValue.serverTimestamp(),
       'fcmTokens': <String>[],
+      'onboardingComplete': false,
     });
     return true;
   }
@@ -41,4 +42,10 @@ class UserBootstrapDatasource {
       });
   Future<bool> userExists(String uid) async =>
       (await _db.collection('users').doc(uid).get()).exists;
+
+  Future<Map<String, dynamic>?> getUser(String uid) async =>
+      (await _db.collection('users').doc(uid).get()).data();
+
+  Future<void> markOnboardingComplete(String uid) =>
+      _db.collection('users').doc(uid).update({'onboardingComplete': true});
 }

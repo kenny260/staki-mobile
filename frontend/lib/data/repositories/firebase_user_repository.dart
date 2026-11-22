@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:staki_mobile/core/errors/auth_failure.dart';
 import 'package:staki_mobile/data/datasources/user_bootstrap_datasource.dart';
 import 'package:staki_mobile/domain/entities/app_user.dart';
+import 'package:staki_mobile/domain/entities/user_account.dart';
 import 'package:staki_mobile/domain/repositories/user_repository.dart';
 
 class FirebaseUserRepository implements UserRepository {
@@ -26,4 +27,18 @@ class FirebaseUserRepository implements UserRepository {
   @override
   Future<bool> userExists(String uid) =>
       _guard(() => _datasource.userExists(uid));
+
+  @override
+  Future<UserAccount?> getAccount(String uid) => _guard(() async {
+        final data = await _datasource.getUser(uid);
+        if (data == null) return null;
+        return UserAccount(
+          role: data['role'] as String? ?? '',
+          onboardingComplete: data['onboardingComplete'] == true,
+        );
+      });
+
+  @override
+  Future<void> markOnboardingComplete(String uid) =>
+      _guard(() => _datasource.markOnboardingComplete(uid));
 }
