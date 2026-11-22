@@ -1,12 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:staki_mobile/core/errors/auth_failure.dart';
-import 'package:staki_mobile/core/router/app_routes.dart';
 import 'package:staki_mobile/domain/entities/app_user.dart';
+import 'package:staki_mobile/presentation/features/auth/providers/auth_landing.dart';
 import 'package:staki_mobile/presentation/features/auth/providers/auth_providers.dart';
-
-// TODO(tolu): confirm the two home routes with Chris and Binthia.
-const _lenderHome = '/marketplace';
-const _borrowerHome = AppRoutes.creditPassport;
 
 class AuthActionState {
   const AuthActionState({this.isLoading = false, this.failure});
@@ -120,21 +116,8 @@ class AuthController extends StateNotifier<AuthActionState> {
         await _ref.read(markOnboardingCompleteProvider)(user.uid);
       });
 
-  /// Where the signed-in user belongs right now. Uses the current Firebase
-  /// user directly, because the auth stream may not have emitted yet.
-  Future<String> landingLocation() async {
-    final user = _ref.read(authRepositoryProvider).currentUser;
-    if (user == null) return AppRoutes.login;
-    if (!user.emailVerified) return AppRoutes.verifyEmail;
-    try {
-      final account = await _ref.read(getUserAccountProvider)(user.uid);
-      if (account == null) return AppRoutes.roleSelect;
-      if (!account.onboardingComplete) return AppRoutes.phone;
-      return account.role == 'lender' ? _lenderHome : _borrowerHome;
-    } on AuthFailure {
-      return AppRoutes.login;
-    }
-  }
+  /// Where the signed-in user belongs right now (see resolveLanding).
+  Future<String> landingLocation() => resolveLanding(_ref);
 
   Future<bool> signOut() => _run(() => _ref.read(signOutProvider)());
 }
