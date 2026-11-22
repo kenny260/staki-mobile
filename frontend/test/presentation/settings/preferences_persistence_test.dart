@@ -54,4 +54,18 @@ void main() {
     container.read(dataPermissionsProvider.notifier).setMomo(connected: false);
     expect(container.read(dataPermissionsProvider).momoConnected, isFalse);
   });
+
+  test('notifications and biometrics survive an app restart', () async {
+    final first = _container(await SharedPreferences.getInstance());
+    expect(first.read(notificationsEnabledProvider), isTrue);
+    expect(first.read(biometricsEnabledProvider), isTrue);
+    await first.read(notificationsEnabledProvider.notifier).set(enabled: false);
+    await first.read(biometricsEnabledProvider.notifier).set(enabled: false);
+    first.dispose();
+
+    final second = _container(await SharedPreferences.getInstance());
+    addTearDown(second.dispose);
+    expect(second.read(notificationsEnabledProvider), isFalse);
+    expect(second.read(biometricsEnabledProvider), isFalse);
+  });
 }

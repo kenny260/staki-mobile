@@ -77,6 +77,8 @@ class S01SettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final phone = ref.watch(phoneNumberProvider);
+    final notifications = ref.watch(notificationsEnabledProvider);
+    final biometrics = ref.watch(biometricsEnabledProvider);
     final language =
         supportedLanguages[ref.watch(languageProvider)] ?? 'English';
 
@@ -154,10 +156,16 @@ class S01SettingsPage extends ConsumerWidget {
                     ],
                   ),
                   const SettingsSectionLabel('SECURITY'),
-                  const SettingsGroup(
+                  SettingsGroup(
                     children: [
-                      SettingsRow(label: 'Change PIN'),
-                      SettingsRow(label: 'Biometrics', value: 'Enabled'),
+                      const SettingsRow(label: 'Change PIN'),
+                      SettingsRow(
+                        label: 'Biometrics',
+                        value: biometrics ? 'On' : 'Off',
+                        onTap: () => ref
+                            .read(biometricsEnabledProvider.notifier)
+                            .set(enabled: !biometrics),
+                      ),
                     ],
                   ),
                   const SettingsSectionLabel('DATA & PERMISSIONS'),
@@ -181,7 +189,13 @@ class S01SettingsPage extends ConsumerWidget {
                         value: language,
                         onTap: () => _pickLanguage(context, ref),
                       ),
-                      const SettingsRow(label: 'Notifications'),
+                      SettingsRow(
+                        label: 'Notifications',
+                        value: notifications ? 'On' : 'Off',
+                        onTap: () => ref
+                            .read(notificationsEnabledProvider.notifier)
+                            .set(enabled: !notifications),
+                      ),
                       SettingsRow(
                         label: 'Privacy',
                         onTap: () => context.push(AppRoutes.privacy),
