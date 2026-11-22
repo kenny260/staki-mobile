@@ -17,12 +17,16 @@ const authUsers = [
     email: 'borrower@staki.demo',
     password: 'StakiDemo123!',
     displayName: 'Demo Borrower',
+    // Demo accounts skip the email link so the walkthrough can sign in.
+    emailVerified: true,
   },
   {
     uid: LENDER_UID,
     email: 'lender@staki.demo',
     password: 'StakiDemo123!',
     displayName: 'Demo Lender',
+    // Demo accounts skip the email link so the walkthrough can sign in.
+    emailVerified: true,
   },
 ];
 
