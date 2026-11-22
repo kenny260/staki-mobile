@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/router/app_routes.dart';
+import 'package:staki_mobile/core/router/auth_redirect.dart';
+import 'package:staki_mobile/domain/entities/app_user.dart';
 import 'package:staki_mobile/presentation/features/auth/pages/forgot_password_page.dart';
 import 'package:staki_mobile/presentation/features/auth/pages/login_page.dart';
 import 'package:staki_mobile/presentation/features/auth/pages/register_page.dart';
 import 'package:staki_mobile/presentation/features/auth/pages/verify_email_page.dart';
+import 'package:staki_mobile/presentation/features/auth/providers/auth_landing.dart';
+import 'package:staki_mobile/presentation/features/auth/providers/auth_providers.dart';
 import 'package:staki_mobile/presentation/features/consent/pages/consent_intro_page.dart';
 import 'package:staki_mobile/presentation/features/consent/pages/momo_connect_page.dart';
 import 'package:staki_mobile/presentation/features/consent/pages/momo_connected_page.dart';
@@ -78,6 +82,8 @@ import 'package:staki_mobile/presentation/features/settings/pages/s03_privacy_pa
 import 'package:staki_mobile/presentation/features/settings/pages/s04_support_page.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
+  final authRefresh = _AuthRefresh(ref);
+  ref.onDispose(authRefresh.dispose);
   GoRoute route(String path, Widget Function() page) => GoRoute(
         path: path,
         builder: (context, state) => page(),
@@ -85,6 +91,12 @@ final routerProvider = Provider<GoRouter>((ref) {
 
   return GoRouter(
     initialLocation: AppRoutes.splash,
+    refreshListenable: authRefresh,
+    redirect: (context, state) => authRedirect(
+      location: state.matchedLocation,
+      auth: ref.read(authStateProvider),
+      landing: () => resolveLanding(ref),
+    ),
     routes: [
       // Section 01
       route(AppRoutes.splash, () => const A01SplashPage()),
@@ -326,3 +338,13 @@ final routerProvider = Provider<GoRouter>((ref) {
         Scaffold(body: Center(child: Text('Route not found: ${state.uri}'))),
   );
 });
+
+/// Re-runs the redirect whenever the signed-in user changes.
+class _AuthRefresh extends ChangeNotifier {
+  _AuthRefresh(Ref ref) {
+    ref.listen<AsyncValue<AppUser?>>(
+      authStateProvider,
+      (_, __) => notifyListeners(),
+    );
+  }
+}
