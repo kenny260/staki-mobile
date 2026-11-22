@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/consent/widgets/action_buttons.dart';
 import 'package:staki_mobile/presentation/features/consent/widgets/consent_app_bar.dart';
 import 'package:staki_mobile/presentation/features/consent/widgets/consent_layout.dart';
@@ -54,14 +55,14 @@ class _InfoCard extends StatelessWidget {
       child: const Column(
         children: [
           _InfoRow(
-            icon: Icons.smartphone,
+            icon: AppIcons.deviceMobile,
             color: AppColors.primary,
             title: 'What we access',
             text: '6 months of transaction history and account status.',
           ),
           SizedBox(height: 18),
           _InfoRow(
-            icon: Icons.check_circle,
+            icon: AppIcons.checkCircle,
             color: AppColors.success,
             title: 'Why we need it',
             text: 'To verify your cash flow, prove utility payments, and '
@@ -69,7 +70,7 @@ class _InfoCard extends StatelessWidget {
           ),
           SizedBox(height: 18),
           _InfoRow(
-            icon: Icons.lock,
+            icon: AppIcons.lockKey,
             color: AppColors.primary,
             title: 'How consent works',
             text: 'Read-only access. You can revoke this permission at '

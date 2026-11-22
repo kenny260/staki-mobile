@@ -16,10 +16,14 @@ class AppTextField extends StatelessWidget {
     this.keyboardType,
     this.inputFormatters,
     this.prefix,
+    this.suffix,
     this.maxLength,
     this.textCapitalization = TextCapitalization.none,
     this.autofocus = false,
     this.isOptional = false,
+    this.obscureText = false,
+    this.autofillHints,
+    this.textInputAction,
   });
 
   final String label;
@@ -31,10 +35,20 @@ class AppTextField extends StatelessWidget {
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
   final Widget? prefix;
+
+  /// Shown at the end of the field, e.g. a Show/Hide button for passwords.
+  final Widget? suffix;
   final int? maxLength;
   final TextCapitalization textCapitalization;
   final bool autofocus;
   final bool isOptional;
+
+  /// Hides the text (password fields).
+  final bool obscureText;
+
+  /// Lets password managers and autofill recognise the field.
+  final Iterable<String>? autofillHints;
+  final TextInputAction? textInputAction;
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +75,9 @@ class AppTextField extends StatelessWidget {
           maxLength: maxLength,
           autofocus: autofocus,
           textCapitalization: textCapitalization,
+          obscureText: obscureText,
+          autofillHints: autofillHints,
+          textInputAction: textInputAction,
           decoration: InputDecoration(
             hintText: hint,
             errorText: errorText,
@@ -72,6 +89,7 @@ class AppTextField extends StatelessWidget {
                     child: prefix,
                   ),
             prefixIconConstraints: const BoxConstraints(),
+            suffixIcon: suffix,
           ),
         ),
         if (helper != null && errorText == null) ...[

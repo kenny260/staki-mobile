@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/core/theme/text_styles.dart';
 import 'package:staki_mobile/presentation/shared_widgets/shared_widgets.dart';
 
@@ -21,7 +22,7 @@ class EdgeCaseGalleryPage extends StatelessWidget {
           return ListTile(
             leading: Icon(c.icon, color: AppColors.primary),
             title: Text('${c.code}  ${c.title}', style: AppTextStyles.label),
-            trailing: const Icon(Icons.chevron_right_rounded),
+            trailing: const Icon(AppIcons.caretRight),
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute<void>(builder: (_) => StateScreen(type: type)),
             ),

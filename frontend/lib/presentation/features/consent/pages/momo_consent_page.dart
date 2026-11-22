@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/consent/providers/consent_providers.dart';
 import 'package:staki_mobile/presentation/features/consent/widgets/action_buttons.dart';
 import 'package:staki_mobile/presentation/features/consent/widgets/consent_app_bar.dart';
@@ -102,7 +103,7 @@ class _LinkHeader extends StatelessWidget {
             border: Border.all(color: AppColors.border),
           ),
           child: const Icon(
-            Icons.verified_user,
+            AppIcons.shieldCheck,
             size: 26,
             color: AppColors.primary,
           ),
@@ -128,7 +129,7 @@ class _AccessCard extends StatelessWidget {
       child: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _CardTitle(icon: Icons.visibility_outlined, label: 'What we access'),
+          _CardTitle(icon: AppIcons.eye, label: 'What we access'),
           SizedBox(height: 14),
           _CheckItem(
             title: 'Transaction History',
@@ -144,7 +145,7 @@ class _AccessCard extends StatelessWidget {
           SizedBox(height: 14),
           Divider(color: AppColors.border, height: 1),
           SizedBox(height: 14),
-          _CardTitle(icon: Icons.lock_outline, label: 'How we protect you'),
+          _CardTitle(icon: AppIcons.lockKey, label: 'How we protect you'),
           SizedBox(height: 12),
           _BulletItem(
             'Read-only access. We cannot move your funds or make '
@@ -199,7 +200,7 @@ class _CheckItem extends StatelessWidget {
       children: [
         const Padding(
           padding: EdgeInsets.only(top: 2),
-          child: Icon(Icons.check_circle, size: 16, color: AppColors.primary),
+          child: Icon(AppIcons.checkCircle, size: 16, color: AppColors.primary),
         ),
         const SizedBox(width: 10),
         Expanded(
@@ -242,7 +243,7 @@ class _BulletItem extends StatelessWidget {
       children: [
         const Padding(
           padding: EdgeInsets.only(top: 6, right: 10),
-          child: Icon(Icons.circle, size: 5, color: AppColors.textMuted),
+          child: Icon(AppIcons.circle, size: 5, color: AppColors.textMuted),
         ),
         Expanded(
           child: Text(

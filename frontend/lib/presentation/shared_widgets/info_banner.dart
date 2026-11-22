@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:staki_mobile/core/constants/spacing.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/core/theme/text_styles.dart';
 
 class InfoBanner extends StatelessWidget {
   const InfoBanner({
     required this.message,
     super.key,
-    this.icon = Icons.info_outline,
+    this.icon = AppIcons.info,
   });
 
   final String message;

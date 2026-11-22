@@ -2,13 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:staki_mobile/presentation/features/documents/pages/documents_page.dart';
+import 'package:staki_mobile/presentation/features/documents/providers/document_providers.dart';
+import 'package:staki_mobile/presentation/features/documents/providers/document_repository.dart';
 
 void main() {
   testWidgets('DocumentsPage lists documents with their status', (
     tester,
   ) async {
     await tester.pumpWidget(
-      const ProviderScope(child: MaterialApp(home: DocumentsPage())),
+      ProviderScope(
+        overrides: [
+          documentRepositoryProvider.overrideWithValue(
+            MockDocumentRepository(),
+          ),
+        ],
+        child: const MaterialApp(home: DocumentsPage()),
+      ),
     );
     await tester.pumpAndSettle();
 

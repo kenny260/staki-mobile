@@ -125,7 +125,7 @@ class _LenderOtpPageState extends ConsumerState<LenderOtpPage> {
                   'Resend code in $countdown',
                   style: const TextStyle(
                     fontSize: 12,
-                    color: AppColors.warningText,
+                    color: AppColors.primary,
                   ),
                 )
               : TextButton(

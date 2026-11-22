@@ -1,13 +1,24 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:staki_mobile/data/datasources/consent_datasource.dart';
+import 'package:staki_mobile/data/repositories/firestore_consent_repository.dart';
+import 'package:staki_mobile/presentation/features/auth/providers/auth_providers.dart';
 import 'package:staki_mobile/presentation/features/consent/providers/consent_models.dart';
 import 'package:staki_mobile/presentation/features/consent/providers/consent_repository.dart';
 
-// TEMP mock. To preview each MoMo result screen, pass an outcome:
-// MockConsentRepository(outcome: MomoOutcome.notEligible)
-// MockConsentRepository(outcome: MomoOutcome.connectionError)
-final consentRepositoryProvider = Provider<ConsentRepository>(
-  (ref) => MockConsentRepository(),
-);
+/// Consent records are saved to Firestore `consents` for a signed-in user.
+/// With nobody signed in (rules would reject the write) the in-memory
+/// repository keeps the flow usable. To preview a MoMo result screen, use
+/// MockConsentRepository(outcome: MomoOutcome.notEligible) or
+/// MockConsentRepository(outcome: MomoOutcome.connectionError).
+final consentRepositoryProvider = Provider<ConsentRepository>((ref) {
+  // Rebuilds when the user signs in or out.
+  final user = ref.watch(authStateProvider).valueOrNull;
+  if (user == null) return MockConsentRepository();
+  return FirestoreConsentRepository(
+    datasource: ConsentDatasource(ref.watch(firestoreProvider)),
+    currentUid: () => user.uid,
+  );
+});
 
 class ConsentController extends Notifier<ConsentFlowState> {
   @override

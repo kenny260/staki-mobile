@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/loan_lifecycle/lifecycle_routes.dart';
 import 'package:staki_mobile/presentation/features/loan_lifecycle/providers/lifecycle_models.dart';
 import 'package:staki_mobile/presentation/features/loan_lifecycle/providers/lifecycle_providers.dart';
@@ -37,7 +38,7 @@ class RepaySuccessPage extends ConsumerWidget {
                           color: AppColors.onPrimary.withValues(alpha: 0.1),
                         ),
                         child: const Icon(
-                          Icons.check_circle,
+                          AppIcons.checkCircle,
                           size: 40,
                           color: AppColors.success,
                         ),

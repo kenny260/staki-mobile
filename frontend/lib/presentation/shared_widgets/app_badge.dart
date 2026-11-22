@@ -15,19 +15,19 @@ class AppBadge extends StatelessWidget {
   final String label;
   final BadgeTone tone;
 
-  Color get _fg => switch (tone) {
-        BadgeTone.neutral => AppColors.textSecondary,
-        BadgeTone.primary => AppColors.primary,
-        BadgeTone.success => AppColors.success,
-        BadgeTone.warning => AppColors.warning,
-        BadgeTone.danger => AppColors.danger,
-        BadgeTone.info => AppColors.info,
+  /// Background and text pairs from the Figma status badges (DS4).
+  (Color, Color) get _colors => switch (tone) {
+        BadgeTone.neutral => (AppColors.surfaceAlt, AppColors.textSecondary),
+        BadgeTone.primary => (AppColors.primarySoft, AppColors.primary),
+        BadgeTone.success => (AppColors.successBg, AppColors.successText),
+        BadgeTone.warning => (AppColors.warningBg, AppColors.warningText),
+        BadgeTone.danger => (AppColors.dangerBg, AppColors.dangerText),
+        BadgeTone.info => (AppColors.infoBg, AppColors.infoText),
       };
 
   @override
   Widget build(BuildContext context) {
-    final bg =
-        tone == BadgeTone.neutral ? AppColors.surfaceAlt : _fg.withAlpha(28);
+    final (bg, fg) = _colors;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
@@ -37,7 +37,7 @@ class AppBadge extends StatelessWidget {
       child: Text(
         label,
         style: AppTextStyles.caption.copyWith(
-          color: _fg,
+          color: fg,
           fontWeight: FontWeight.w600,
         ),
       ),

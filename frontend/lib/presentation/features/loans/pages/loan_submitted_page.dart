@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/router/app_routes.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/loans/providers/loan_models.dart';
 import 'package:staki_mobile/presentation/features/loans/providers/loan_providers.dart';
 
@@ -39,7 +40,7 @@ class LoanSubmittedPage extends ConsumerWidget {
                           color: AppColors.onPrimary.withValues(alpha: 0.1),
                         ),
                         child: const Icon(
-                          Icons.description,
+                          AppIcons.fileText,
                           size: 38,
                           color: AppColors.success,
                         ),

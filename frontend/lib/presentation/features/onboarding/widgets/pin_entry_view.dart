@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:staki_mobile/core/constants/spacing.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/core/theme/text_styles.dart';
 import 'package:staki_mobile/presentation/shared_widgets/shared_widgets.dart';
 
@@ -116,7 +117,7 @@ class _Stepper extends StatelessWidget {
                 : AppColors.border,
       ),
       child: done
-          ? const Icon(Icons.check, size: 12, color: AppColors.onPrimary)
+          ? const Icon(AppIcons.check, size: 12, color: AppColors.onPrimary)
           : Text(
               '$n',
               style: AppTextStyles.navLabel.copyWith(

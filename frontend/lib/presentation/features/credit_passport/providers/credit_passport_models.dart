@@ -62,8 +62,7 @@ class CreditScore {
     return ScoreBand.exceptional;
   }
 
-  /// Figma shows "STRONG" for 780, which the plan calls Very Good.
-  /// Confirm the final wording with Abdull-Kudus; change it only here.
+  /// Band names from the Figma Credit Passport gauge and Product Map.
   String get bandLabel {
     switch (band) {
       case ScoreBand.poor:
@@ -73,7 +72,7 @@ class CreditScore {
       case ScoreBand.good:
         return 'GOOD';
       case ScoreBand.veryGood:
-        return 'STRONG';
+        return 'VERY GOOD';
       case ScoreBand.exceptional:
         return 'EXCEPTIONAL';
     }

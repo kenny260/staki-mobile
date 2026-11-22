@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/router/app_routes.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/shared_widgets/shared_widgets.dart';
 
 void showLoanMessage(BuildContext context, String message) {
@@ -128,7 +129,7 @@ class LoanNote extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(
-            Icons.info,
+            AppIcons.info,
             size: 16,
             color: blue ? AppColors.info : AppColors.textSecondary,
           ),

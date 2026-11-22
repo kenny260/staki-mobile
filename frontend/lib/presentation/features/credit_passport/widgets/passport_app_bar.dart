@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 
 class PassportAppBar extends StatelessWidget implements PreferredSizeWidget {
   const PassportAppBar({required this.title, super.key});
@@ -35,7 +36,7 @@ class PassportAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: 0,
       leading: IconButton(
         tooltip: 'Back',
-        icon: const Icon(Icons.chevron_left, color: AppColors.primary),
+        icon: const Icon(AppIcons.caretLeft, color: AppColors.primary),
         onPressed: () => _goBack(context),
       ),
     );

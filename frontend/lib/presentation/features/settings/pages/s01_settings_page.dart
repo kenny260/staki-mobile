@@ -4,8 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/constants/spacing.dart';
 import 'package:staki_mobile/core/router/app_routes.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/core/theme/text_styles.dart';
 import 'package:staki_mobile/core/utils/validators.dart';
+import 'package:staki_mobile/presentation/features/auth/providers/auth_controller.dart';
 import 'package:staki_mobile/presentation/features/onboarding/providers/onboarding_providers.dart';
 import 'package:staki_mobile/presentation/features/settings/providers/settings_providers.dart';
 import 'package:staki_mobile/presentation/features/settings/widgets/settings_widgets.dart';
@@ -29,7 +31,7 @@ class S01SettingsPage extends ConsumerWidget {
               ListTile(
                 title: Text(entry.value),
                 trailing: entry.key == current
-                    ? const Icon(Icons.check, color: AppColors.primary)
+                    ? const Icon(AppIcons.check, color: AppColors.primary)
                     : null,
                 onTap: () => Navigator.of(context).pop(entry.key),
               ),
@@ -40,13 +42,14 @@ class S01SettingsPage extends ConsumerWidget {
     if (picked != null) await ref.read(languageProvider.notifier).set(picked);
   }
 
-  Future<void> _confirmLogout(BuildContext context) async {
+  Future<void> _confirmLogout(BuildContext context, WidgetRef ref) async {
     final ok = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
         title: const Text('Log out?'),
-        content:
-            const Text('You will need your PIN or biometrics to log in again.'),
+        content: const Text(
+          'You will need to log in again with your email or Google account.',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
@@ -59,10 +62,16 @@ class S01SettingsPage extends ConsumerWidget {
         ],
       ),
     );
-    if ((ok ?? false) && context.mounted) {
-      // TODO(Tolu): sign out of Firebase Auth before leaving.
-      context.go(AppRoutes.welcome);
-    }
+    if (!(ok ?? false) || !context.mounted) return;
+
+    final signedOut = await ref.read(authControllerProvider.notifier).signOut();
+    if (!signedOut || !context.mounted) return;
+
+    // Forget the previous person's choices so a new account starts clean.
+    ref
+      ..invalidate(selectedRoleProvider)
+      ..invalidate(phoneNumberProvider);
+    context.go(AppRoutes.welcome);
   }
 
   @override
@@ -101,7 +110,7 @@ class S01SettingsPage extends ConsumerWidget {
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(
-                          Icons.person,
+                          AppIcons.user,
                           color: AppColors.onPrimary,
                         ),
                       ),
@@ -189,7 +198,7 @@ class S01SettingsPage extends ConsumerWidget {
                       SettingsRow(
                         label: 'Log out',
                         isDestructive: true,
-                        onTap: () => _confirmLogout(context),
+                        onTap: () => _confirmLogout(context, ref),
                       ),
                     ],
                   ),

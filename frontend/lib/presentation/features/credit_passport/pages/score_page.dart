@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/providers/credit_passport_models.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/providers/credit_passport_provider.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/widgets/factor_summary_card.dart';
@@ -79,7 +80,7 @@ class ScorePage extends ConsumerWidget {
                           Row(
                             children: [
                               const Icon(
-                                Icons.circle,
+                                AppIcons.circle,
                                 size: 8,
                                 color: AppColors.success,
                               ),

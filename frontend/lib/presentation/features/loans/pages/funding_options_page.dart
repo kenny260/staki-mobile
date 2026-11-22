@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/router/app_routes.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/loans/loan_routes.dart';
 import 'package:staki_mobile/presentation/features/loans/providers/loan_models.dart';
 import 'package:staki_mobile/presentation/features/loans/providers/loan_providers.dart';
@@ -130,7 +131,7 @@ class _OfferCard extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
-                            pending ? Icons.info : Icons.check_circle,
+                            pending ? AppIcons.info : AppIcons.checkCircle,
                             size: 12,
                             color:
                                 pending ? AppColors.primary : AppColors.success,
@@ -253,7 +254,7 @@ class _BankBadge extends StatelessWidget {
         shape: BoxShape.circle,
       ),
       child: const Icon(
-        Icons.account_balance,
+        AppIcons.bank,
         size: 18,
         color: AppColors.primary,
       ),
@@ -285,7 +286,7 @@ class _NotEligibleView extends StatelessWidget {
         ),
       ),
       children: const [
-        _Badge(icon: Icons.verified_user, color: AppColors.info),
+        _Badge(icon: AppIcons.shieldCheck, color: AppColors.info),
         SizedBox(height: 20),
         LoanHeading('No matching offers right now'),
         SizedBox(height: 10),
@@ -298,7 +299,7 @@ class _NotEligibleView extends StatelessWidget {
         LoanHeading('How to improve your eligibility', size: 14),
         SizedBox(height: 12),
         _TipCard(
-          icon: Icons.trending_up,
+          icon: AppIcons.trendUp,
           color: AppColors.success,
           title: 'Keep your connections active',
           text: 'Leave your MTN MoMo and Bank accounts connected. More '
@@ -306,7 +307,7 @@ class _NotEligibleView extends StatelessWidget {
         ),
         SizedBox(height: 10),
         _TipCard(
-          icon: Icons.check_circle,
+          icon: AppIcons.checkCircle,
           color: AppColors.primary,
           title: 'Pay utility bills on time',
           text: 'Consistent digital payments strengthen your affordability '
@@ -472,7 +473,7 @@ class _UnderReviewView extends ConsumerWidget {
       children: [
         const SizedBox(height: 24),
         const Center(
-          child: _Badge(icon: Icons.schedule, color: AppColors.warning),
+          child: _Badge(icon: AppIcons.clock, color: AppColors.warning),
         ),
         const SizedBox(height: 20),
         const Center(child: LoanHeading('Application under review')),

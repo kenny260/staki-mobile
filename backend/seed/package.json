@@ -1,0 +1,18 @@
+{
+  "name": "staki-seed",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Loads Staki Fund demo data into Firestore and Firebase Auth.",
+  "main": "seed.js",
+  "scripts": {
+    "seed": "node seed.js",
+    "seed:emulator": "node seed.js --emulator",
+    "seed:dry": "node seed.js --dry-run"
+  },
+  "dependencies": {
+    "firebase-admin": "^13.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

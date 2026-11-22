@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/documents/providers/document_models.dart';
 
 /// D02_UploadSheet. Returns the chosen source, or null if dismissed.
@@ -40,7 +41,7 @@ class _UploadSheet extends StatelessWidget {
                 ),
                 IconButton(
                   tooltip: 'Close',
-                  icon: const Icon(Icons.close, color: AppColors.primary),
+                  icon: const Icon(AppIcons.x, color: AppColors.primary),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ],
@@ -49,13 +50,13 @@ class _UploadSheet extends StatelessWidget {
             const Row(
               children: [
                 _Option(
-                  icon: Icons.document_scanner_outlined,
+                  icon: AppIcons.scan,
                   label: 'Scan document',
                   source: UploadSource.scan,
                 ),
                 SizedBox(width: 12),
                 _Option(
-                  icon: Icons.photo_camera,
+                  icon: AppIcons.camera,
                   label: 'Take a photo',
                   source: UploadSource.camera,
                 ),
@@ -65,13 +66,13 @@ class _UploadSheet extends StatelessWidget {
             const Row(
               children: [
                 _Option(
-                  icon: Icons.folder_open,
+                  icon: AppIcons.folderOpen,
                   label: 'Choose from files',
                   source: UploadSource.files,
                 ),
                 SizedBox(width: 12),
                 _Option(
-                  icon: Icons.image_outlined,
+                  icon: AppIcons.image,
                   label: 'Choose photo',
                   source: UploadSource.gallery,
                 ),

@@ -2,6 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/router/app_routes.dart';
+import 'package:staki_mobile/core/router/auth_redirect.dart';
+import 'package:staki_mobile/domain/entities/app_user.dart';
+import 'package:staki_mobile/presentation/features/auth/pages/forgot_password_page.dart';
+import 'package:staki_mobile/presentation/features/auth/pages/login_page.dart';
+import 'package:staki_mobile/presentation/features/auth/pages/register_page.dart';
+import 'package:staki_mobile/presentation/features/auth/pages/verify_email_page.dart';
+import 'package:staki_mobile/presentation/features/auth/providers/auth_landing.dart';
+import 'package:staki_mobile/presentation/features/auth/providers/auth_providers.dart';
+import 'package:staki_mobile/presentation/features/consent/pages/consent_intro_page.dart';
+import 'package:staki_mobile/presentation/features/consent/pages/momo_connect_page.dart';
+import 'package:staki_mobile/presentation/features/consent/pages/momo_connected_page.dart';
+import 'package:staki_mobile/presentation/features/consent/pages/momo_connecting_page.dart';
+import 'package:staki_mobile/presentation/features/consent/pages/momo_consent_page.dart';
+import 'package:staki_mobile/presentation/features/consent/pages/momo_eligible_page.dart';
+import 'package:staki_mobile/presentation/features/consent/pages/momo_error_page.dart';
+import 'package:staki_mobile/presentation/features/consent/pages/momo_not_eligible_page.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/pages/assessment_page.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/pages/breakdown_page.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/pages/score_page.dart';
@@ -27,6 +43,17 @@ import 'package:staki_mobile/presentation/features/loans/pages/loan_purpose_page
 import 'package:staki_mobile/presentation/features/loans/pages/loan_review_page.dart';
 import 'package:staki_mobile/presentation/features/loans/pages/loan_submitted_page.dart';
 import 'package:staki_mobile/presentation/features/loans/pages/loan_term_page.dart';
+import 'package:staki_mobile/presentation/features/marketplace/pages/allocation_detail_page.dart';
+import 'package:staki_mobile/presentation/features/marketplace/pages/fund_amount_page.dart';
+import 'package:staki_mobile/presentation/features/marketplace/pages/fund_confirm_page.dart';
+import 'package:staki_mobile/presentation/features/marketplace/pages/fund_review_page.dart';
+import 'package:staki_mobile/presentation/features/marketplace/pages/fund_success_page.dart';
+import 'package:staki_mobile/presentation/features/marketplace/pages/ledger_page.dart';
+import 'package:staki_mobile/presentation/features/marketplace/pages/notifications_page.dart';
+import 'package:staki_mobile/presentation/features/marketplace/pages/opportunities_page.dart';
+import 'package:staki_mobile/presentation/features/marketplace/pages/opportunity_detail_page.dart';
+import 'package:staki_mobile/presentation/features/marketplace/pages/portfolio_page.dart';
+import 'package:staki_mobile/presentation/features/notifications/providers/push_providers.dart';
 import 'package:staki_mobile/presentation/features/onboarding/pages/a01_splash_page.dart';
 import 'package:staki_mobile/presentation/features/onboarding/pages/a02_welcome_page.dart';
 import 'package:staki_mobile/presentation/features/onboarding/pages/a03_role_select_page.dart';
@@ -54,9 +81,11 @@ import 'package:staki_mobile/presentation/features/settings/pages/s01_settings_p
 import 'package:staki_mobile/presentation/features/settings/pages/s02_data_permissions_page.dart';
 import 'package:staki_mobile/presentation/features/settings/pages/s03_privacy_page.dart';
 import 'package:staki_mobile/presentation/features/settings/pages/s04_support_page.dart';
-import 'package:staki_mobile/presentation/shared_widgets/placeholder_page.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
+  ref.read(pushSyncProvider);
+  final authRefresh = _AuthRefresh(ref);
+  ref.onDispose(authRefresh.dispose);
   GoRoute route(String path, Widget Function() page) => GoRoute(
         path: path,
         builder: (context, state) => page(),
@@ -64,6 +93,12 @@ final routerProvider = Provider<GoRouter>((ref) {
 
   return GoRouter(
     initialLocation: AppRoutes.splash,
+    refreshListenable: authRefresh,
+    redirect: (context, state) => authRedirect(
+      location: state.matchedLocation,
+      auth: ref.read(authStateProvider),
+      landing: () => resolveLanding(ref),
+    ),
     routes: [
       // Section 01
       route(AppRoutes.splash, () => const A01SplashPage()),
@@ -111,22 +146,46 @@ final routerProvider = Provider<GoRouter>((ref) {
       route(AppRoutes.salaried, () => const P30SalaryEmploymentPage()),
       route(AppRoutes.salariedIncome, () => const P31SalaryIncomePage()),
       route(AppRoutes.otherInfo, () => const P40OtherInfoPage()),
-      // Placeholders until the owner builds the real screen
-      route(
-        AppRoutes.login,
-        () => const PlaceholderPage(
-          screenCode: 'Login',
-          title: 'Login (email, password, Google)',
-          owner: 'Tolu',
-        ),
-      ),
-      route(
-        AppRoutes.consent,
-        () => const PlaceholderPage(
-          screenCode: 'O01_Consent',
-          title: 'Data Consent & MoMo',
-          owner: 'Chris',
-        ),
+      // Auth (Tolu)
+      route(AppRoutes.login, () => const LoginPage()),
+      route(AppRoutes.register, () => const RegisterPage()),
+      route(AppRoutes.forgotPassword, () => const ForgotPasswordPage()),
+      route(AppRoutes.verifyEmail, () => const VerifyEmailPage()),
+      GoRoute(
+        path: AppRoutes.consent,
+        builder: (context, state) => const ConsentIntroPage(), // O01
+        routes: [
+          GoRoute(
+            path: 'momo', // O02 / O02b
+            builder: (context, state) => const MomoConsentPage(),
+            routes: [
+              GoRoute(
+                path: 'connect', // M01
+                builder: (context, state) => const MomoConnectPage(),
+              ),
+              GoRoute(
+                path: 'connecting', // M02
+                builder: (context, state) => const MomoConnectingPage(),
+              ),
+              GoRoute(
+                path: 'connected', // M03
+                builder: (context, state) => const MomoConnectedPage(),
+              ),
+              GoRoute(
+                path: 'error', // M04
+                builder: (context, state) => const MomoErrorPage(),
+              ),
+              GoRoute(
+                path: 'not-eligible', // M05
+                builder: (context, state) => const MomoNotEligiblePage(),
+              ),
+              GoRoute(
+                path: 'eligible', // M06
+                builder: (context, state) => const MomoEligiblePage(),
+              ),
+            ],
+          ),
+        ],
       ),
       GoRoute(
         path: AppRoutes.documents,
@@ -224,13 +283,51 @@ final routerProvider = Provider<GoRouter>((ref) {
           ),
         ],
       ),
-      route(
-        '/marketplace',
-        () => const PlaceholderPage(
-          screenCode: 'LE01_Opportunities',
-          title: 'Lender Marketplace & Portfolio',
-          owner: 'Chris',
-        ),
+      GoRoute(
+        path: '/marketplace',
+        builder: (context, state) => const OpportunitiesPage(), // LE01
+        routes: [
+          GoRoute(
+            path: 'opportunity/:id', // LE02
+            builder: (context, state) => OpportunityDetailPage(
+              opportunityId: state.pathParameters['id'] ?? '',
+            ),
+          ),
+          GoRoute(
+            path: 'fund', // LE03
+            builder: (context, state) => const FundAmountPage(),
+          ),
+          GoRoute(
+            path: 'review', // LE04
+            builder: (context, state) => const FundReviewPage(),
+          ),
+          GoRoute(
+            path: 'confirm', // LE05
+            builder: (context, state) => const FundConfirmPage(),
+          ),
+          GoRoute(
+            path: 'success', // LE06
+            builder: (context, state) => const FundSuccessPage(),
+          ),
+          GoRoute(
+            path: 'portfolio', // LE07
+            builder: (context, state) => const PortfolioPage(),
+          ),
+          GoRoute(
+            path: 'notifications', // LE08
+            builder: (context, state) => const NotificationsPage(),
+          ),
+          GoRoute(
+            path: 'ledger', // LE09
+            builder: (context, state) => const LedgerPage(),
+          ),
+          GoRoute(
+            path: 'allocation/:id', // LE10
+            builder: (context, state) => AllocationDetailPage(
+              allocationId: state.pathParameters['id'] ?? '',
+            ),
+          ),
+        ],
       ),
       // Section 10 (Binthia)
       route(AppRoutes.settings, () => const S01SettingsPage()),
@@ -243,3 +340,13 @@ final routerProvider = Provider<GoRouter>((ref) {
         Scaffold(body: Center(child: Text('Route not found: ${state.uri}'))),
   );
 });
+
+/// Re-runs the redirect whenever the signed-in user changes.
+class _AuthRefresh extends ChangeNotifier {
+  _AuthRefresh(Ref ref) {
+    ref.listen<AsyncValue<AppUser?>>(
+      authStateProvider,
+      (_, __) => notifyListeners(),
+    );
+  }
+}

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/router/app_routes.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/profile/providers/profile_setup_provider.dart';
 import 'package:staki_mobile/presentation/shared_widgets/shared_widgets.dart';
 
@@ -32,7 +33,7 @@ class P04BizLocationPage extends ConsumerWidget {
           initialValue: s.value(ProfileFields.location),
           textCapitalization: TextCapitalization.words,
           prefix: const Icon(
-            Icons.location_on_outlined,
+            AppIcons.mapPin,
             size: 18,
             color: AppColors.textMuted,
           ),

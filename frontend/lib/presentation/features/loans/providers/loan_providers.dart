@@ -1,13 +1,22 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:staki_mobile/data/datasources/loan_datasource.dart';
+import 'package:staki_mobile/data/repositories/firestore_loan_repository.dart';
+import 'package:staki_mobile/presentation/features/auth/providers/auth_providers.dart';
 import 'package:staki_mobile/presentation/features/loans/providers/loan_models.dart';
 import 'package:staki_mobile/presentation/features/loans/providers/loan_repository.dart';
 
-// TEMP mock. To preview another L01 state, pass a status, for example:
-// MockLoanRepository(status: EligibilityStatus.partiallyEligible)
-// MockLoanRepository(status: EligibilityStatus.notEligible)
-final loanRepositoryProvider = Provider<LoanRepository>(
-  (ref) => MockLoanRepository(),
-);
+/// Loans are read from and written to Firestore for a signed-in borrower.
+/// With nobody signed in the in-memory repository keeps the screens usable.
+/// To preview another L01 state, use for example
+/// MockLoanRepository(status: EligibilityStatus.partiallyEligible).
+final loanRepositoryProvider = Provider<LoanRepository>((ref) {
+  final user = ref.watch(authStateProvider).valueOrNull;
+  if (user == null) return MockLoanRepository();
+  return FirestoreLoanRepository(
+    datasource: LoanDatasource(ref.watch(firestoreProvider)),
+    uid: user.uid,
+  );
+});
 
 final eligibilityProvider = FutureProvider.autoDispose<EligibilityResult>(
   (ref) => ref.watch(loanRepositoryProvider).fetchEligibility(),

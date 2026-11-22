@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 
 class LenderSuccessPage extends StatelessWidget {
   const LenderSuccessPage({super.key});
@@ -24,7 +25,7 @@ class LenderSuccessPage extends StatelessWidget {
                     color: AppColors.onPrimary.withValues(alpha: 0.1),
                   ),
                   child: const Icon(
-                    Icons.check_circle,
+                    AppIcons.checkCircle,
                     size: 40,
                     color: AppColors.success,
                   ),
@@ -56,7 +57,7 @@ class LenderSuccessPage extends StatelessWidget {
                   onPressed: () => context.go('/marketplace'),
                   style: FilledButton.styleFrom(
                     minimumSize: const Size.fromHeight(52),
-                    backgroundColor: AppColors.warning,
+                    backgroundColor: AppColors.onPrimary,
                     foregroundColor: AppColors.primary,
                     shape: const StadiumBorder(),
                   ),

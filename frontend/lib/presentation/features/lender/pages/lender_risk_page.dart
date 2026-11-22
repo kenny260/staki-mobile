@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/lender/lender_routes.dart';
 import 'package:staki_mobile/presentation/features/lender/providers/lender_providers.dart';
 import 'package:staki_mobile/presentation/features/lender/widgets/lender_widgets.dart';
@@ -37,7 +38,7 @@ class LenderRiskPage extends ConsumerWidget {
             acknowledged ? () => unawaited(_continue(context, ref)) : null,
       ),
       children: [
-        const AmberBadge(icon: Icons.warning_amber_rounded),
+        const AmberBadge(icon: AppIcons.warning),
         const SizedBox(height: 20),
         const LenderHeading('Risk Disclosure'),
         const SizedBox(height: 14),
@@ -45,7 +46,7 @@ class LenderRiskPage extends ConsumerWidget {
           width: double.infinity,
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: AppColors.warningBg,
+            color: AppColors.primarySoft,
             borderRadius: BorderRadius.circular(16),
           ),
           child: const Text(
@@ -53,7 +54,7 @@ class LenderRiskPage extends ConsumerWidget {
             style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w700,
-              color: AppColors.warningText,
+              color: AppColors.primary,
             ),
           ),
         ),

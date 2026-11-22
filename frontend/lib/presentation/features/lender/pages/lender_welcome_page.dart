@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/router/app_routes.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/lender/lender_routes.dart';
 import 'package:staki_mobile/presentation/features/lender/providers/lender_providers.dart';
 
@@ -50,7 +51,7 @@ class LenderWelcomePage extends ConsumerWidget {
                           color: AppColors.onPrimary.withValues(alpha: 0.12),
                         ),
                         child: const Icon(
-                          Icons.chevron_left,
+                          AppIcons.caretLeft,
                           color: AppColors.onPrimary,
                         ),
                       ),
@@ -64,7 +65,7 @@ class LenderWelcomePage extends ConsumerWidget {
                         fontSize: 12,
                         fontWeight: FontWeight.w800,
                         letterSpacing: 1.5,
-                        color: AppColors.warning,
+                        color: AppColors.onPrimary,
                       ),
                     ),
                   ),
@@ -83,11 +84,11 @@ class LenderWelcomePage extends ConsumerWidget {
                         width: 64,
                         height: 64,
                         decoration: BoxDecoration(
-                          color: AppColors.warning,
+                          color: AppColors.onPrimary,
                           borderRadius: BorderRadius.circular(18),
                         ),
                         child: const Icon(
-                          Icons.account_balance,
+                          AppIcons.bank,
                           size: 30,
                           color: AppColors.primary,
                         ),
@@ -120,7 +121,7 @@ class LenderWelcomePage extends ConsumerWidget {
                         onPressed: () => unawaited(_start(context, ref)),
                         style: FilledButton.styleFrom(
                           minimumSize: const Size.fromHeight(52),
-                          backgroundColor: AppColors.warning,
+                          backgroundColor: AppColors.onPrimary,
                           foregroundColor: AppColors.primary,
                           shape: const StadiumBorder(),
                         ),
@@ -132,7 +133,7 @@ class LenderWelcomePage extends ConsumerWidget {
                               style: TextStyle(fontWeight: FontWeight.w700),
                             ),
                             SizedBox(width: 8),
-                            Icon(Icons.arrow_forward, size: 18),
+                            Icon(AppIcons.arrowRight, size: 18),
                           ],
                         ),
                       ),

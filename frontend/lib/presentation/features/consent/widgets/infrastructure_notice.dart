@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 
 class InfrastructureNotice extends StatelessWidget {
   const InfrastructureNotice({super.key});
@@ -17,7 +18,7 @@ class InfrastructureNotice extends StatelessWidget {
       child: const Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(Icons.info, size: 16, color: AppColors.primary),
+          Icon(AppIcons.info, size: 16, color: AppColors.primary),
           SizedBox(width: 10),
           Expanded(
             child: Text.rich(

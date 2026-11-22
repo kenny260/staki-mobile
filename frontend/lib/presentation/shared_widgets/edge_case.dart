@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 
 /// Colour family of an edge-case icon tile (from the Figma tints).
 enum EdgeCaseTone { error, warning, info, neutral }
@@ -71,21 +72,21 @@ const Map<EdgeCaseType, EdgeCaseContent> _contents = {
   EdgeCaseType.loading: EdgeCaseContent(
     code: 'E01',
     tone: EdgeCaseTone.info,
-    icon: Icons.hourglass_empty_rounded,
+    icon: AppIcons.hourglass,
     title: 'Processing securely',
     message: 'Please wait a moment while we retrieve your information.',
   ),
   EdgeCaseType.skeleton: EdgeCaseContent(
     code: 'E02',
     tone: EdgeCaseTone.neutral,
-    icon: Icons.view_agenda_outlined,
+    icon: AppIcons.rows,
     title: 'Loading',
     message: '',
   ),
   EdgeCaseType.emptyState: EdgeCaseContent(
     code: 'E03',
     tone: EdgeCaseTone.neutral,
-    icon: Icons.inbox_outlined,
+    icon: AppIcons.tray,
     title: 'Nothing to display yet',
     message: 'There are no active records to show right now. Check '
         'back later or start a new application.',
@@ -94,7 +95,7 @@ const Map<EdgeCaseType, EdgeCaseContent> _contents = {
   EdgeCaseType.offline: EdgeCaseContent(
     code: 'E04',
     tone: EdgeCaseTone.warning,
-    icon: Icons.wifi_off_rounded,
+    icon: AppIcons.wifiSlash,
     title: 'You are offline',
     message: 'We cannot reach the Staki fund network. Please check '
         'your internet connection and try again.',
@@ -104,7 +105,7 @@ const Map<EdgeCaseType, EdgeCaseContent> _contents = {
   EdgeCaseType.poorNetwork: EdgeCaseContent(
     code: 'E05',
     tone: EdgeCaseTone.warning,
-    icon: Icons.network_check_rounded,
+    icon: AppIcons.cellSignalLow,
     title: 'Connection is slow',
     message: 'Your network is experiencing delays. This process might '
         'take a little longer than usual to complete securely.',
@@ -114,7 +115,7 @@ const Map<EdgeCaseType, EdgeCaseContent> _contents = {
   EdgeCaseType.sessionExpired: EdgeCaseContent(
     code: 'E06',
     tone: EdgeCaseTone.info,
-    icon: Icons.lock_clock_outlined,
+    icon: AppIcons.lockKey,
     title: 'Session expired',
     message: 'For your security, we have paused your session due to '
         'inactivity. Please log in again to continue.',
@@ -123,7 +124,7 @@ const Map<EdgeCaseType, EdgeCaseContent> _contents = {
   EdgeCaseType.otpExpired: EdgeCaseContent(
     code: 'E07',
     tone: EdgeCaseTone.warning,
-    icon: Icons.timer_off_outlined,
+    icon: AppIcons.timer,
     title: 'Code expired',
     message: 'The verification code has expired for your security. '
         'Please request a new code to continue.',
@@ -133,7 +134,7 @@ const Map<EdgeCaseType, EdgeCaseContent> _contents = {
   EdgeCaseType.wrongOtp: EdgeCaseContent(
     code: 'E08',
     tone: EdgeCaseTone.error,
-    icon: Icons.error_outline_rounded,
+    icon: AppIcons.warningCircle,
     title: 'Incorrect code',
     message: 'The code entered does not match the one we sent. Please '
         'check the code and try again.',
@@ -142,7 +143,7 @@ const Map<EdgeCaseType, EdgeCaseContent> _contents = {
   EdgeCaseType.invalidPhone: EdgeCaseContent(
     code: 'E09',
     tone: EdgeCaseTone.error,
-    icon: Icons.phone_disabled_outlined,
+    icon: AppIcons.phoneSlash,
     title: 'Invalid phone number',
     message: 'The phone number entered is not a recognized format. '
         'Please ensure it is a valid active number.',
@@ -151,7 +152,7 @@ const Map<EdgeCaseType, EdgeCaseContent> _contents = {
   EdgeCaseType.incorrectPin: EdgeCaseContent(
     code: 'E10',
     tone: EdgeCaseTone.error,
-    icon: Icons.password_rounded,
+    icon: AppIcons.password,
     title: 'Incorrect PIN',
     message: 'The PIN entered is incorrect. You have 2 attempts '
         'remaining before your account is temporarily locked.',
@@ -161,7 +162,7 @@ const Map<EdgeCaseType, EdgeCaseContent> _contents = {
   EdgeCaseType.forgotPin: EdgeCaseContent(
     code: 'E11',
     tone: EdgeCaseTone.info,
-    icon: Icons.lock_reset_rounded,
+    icon: AppIcons.arrowCounterClockwise,
     title: 'Reset your PIN',
     message: 'To secure your account, we will send a verification code '
         'to your registered phone number to help you reset your '
@@ -172,7 +173,7 @@ const Map<EdgeCaseType, EdgeCaseContent> _contents = {
   EdgeCaseType.momoFailed: EdgeCaseContent(
     code: 'E12',
     tone: EdgeCaseTone.error,
-    icon: Icons.link_off_rounded,
+    icon: AppIcons.linkBreak,
     title: 'Connection failed',
     message: 'We could not securely connect to your MTN MoMo account. '
         'This might be due to a timeout or declined prompt.',
@@ -182,7 +183,7 @@ const Map<EdgeCaseType, EdgeCaseContent> _contents = {
   EdgeCaseType.momoUnavailable: EdgeCaseContent(
     code: 'E13',
     tone: EdgeCaseTone.warning,
-    icon: Icons.cloud_off_rounded,
+    icon: AppIcons.cloudSlash,
     title: 'Service unavailable',
     message: 'The MTN Mobile Money service is currently experiencing '
         'downtime. Please try connecting again later.',
@@ -191,7 +192,7 @@ const Map<EdgeCaseType, EdgeCaseContent> _contents = {
   EdgeCaseType.momoNotEligible: EdgeCaseContent(
     code: 'E14',
     tone: EdgeCaseTone.warning,
-    icon: Icons.account_balance_wallet_outlined,
+    icon: AppIcons.wallet,
     title: 'Account not supported',
     message: 'This MoMo account type is currently not supported for '
         'Credit Passport verification.',
@@ -201,7 +202,7 @@ const Map<EdgeCaseType, EdgeCaseContent> _contents = {
   EdgeCaseType.insufficientHistory: EdgeCaseContent(
     code: 'E15',
     tone: EdgeCaseTone.warning,
-    icon: Icons.history_rounded,
+    icon: AppIcons.clockCounterClockwise,
     title: 'More history needed',
     message: 'Your connected accounts do not have enough recent '
         'transaction history to generate a reliable score.',
@@ -211,7 +212,7 @@ const Map<EdgeCaseType, EdgeCaseContent> _contents = {
   EdgeCaseType.docUploadFailed: EdgeCaseContent(
     code: 'E16',
     tone: EdgeCaseTone.error,
-    icon: Icons.cloud_upload_outlined,
+    icon: AppIcons.cloudArrowUp,
     title: 'Upload failed',
     message: 'We could not upload your document securely. Please '
         'ensure your connection is stable and the file is under '
@@ -222,7 +223,7 @@ const Map<EdgeCaseType, EdgeCaseContent> _contents = {
   EdgeCaseType.poorDocQuality: EdgeCaseContent(
     code: 'E17',
     tone: EdgeCaseTone.warning,
-    icon: Icons.blur_on_rounded,
+    icon: AppIcons.dotsNine,
     title: 'Document is unclear',
     message: 'The document uploaded is blurry or cut off. Please '
         'ensure all text is legible and well-lit.',
@@ -231,7 +232,7 @@ const Map<EdgeCaseType, EdgeCaseContent> _contents = {
   EdgeCaseType.docRejected: EdgeCaseContent(
     code: 'E18',
     tone: EdgeCaseTone.error,
-    icon: Icons.description_outlined,
+    icon: AppIcons.fileText,
     title: 'Document rejected',
     message: 'The submitted document could not be accepted. Please '
         'ensure it is the correct, valid document requested.',
@@ -241,7 +242,7 @@ const Map<EdgeCaseType, EdgeCaseContent> _contents = {
   EdgeCaseType.identityFailed: EdgeCaseContent(
     code: 'E19',
     tone: EdgeCaseTone.error,
-    icon: Icons.badge_outlined,
+    icon: AppIcons.identificationCard,
     title: 'Verification failed',
     message: 'We could not verify your identity with the provided '
         'information. Please review your details and try again.',
@@ -250,7 +251,7 @@ const Map<EdgeCaseType, EdgeCaseContent> _contents = {
   EdgeCaseType.kycIncomplete: EdgeCaseContent(
     code: 'E20',
     tone: EdgeCaseTone.info,
-    icon: Icons.assignment_late_outlined,
+    icon: AppIcons.fileDashed,
     title: 'Profile incomplete',
     message: 'We need a few more details to comply with financial '
         'regulations before activating your account.',
@@ -259,7 +260,7 @@ const Map<EdgeCaseType, EdgeCaseContent> _contents = {
   EdgeCaseType.kycRejected: EdgeCaseContent(
     code: 'E21',
     tone: EdgeCaseTone.error,
-    icon: Icons.gpp_bad_outlined,
+    icon: AppIcons.shieldWarning,
     title: 'Verification declined',
     message: 'We are unable to offer you an account at this time based '
         'on regulatory criteria. If you believe this is an error, '
@@ -269,7 +270,7 @@ const Map<EdgeCaseType, EdgeCaseContent> _contents = {
   EdgeCaseType.assessmentDelayed: EdgeCaseContent(
     code: 'E22',
     tone: EdgeCaseTone.warning,
-    icon: Icons.schedule_rounded,
+    icon: AppIcons.clock,
     title: 'Assessment delayed',
     message: 'Generating your Credit Passport is taking longer than '
         'usual due to high data volume. We will notify you when '
@@ -279,7 +280,7 @@ const Map<EdgeCaseType, EdgeCaseContent> _contents = {
   EdgeCaseType.assessmentFailed: EdgeCaseContent(
     code: 'E23',
     tone: EdgeCaseTone.error,
-    icon: Icons.sync_problem_rounded,
+    icon: AppIcons.warningCircle,
     title: 'Assessment incomplete',
     message: 'We encountered an error while finalizing your score. '
         'Your data is safe, but we need to restart the '
@@ -290,7 +291,7 @@ const Map<EdgeCaseType, EdgeCaseContent> _contents = {
   EdgeCaseType.scoreUnavailable: EdgeCaseContent(
     code: 'E24',
     tone: EdgeCaseTone.neutral,
-    icon: Icons.speed_rounded,
+    icon: AppIcons.gauge,
     title: 'Score unavailable',
     message: 'Your Credit Passport score cannot be generated right '
         'now. This is usually due to insufficient recent '
@@ -300,7 +301,7 @@ const Map<EdgeCaseType, EdgeCaseContent> _contents = {
   EdgeCaseType.loanIncomplete: EdgeCaseContent(
     code: 'E25',
     tone: EdgeCaseTone.warning,
-    icon: Icons.edit_note_rounded,
+    icon: AppIcons.notePencil,
     title: 'Application incomplete',
     message: 'Your loan application is missing some required details. '
         'Please review and complete it to proceed.',
@@ -309,7 +310,7 @@ const Map<EdgeCaseType, EdgeCaseContent> _contents = {
   EdgeCaseType.loanDeclined: EdgeCaseContent(
     code: 'E26',
     tone: EdgeCaseTone.neutral,
-    icon: Icons.do_not_disturb_on_outlined,
+    icon: AppIcons.minusCircle,
     title: 'Application declined',
     message: 'The lending partner was unable to approve this loan '
         'request based on their current criteria.',
@@ -319,7 +320,7 @@ const Map<EdgeCaseType, EdgeCaseContent> _contents = {
   EdgeCaseType.offerExpired: EdgeCaseContent(
     code: 'E27',
     tone: EdgeCaseTone.neutral,
-    icon: Icons.event_busy_outlined,
+    icon: AppIcons.calendarX,
     title: 'Offer expired',
     message: 'This funding offer is no longer valid. Please refresh '
         'your Credit Passport to see new opportunities.',
@@ -328,7 +329,7 @@ const Map<EdgeCaseType, EdgeCaseContent> _contents = {
   EdgeCaseType.disbursementDelayed: EdgeCaseContent(
     code: 'E28',
     tone: EdgeCaseTone.warning,
-    icon: Icons.account_balance_outlined,
+    icon: AppIcons.bank,
     title: 'Disbursement delayed',
     message: 'The partner bank is experiencing a delay in transferring '
         'your funds. The transaction is secure and will complete '
@@ -338,7 +339,7 @@ const Map<EdgeCaseType, EdgeCaseContent> _contents = {
   EdgeCaseType.repaymentFailed: EdgeCaseContent(
     code: 'E29',
     tone: EdgeCaseTone.error,
-    icon: Icons.payments_outlined,
+    icon: AppIcons.money,
     title: 'Repayment failed',
     message: 'We could not process your repayment. Please check your '
         'account balance or try a different payment method.',
@@ -348,7 +349,7 @@ const Map<EdgeCaseType, EdgeCaseContent> _contents = {
   EdgeCaseType.repaymentOverdue: EdgeCaseContent(
     code: 'E30',
     tone: EdgeCaseTone.warning,
-    icon: Icons.notification_important_outlined,
+    icon: AppIcons.bellRinging,
     title: 'Payment overdue',
     message: 'Your scheduled loan repayment is past due. Please make a '
         'payment as soon as possible to maintain your score.',
@@ -358,7 +359,7 @@ const Map<EdgeCaseType, EdgeCaseContent> _contents = {
   EdgeCaseType.fundingUnavailable: EdgeCaseContent(
     code: 'E31',
     tone: EdgeCaseTone.error,
-    icon: Icons.block_rounded,
+    icon: AppIcons.prohibit,
     title: 'Allocation failed',
     message: 'We could not allocate your funds to this opportunity. '
         'The opportunity may have just been fully funded.',
@@ -367,7 +368,7 @@ const Map<EdgeCaseType, EdgeCaseContent> _contents = {
   EdgeCaseType.insufficientBalance: EdgeCaseContent(
     code: 'E32',
     tone: EdgeCaseTone.warning,
-    icon: Icons.account_balance_wallet_outlined,
+    icon: AppIcons.wallet,
     title: 'Insufficient balance',
     message: 'You do not have enough available funds to complete this '
         'allocation. Please add more funds to your account.',
@@ -377,7 +378,7 @@ const Map<EdgeCaseType, EdgeCaseContent> _contents = {
   EdgeCaseType.noOpportunities: EdgeCaseContent(
     code: 'E33',
     tone: EdgeCaseTone.neutral,
-    icon: Icons.search_off_rounded,
+    icon: AppIcons.magnifyingGlass,
     title: 'No opportunities',
     message: 'There are currently no funding opportunities that match '
         'your filters. Please check back later.',
@@ -386,7 +387,7 @@ const Map<EdgeCaseType, EdgeCaseContent> _contents = {
   EdgeCaseType.opportunityFullyFunded: EdgeCaseContent(
     code: 'E34',
     tone: EdgeCaseTone.info,
-    icon: Icons.check_circle_outline_rounded,
+    icon: AppIcons.checkCircle,
     title: 'Fully funded',
     message: 'This opportunity has already reached its funding goal '
         'and is no longer accepting new allocations.',

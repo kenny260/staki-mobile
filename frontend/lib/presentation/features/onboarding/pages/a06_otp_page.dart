@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/constants/spacing.dart';
 import 'package:staki_mobile/core/router/app_routes.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/core/theme/text_styles.dart';
 import 'package:staki_mobile/core/utils/validators.dart';
 import 'package:staki_mobile/presentation/features/onboarding/providers/onboarding_providers.dart';
@@ -92,7 +93,7 @@ class _A06OtpPageState extends ConsumerState<A06OtpPage> {
         ),
         const SizedBox(height: AppSpacing.lg),
         const InfoBanner(
-          icon: Icons.shield_outlined,
+          icon: AppIcons.shieldCheck,
           message: 'Never share this code. Staki fund will never ask for your '
               'OTP over the phone or chat.',
         ),

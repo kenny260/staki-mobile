@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/lender/lender_routes.dart';
 import 'package:staki_mobile/presentation/features/lender/providers/lender_providers.dart';
 import 'package:staki_mobile/presentation/features/lender/widgets/entry_widgets.dart';
@@ -53,7 +54,7 @@ class LenderPinPage extends ConsumerWidget {
       ),
       children: [
         const SizedBox(height: 8),
-        const Center(child: AmberBadge(icon: Icons.lock)),
+        const Center(child: AmberBadge(icon: AppIcons.lockKey)),
         const SizedBox(height: 16),
         const Center(child: LenderHeading('Create a PIN')),
         const SizedBox(height: 6),

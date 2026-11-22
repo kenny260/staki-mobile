@@ -28,8 +28,11 @@ class MockLenderRepository implements LenderRepository {
     this.failSubmit = false,
   });
 
-  /// The only code the mock accepts.
+  /// A code the mock accepts. Any 6 digits work except [invalidCode].
   static const validCode = '123456';
+
+  /// Always rejected, so the wrong-code state can be demoed.
+  static const invalidCode = '000000';
 
   final Duration delay;
 
@@ -51,7 +54,8 @@ class MockLenderRepository implements LenderRepository {
   @override
   Future<bool> verifyOtp(String phone, String code) async {
     await _wait();
-    return code == validCode;
+    // TODO(Tolu): replace with the real Firebase phone verification.
+    return RegExp(r'^\d{6}$').hasMatch(code) && code != invalidCode;
   }
 
   @override

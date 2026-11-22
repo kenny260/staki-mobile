@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/providers/credit_passport_models.dart';
 
 class FactorDetailCard extends StatelessWidget {
@@ -72,14 +73,14 @@ class FactorDetailCard extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           _Reason(
-            icon: Icons.trending_up,
+            icon: AppIcons.trendUp,
             color: AppColors.success,
             label: 'WHAT HELPED',
             text: factor.helped,
           ),
           const SizedBox(height: 10),
           _Reason(
-            icon: Icons.trending_down,
+            icon: AppIcons.trendDown,
             color: AppColors.warning,
             label: 'WHAT COULD IMPROVE',
             text: factor.improve,

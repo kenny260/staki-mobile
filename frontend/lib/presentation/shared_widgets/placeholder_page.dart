@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/core/theme/text_styles.dart';
 
 /// Temporary page used while a Figma screen is not yet built.
@@ -30,7 +31,7 @@ class PlaceholderPage extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               const Icon(
-                Icons.construction,
+                AppIcons.wrench,
                 size: 48,
                 color: AppColors.textMuted,
               ),

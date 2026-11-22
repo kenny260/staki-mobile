@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/providers/credit_passport_provider.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/widgets/factor_detail_card.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/widgets/passport_app_bar.dart';
@@ -66,7 +67,7 @@ class BreakdownPage extends ConsumerWidget {
                         style: TextStyle(fontWeight: FontWeight.w700),
                       ),
                       SizedBox(width: 8),
-                      Icon(Icons.arrow_forward, size: 18),
+                      Icon(AppIcons.arrowRight, size: 18),
                     ],
                   ),
                 ),

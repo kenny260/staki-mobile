@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/loans/loan_routes.dart';
 import 'package:staki_mobile/presentation/features/loans/providers/loan_models.dart';
 import 'package:staki_mobile/presentation/features/loans/providers/loan_providers.dart';
@@ -138,7 +139,7 @@ class _ReviewCard extends StatelessWidget {
                 tooltip: 'Edit $title',
                 visualDensity: VisualDensity.compact,
                 icon: const Icon(
-                  Icons.edit,
+                  AppIcons.pencilSimple,
                   size: 16,
                   color: AppColors.textSecondary,
                 ),

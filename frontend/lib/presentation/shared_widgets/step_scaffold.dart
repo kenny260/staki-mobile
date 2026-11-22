@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:staki_mobile/core/constants/spacing.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/core/theme/text_styles.dart';
 import 'package:staki_mobile/presentation/shared_widgets/app_button.dart';
 import 'package:staki_mobile/presentation/shared_widgets/step_indicator.dart';
@@ -100,12 +101,12 @@ class StepScaffold extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    if (bottomExtra != null) bottomExtra!,
                     AppButton(
                       label: ctaLabel!,
                       onPressed: onCta,
                       showArrow: ctaShowArrow,
                     ),
+                    if (bottomExtra != null) bottomExtra!,
                     if (footerText != null) ...[
                       const SizedBox(height: AppSpacing.sm),
                       Text(footerText!, style: AppTextStyles.caption),
@@ -139,7 +140,7 @@ class _TopBar extends StatelessWidget {
           if (canPop && appBarTitle != null)
             IconButton(
               tooltip: 'Back',
-              icon: const Icon(Icons.chevron_left_rounded, size: 28),
+              icon: const Icon(AppIcons.caretLeft, size: 28),
               onPressed: () => Navigator.of(context).maybePop(),
             )
           else if (canPop)
@@ -148,7 +149,7 @@ class _TopBar extends StatelessWidget {
               child: TextButton.icon(
                 onPressed: () => Navigator.of(context).maybePop(),
                 icon: const Icon(
-                  Icons.chevron_left_rounded,
+                  AppIcons.caretLeft,
                   size: 20,
                   color: AppColors.textSecondary,
                 ),

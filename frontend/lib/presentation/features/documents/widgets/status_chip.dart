@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/documents/providers/document_models.dart';
 
 class StatusChip extends StatelessWidget {
@@ -32,12 +33,12 @@ class StatusChip extends StatelessWidget {
           child: CircularProgressIndicator(strokeWidth: 1.5, color: _color),
         );
       case DocumentStatus.verified:
-        return Icon(Icons.check_circle, size: 12, color: _color);
+        return Icon(AppIcons.checkCircle, size: 12, color: _color);
       case DocumentStatus.notUploaded:
         return const SizedBox.shrink();
       case DocumentStatus.underReview:
       case DocumentStatus.needsAttention:
-        return Icon(Icons.circle, size: 7, color: _color);
+        return Icon(AppIcons.circle, size: 7, color: _color);
     }
   }
 

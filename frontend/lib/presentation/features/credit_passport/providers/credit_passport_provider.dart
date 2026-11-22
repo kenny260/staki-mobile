@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/providers/credit_passport_models.dart';
 
 // TEMP: swap the implementation when the backend repository is ready.
@@ -25,7 +25,7 @@ class MockCreditPassportRepository implements CreditPassportRepository {
   @override
   Stream<CreditScore?> watchScore() => Stream.value(
         const CreditScore(
-          value: 780,
+          value: 742,
           updatedLabel: 'Updated today',
           factors: [
             ScoreFactor(
@@ -35,7 +35,7 @@ class MockCreditPassportRepository implements CreditPassportRepository {
               summary: 'Your incoming cash flow is consistent and healthy.',
               helped: 'Consistent weekly deposits over the last 6 months.',
               improve: 'More consistent monthly activity.',
-              icon: Icons.show_chart,
+              icon: AppIcons.chartLineUp,
             ),
             ScoreFactor(
               title: 'Financial consistency',
@@ -45,7 +45,7 @@ class MockCreditPassportRepository implements CreditPassportRepository {
                   'predictable over time.',
               helped: 'Long history of active account usage.',
               improve: 'Avoid sudden, large drops in transaction volume.',
-              icon: Icons.sync,
+              icon: AppIcons.arrowsClockwise,
             ),
           ],
         ),
