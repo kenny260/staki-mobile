@@ -99,6 +99,15 @@ void main() {
     );
     expect(find.text('Your current password is incorrect.'), findsOneWidget);
     expect(repo.currentPassword, 'OldPass123');
+
+    // The error line appears above the fields; each box keeps its text.
+    String textOf(int i) => tester
+        .widget<EditableText>(find.byType(EditableText).at(i))
+        .controller
+        .text;
+    expect(textOf(0), 'Nope12345');
+    expect(textOf(1), 'NewPass456');
+    expect(textOf(2), 'NewPass456');
   });
 
   testWidgets('a weak or mismatched new password is not sent',

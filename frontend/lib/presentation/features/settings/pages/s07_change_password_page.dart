@@ -134,6 +134,9 @@ class _S07ChangePasswordPageState extends ConsumerState<S07ChangePasswordPage> {
             const SizedBox(height: AppSpacing.md),
           ],
           AppTextField(
+            // Keys keep each box's text in place when the error line
+            // appears above them (ListView matches children by position).
+            key: const ValueKey('current'),
             label: 'Current password',
             obscureText: !_show,
             autofillHints: const [AutofillHints.password],
@@ -144,6 +147,7 @@ class _S07ChangePasswordPageState extends ConsumerState<S07ChangePasswordPage> {
           ),
           const SizedBox(height: AppSpacing.md),
           AppTextField(
+            key: const ValueKey('new'),
             label: 'New password',
             helper: 'At least 8 characters, with a letter and a number.',
             obscureText: !_show,
@@ -154,6 +158,7 @@ class _S07ChangePasswordPageState extends ConsumerState<S07ChangePasswordPage> {
           ),
           const SizedBox(height: AppSpacing.md),
           AppTextField(
+            key: const ValueKey('confirm'),
             label: 'Confirm new password',
             obscureText: !_show,
             autofillHints: const [AutofillHints.newPassword],
