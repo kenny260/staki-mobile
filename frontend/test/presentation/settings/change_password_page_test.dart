@@ -88,8 +88,7 @@ void main() {
     expect(repo.currentPassword, 'NewPass456');
   });
 
-  testWidgets('a wrong current password shows a clear message',
-      (tester) async {
+  testWidgets('a wrong current password shows a clear message', (tester) async {
     final repo = await _pump(tester);
     await _fill(
       tester,
@@ -110,8 +109,7 @@ void main() {
     expect(textOf(2), 'NewPass456');
   });
 
-  testWidgets('a weak or mismatched new password is not sent',
-      (tester) async {
+  testWidgets('a weak or mismatched new password is not sent', (tester) async {
     final repo = await _pump(tester);
     await _fill(tester, current: 'OldPass123', next: 'short', confirm: 'x');
     expect(repo.calls, isEmpty);
