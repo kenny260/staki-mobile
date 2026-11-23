@@ -157,10 +157,6 @@ final routerProvider = Provider<GoRouter>((ref) {
                     path: 'improve', // C04_Improve
                     builder: (context, state) => const ImprovePage(),
                   ),
-                  GoRoute(
-                    path: 'assessment', // C01 states
-                    builder: (context, state) => const AssessmentPage(),
-                  ),
                 ],
               ),
             ],
@@ -173,6 +169,9 @@ final routerProvider = Provider<GoRouter>((ref) {
           ),
         ],
       ),
+      // C01 assessment states open full screen over the tabs, because the
+      // MoMo consent flow (outside the tabs) pushes it.
+      route(AppRoutes.creditAssessment, () => const AssessmentPage()),
       route(AppRoutes.salaried, () => const P30SalaryEmploymentPage()),
       route(AppRoutes.salariedIncome, () => const P31SalaryIncomePage()),
       route(AppRoutes.otherInfo, () => const P40OtherInfoPage()),
