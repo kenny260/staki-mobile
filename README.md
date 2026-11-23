@@ -30,7 +30,7 @@ Small businesses in Rwanda earn and transact through mobile money but have no co
 
 - Onboarding flow with borrower and lender role selection
 - Email/password and Google sign-in with email verification
-- Borrower profile supporting five borrower types (salaried, self-employed, trader, farmer, student)
+- Borrower profile supporting five borrower types (business, startup, student, salaried, other)
 - Data consent screen and MoMo connection with revocable access
 - Document upload for PDFs and images, stored via Cloudinary
 - Credit Passport score (300–1000) with factor breakdown
@@ -78,7 +78,7 @@ frontend/lib/
 ### Steps
 
 ```bash
-git clone https://github.com/your-org/staki-mobile.git
+git clone https://github.com/kenny260/staki-mobile.git
 cd staki-mobile/frontend
 flutter pub get
 flutter run -t lib/main_dev.dart
@@ -104,6 +104,8 @@ firebase deploy --only firestore:rules,firestore:indexes
 Demo seed data is in `backend/seed/`; run it with:
 
 ```bash
+cd backend/seed
+npm install
 node seed.js
 ```
 
