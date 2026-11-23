@@ -10,6 +10,8 @@ import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/core/theme/text_styles.dart';
 import 'package:staki_mobile/presentation/features/consent/providers/consent_models.dart';
 import 'package:staki_mobile/presentation/features/consent/providers/consent_providers.dart';
+import 'package:staki_mobile/presentation/features/documents/providers/document_models.dart';
+import 'package:staki_mobile/presentation/features/documents/providers/document_providers.dart';
 import 'package:staki_mobile/presentation/features/settings/providers/settings_providers.dart';
 import 'package:staki_mobile/presentation/shared_widgets/shared_widgets.dart';
 
@@ -70,6 +72,10 @@ class S02DataPermissionsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final p = ref.watch(dataPermissionsProvider);
+    final uploadedDocs = (ref.watch(documentsControllerProvider).valueOrNull ??
+            const <DocumentItem>[])
+        .where((d) => d.status != DocumentStatus.notUploaded)
+        .length;
     final n = ref.read(dataPermissionsProvider.notifier);
 
     return Scaffold(
@@ -139,15 +145,15 @@ class S02DataPermissionsPage extends ConsumerWidget {
                     tint: AppColors.primarySoft,
                     iconColor: AppColors.primary,
                     title: 'Documents',
-                    status: p.documentsUploaded > 0
-                        ? 'Available (${p.documentsUploaded} uploaded)'
+                    status: uploadedDocs > 0
+                        ? 'Available ($uploadedDocs uploaded)'
                         : 'None uploaded',
-                    isOk: p.documentsUploaded > 0,
+                    isOk: uploadedDocs > 0,
                     description: 'RDB Certificates and tax clearance are used '
                         'for identity and business verification.',
                     actionLabel: 'Manage Documents',
-                    // TODO(Chris): open the document list (Section 04).
-                    onAction: null,
+                    onAction: () =>
+                        unawaited(context.push(AppRoutes.documents)),
                   ),
                 ],
               ),
