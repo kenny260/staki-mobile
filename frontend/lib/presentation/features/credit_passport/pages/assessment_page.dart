@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -288,9 +289,28 @@ class _NeedsInfoView extends ConsumerWidget {
     // The API does not say which document is the problem yet.
     final issue = ref.watch(needsInfoIssueProvider);
     return _StatusLayout(
-      bottom: _PrimaryButton(
-        label: 'Update Document',
-        onTap: () => context.go(AppRoutes.documents),
+      bottom: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _PrimaryButton(
+            label: 'Update Document',
+            onTap: () => context.go(AppRoutes.documents),
+          ),
+          // Dev-only escape hatch: kDebugMode is false in release builds, so
+          // real users never see this and cannot skip a paused assessment.
+          if (kDebugMode) ...[
+            const SizedBox(height: 8),
+            TextButton(
+              onPressed: () {
+                // No real score was saved, so the loan screens would show
+                // "no offers". This makes them use sample data instead.
+                ref.read(assessmentSkippedProvider.notifier).state = true;
+                context.go(AppRoutes.creditPassport);
+              },
+              child: const Text('Next'),
+            ),
+          ],
+        ],
       ),
       children: [
         const SizedBox(height: 16),
