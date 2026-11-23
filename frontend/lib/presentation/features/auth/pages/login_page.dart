@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/constants/spacing.dart';
@@ -8,6 +9,7 @@ import 'package:staki_mobile/presentation/features/auth/providers/auth_form_prov
 import 'package:staki_mobile/presentation/features/auth/widgets/auth_error_banner.dart';
 import 'package:staki_mobile/presentation/features/auth/widgets/google_sign_in_button.dart';
 import 'package:staki_mobile/presentation/features/auth/widgets/or_divider.dart';
+import 'package:staki_mobile/presentation/shared_providers/preferences_providers.dart';
 import 'package:staki_mobile/presentation/shared_widgets/shared_widgets.dart';
 
 /// Login (email and password, or Google).
@@ -29,8 +31,14 @@ class LoginPage extends ConsumerWidget {
     Future<void> submit() async {
       formNotifier.markSubmitted();
       if (!form.loginValid) return;
+      final prefs = ref.read(preferencesProvider);
       final ok = await controller.signIn(form.email, form.password);
-      if (ok) await goToLanding();
+      if (!ok) return;
+      // Remember the email for next time, and let the phone's password
+      // manager offer to save the login.
+      TextInput.finishAutofillContext();
+      await prefs.setLastLoginEmail(form.email);
+      await goToLanding();
     }
 
     Future<void> signInWithGoogle() async {
@@ -54,28 +62,36 @@ class LoginPage extends ConsumerWidget {
       children: [
         if (auth.failure != null)
           AuthErrorBanner(message: auth.failure!.message),
-        AppTextField(
-          label: 'Email',
-          hint: 'you@example.com',
-          keyboardType: TextInputType.emailAddress,
-          autofillHints: const [AutofillHints.email],
-          textInputAction: TextInputAction.next,
-          errorText: form.emailError,
-          onChanged: formNotifier.setEmail,
-        ),
-        const SizedBox(height: AppSpacing.md),
-        AppTextField(
-          label: 'Password',
-          hint: 'Enter your password',
-          obscureText: !form.showPassword,
-          autofillHints: const [AutofillHints.password],
-          textInputAction: TextInputAction.done,
-          errorText: form.loginPasswordError,
-          suffix: TextButton(
-            onPressed: formNotifier.toggleShowPassword,
-            child: Text(form.showPassword ? 'Hide' : 'Show'),
+        // Groups email and password so the phone can fill and save both.
+        AutofillGroup(
+          child: Column(
+            children: [
+              AppTextField(
+                label: 'Email',
+                hint: 'you@example.com',
+                initialValue: form.email,
+                keyboardType: TextInputType.emailAddress,
+                autofillHints: const [AutofillHints.email],
+                textInputAction: TextInputAction.next,
+                errorText: form.emailError,
+                onChanged: formNotifier.setEmail,
+              ),
+              const SizedBox(height: AppSpacing.md),
+              AppTextField(
+                label: 'Password',
+                hint: 'Enter your password',
+                obscureText: !form.showPassword,
+                autofillHints: const [AutofillHints.password],
+                textInputAction: TextInputAction.done,
+                errorText: form.loginPasswordError,
+                suffix: TextButton(
+                  onPressed: formNotifier.toggleShowPassword,
+                  child: Text(form.showPassword ? 'Hide' : 'Show'),
+                ),
+                onChanged: formNotifier.setPassword,
+              ),
+            ],
           ),
-          onChanged: formNotifier.setPassword,
         ),
         Align(
           alignment: Alignment.centerRight,

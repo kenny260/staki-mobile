@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// SharedPreferences wrapper: theme, language, last role, notifications and
-/// biometric unlock. Every value is read back on the next launch.
+/// SharedPreferences wrapper: theme, language, last role, last login email,
+/// notifications and biometric unlock. Every value is read back on the next
+/// launch.
 class PreferencesDatasource {
   PreferencesDatasource(this._prefs);
 
@@ -11,6 +12,7 @@ class PreferencesDatasource {
   static const _kTheme = 'theme_mode';
   static const _kLanguage = 'language_code';
   static const _kLastRole = 'last_role';
+  static const _kLastEmail = 'last_login_email';
   static const _kNotifications = 'notifications_enabled';
   static const _kBiometrics = 'biometrics_enabled';
 
@@ -34,6 +36,14 @@ class PreferencesDatasource {
   String? get lastRole => _prefs.getString(_kLastRole);
 
   Future<void> setLastRole(String role) => _prefs.setString(_kLastRole, role);
+
+  /// Email of the last successful email login, so Login can prefill it.
+  /// The password is never stored here; the phone's password manager
+  /// offers to save it instead.
+  String? get lastLoginEmail => _prefs.getString(_kLastEmail);
+
+  Future<void> setLastLoginEmail(String email) =>
+      _prefs.setString(_kLastEmail, email.trim());
 
   /// Push and in-app notifications. On by default.
   bool get notificationsEnabled => _prefs.getBool(_kNotifications) ?? true;

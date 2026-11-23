@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/router/app_routes.dart';
 import 'package:staki_mobile/core/router/auth_redirect.dart';
+import 'package:staki_mobile/core/router/main_shell.dart';
 import 'package:staki_mobile/domain/entities/app_user.dart';
 import 'package:staki_mobile/presentation/features/auth/pages/forgot_password_page.dart';
 import 'package:staki_mobile/presentation/features/auth/pages/login_page.dart';
@@ -20,10 +21,12 @@ import 'package:staki_mobile/presentation/features/consent/pages/momo_error_page
 import 'package:staki_mobile/presentation/features/consent/pages/momo_not_eligible_page.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/pages/assessment_page.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/pages/breakdown_page.dart';
+import 'package:staki_mobile/presentation/features/credit_passport/pages/improve_page.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/pages/score_page.dart';
 import 'package:staki_mobile/presentation/features/documents/pages/document_preview_page.dart';
 import 'package:staki_mobile/presentation/features/documents/pages/documents_page.dart';
 import 'package:staki_mobile/presentation/features/edge_cases/pages/edge_case_gallery_page.dart';
+import 'package:staki_mobile/presentation/features/home/pages/home_page.dart';
 import 'package:staki_mobile/presentation/features/lender/pages/lender_kyc_page.dart';
 import 'package:staki_mobile/presentation/features/lender/pages/lender_otp_page.dart';
 import 'package:staki_mobile/presentation/features/lender/pages/lender_phone_page.dart';
@@ -34,6 +37,7 @@ import 'package:staki_mobile/presentation/features/lender/pages/lender_structure
 import 'package:staki_mobile/presentation/features/lender/pages/lender_success_page.dart';
 import 'package:staki_mobile/presentation/features/lender/pages/lender_welcome_page.dart';
 import 'package:staki_mobile/presentation/features/loan_lifecycle/pages/loan_details_page.dart';
+import 'package:staki_mobile/presentation/features/loan_lifecycle/pages/my_loans_page.dart';
 import 'package:staki_mobile/presentation/features/loan_lifecycle/pages/repay_amount_page.dart';
 import 'package:staki_mobile/presentation/features/loan_lifecycle/pages/repay_confirm_page.dart';
 import 'package:staki_mobile/presentation/features/loan_lifecycle/pages/repay_success_page.dart';
@@ -43,6 +47,7 @@ import 'package:staki_mobile/presentation/features/loans/pages/loan_purpose_page
 import 'package:staki_mobile/presentation/features/loans/pages/loan_review_page.dart';
 import 'package:staki_mobile/presentation/features/loans/pages/loan_submitted_page.dart';
 import 'package:staki_mobile/presentation/features/loans/pages/loan_term_page.dart';
+import 'package:staki_mobile/presentation/features/marketplace/market_routes.dart';
 import 'package:staki_mobile/presentation/features/marketplace/pages/allocation_detail_page.dart';
 import 'package:staki_mobile/presentation/features/marketplace/pages/fund_amount_page.dart';
 import 'package:staki_mobile/presentation/features/marketplace/pages/fund_confirm_page.dart';
@@ -77,10 +82,14 @@ import 'package:staki_mobile/presentation/features/profile/pages/p21_student_inc
 import 'package:staki_mobile/presentation/features/profile/pages/p30_salary_employment_page.dart';
 import 'package:staki_mobile/presentation/features/profile/pages/p31_salary_income_page.dart';
 import 'package:staki_mobile/presentation/features/profile/pages/p40_other_info_page.dart';
+import 'package:staki_mobile/presentation/features/profile/pages/profile_page.dart';
 import 'package:staki_mobile/presentation/features/settings/pages/s01_settings_page.dart';
 import 'package:staki_mobile/presentation/features/settings/pages/s02_data_permissions_page.dart';
 import 'package:staki_mobile/presentation/features/settings/pages/s03_privacy_page.dart';
 import 'package:staki_mobile/presentation/features/settings/pages/s04_support_page.dart';
+import 'package:staki_mobile/presentation/features/settings/pages/s05_personal_info_page.dart';
+import 'package:staki_mobile/presentation/features/settings/pages/s06_change_pin_page.dart';
+import 'package:staki_mobile/presentation/features/settings/pages/s07_change_password_page.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   ref.read(pushSyncProvider);
@@ -128,21 +137,44 @@ final routerProvider = Provider<GoRouter>((ref) {
         () => const P20StudentInstitutionPage(),
       ),
       route(AppRoutes.studentIncome, () => const P21StudentIncomePage()),
-      // Section 05: Credit Passport (Chris)
-      GoRoute(
-        path: AppRoutes.creditPassport,
-        builder: (context, state) => const ScorePage(), // C02_Score
-        routes: [
-          GoRoute(
-            path: 'breakdown', // C03_Breakdown
-            builder: (context, state) => const BreakdownPage(),
+      // Borrower bottom tabs: Home, Credit Passport, Loans, Profile.
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, shell) =>
+            MainShell(navigationShell: shell, items: borrowerTabs),
+        branches: [
+          StatefulShellBranch(
+            routes: [route(AppRoutes.home, () => const HomePage())],
           ),
-          GoRoute(
-            path: 'assessment', // C01 states
-            builder: (context, state) => const AssessmentPage(),
+          // Section 05: Credit Passport (Chris)
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.creditPassport,
+                builder: (context, state) => const ScorePage(), // C02_Score
+                routes: [
+                  GoRoute(
+                    path: 'breakdown', // C03_Breakdown
+                    builder: (context, state) => const BreakdownPage(),
+                  ),
+                  GoRoute(
+                    path: 'improve', // C04_Improve
+                    builder: (context, state) => const ImprovePage(),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [route(AppRoutes.myLoans, () => const MyLoansPage())],
+          ),
+          StatefulShellBranch(
+            routes: [route(AppRoutes.profile, () => const ProfilePage())],
           ),
         ],
       ),
+      // C01 assessment states open full screen over the tabs, because the
+      // MoMo consent flow (outside the tabs) pushes it.
+      route(AppRoutes.creditAssessment, () => const AssessmentPage()),
       route(AppRoutes.salaried, () => const P30SalaryEmploymentPage()),
       route(AppRoutes.salariedIncome, () => const P31SalaryIncomePage()),
       route(AppRoutes.otherInfo, () => const P40OtherInfoPage()),
@@ -283,57 +315,63 @@ final routerProvider = Provider<GoRouter>((ref) {
           ),
         ],
       ),
-      GoRoute(
-        path: '/marketplace',
-        builder: (context, state) => const OpportunitiesPage(), // LE01
-        routes: [
-          GoRoute(
-            path: 'opportunity/:id', // LE02
-            builder: (context, state) => OpportunityDetailPage(
-              opportunityId: state.pathParameters['id'] ?? '',
-            ),
+      // Lender bottom tabs: Marketplace, Portfolio, Wallet, Profile.
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, shell) =>
+            MainShell(navigationShell: shell, items: lenderTabs),
+        branches: [
+          StatefulShellBranch(
+            routes: [
+              route(MarketRoutes.base, () => const OpportunitiesPage()),
+            ], // LE01
           ),
-          GoRoute(
-            path: 'fund', // LE03
-            builder: (context, state) => const FundAmountPage(),
+          StatefulShellBranch(
+            routes: [
+              route(MarketRoutes.portfolio, () => const PortfolioPage()),
+            ], // LE07
           ),
-          GoRoute(
-            path: 'review', // LE04
-            builder: (context, state) => const FundReviewPage(),
-          ),
-          GoRoute(
-            path: 'confirm', // LE05
-            builder: (context, state) => const FundConfirmPage(),
-          ),
-          GoRoute(
-            path: 'success', // LE06
-            builder: (context, state) => const FundSuccessPage(),
-          ),
-          GoRoute(
-            path: 'portfolio', // LE07
-            builder: (context, state) => const PortfolioPage(),
-          ),
-          GoRoute(
-            path: 'notifications', // LE08
-            builder: (context, state) => const NotificationsPage(),
-          ),
-          GoRoute(
-            path: 'ledger', // LE09
-            builder: (context, state) => const LedgerPage(),
-          ),
-          GoRoute(
-            path: 'allocation/:id', // LE10
-            builder: (context, state) => AllocationDetailPage(
-              allocationId: state.pathParameters['id'] ?? '',
-            ),
+          StatefulShellBranch(
+            routes: [route(MarketRoutes.ledger, () => const LedgerPage())],
+          ), // LE09
+          StatefulShellBranch(
+            routes: [
+              route(AppRoutes.lenderProfile, () => const ProfilePage()),
+            ],
           ),
         ],
+      ),
+      // Lender detail and funding screens open full screen over the tabs.
+      GoRoute(
+        path: '/marketplace/opportunity/:id', // LE02
+        builder: (context, state) => OpportunityDetailPage(
+          opportunityId: state.pathParameters['id'] ?? '',
+        ),
+      ),
+      route(MarketRoutes.fund, () => const FundAmountPage()), // LE03
+      route(MarketRoutes.review, () => const FundReviewPage()), // LE04
+      route(MarketRoutes.confirm, () => const FundConfirmPage()), // LE05
+      route(MarketRoutes.success, () => const FundSuccessPage()), // LE06
+      route(
+        MarketRoutes.notifications,
+        () => const NotificationsPage(),
+      ), // LE08
+      GoRoute(
+        path: '/marketplace/allocation/:id', // LE10
+        builder: (context, state) => AllocationDetailPage(
+          allocationId: state.pathParameters['id'] ?? '',
+        ),
       ),
       // Section 10 (Binthia)
       route(AppRoutes.settings, () => const S01SettingsPage()),
       route(AppRoutes.dataPermissions, () => const S02DataPermissionsPage()),
       route(AppRoutes.privacy, () => const S03PrivacyPage()),
       route(AppRoutes.support, () => const S04SupportPage()),
+      route(AppRoutes.personalInfo, () => const S05PersonalInfoPage()),
+      route(AppRoutes.changePin, () => const S06ChangePinPage()),
+      route(
+        AppRoutes.changePassword,
+        () => const S07ChangePasswordPage(),
+      ),
       route(AppRoutes.edgeCases, () => const EdgeCaseGalleryPage()),
     ],
     errorBuilder: (context, state) =>

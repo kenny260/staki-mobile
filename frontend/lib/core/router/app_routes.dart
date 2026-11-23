@@ -27,11 +27,20 @@ abstract final class AppRoutes {
   static const salariedIncome = '/profile/salaried/income'; // P31
   static const otherInfo = '/profile/other'; // P40
 
+  // Bottom tab bar (signed-in users)
+  static const home = '/home'; // borrower: Home tab
+  static const myLoans = '/my-loans'; // borrower: Loans tab
+  static const profile = '/profile'; // borrower: Profile tab
+  static const lenderProfile = '/lender/profile'; // lender: Profile tab
+
   // Section 10: Profile and settings
   static const settings = '/settings'; // S01_Settings
   static const dataPermissions = '/settings/data'; // S02_DataPermissions
   static const privacy = '/settings/privacy'; // S03_Privacy
   static const support = '/settings/support'; // S04_Support
+  static const personalInfo = '/settings/personal'; // S05_PersonalInfo
+  static const changePin = '/settings/pin'; // S06_ChangePIN
+  static const changePassword = '/settings/password'; // S07
 
   /// Developer gallery of all 34 edge-case states (E01-E34).
   static const edgeCases = '/dev/edge-cases';
@@ -48,5 +57,6 @@ abstract final class AppRoutes {
   // Section 05: Credit Passport (Chris)
   static const creditPassport = '/credit-passport'; // C02_Score
   static const creditBreakdown = '/credit-passport/breakdown'; // C03_Breakdown
+  static const creditImprove = '/credit-passport/improve'; // C04_Improve
   static const creditAssessment = '/credit-passport/assessment'; // C01 states
 }

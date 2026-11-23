@@ -47,6 +47,7 @@ abstract final class AppIcons {
   static const IconData funnel = IconData(0xe266, fontFamily: _f);
   static const IconData gauge = IconData(0xe628, fontFamily: _f);
   static const IconData globe = IconData(0xe288, fontFamily: _f);
+  static const IconData house = IconData(0xe2c2, fontFamily: _f);
   static const IconData graduationCap = IconData(0xe62c, fontFamily: _f);
   static const IconData hourglass = IconData(0xe2b2, fontFamily: _f);
   static const IconData identificationCard = IconData(0xe2c8, fontFamily: _f);

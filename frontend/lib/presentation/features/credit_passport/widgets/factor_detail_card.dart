@@ -44,6 +44,17 @@ class FactorDetailCard extends StatelessWidget {
                   ),
                 ),
               ),
+              if (factor.points != null) ...[
+                Text(
+                  '+${factor.points} pts',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.success,
+                  ),
+                ),
+                const SizedBox(width: 8),
+              ],
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                 decoration: BoxDecoration(

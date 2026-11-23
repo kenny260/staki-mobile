@@ -1,11 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/constants/spacing.dart';
+import 'package:staki_mobile/core/router/app_routes.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
 import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/core/theme/text_styles.dart';
 import 'package:staki_mobile/presentation/features/consent/providers/consent_models.dart';
 import 'package:staki_mobile/presentation/features/consent/providers/consent_providers.dart';
+import 'package:staki_mobile/presentation/features/documents/providers/document_models.dart';
+import 'package:staki_mobile/presentation/features/documents/providers/document_providers.dart';
 import 'package:staki_mobile/presentation/features/settings/providers/settings_providers.dart';
 import 'package:staki_mobile/presentation/shared_widgets/shared_widgets.dart';
 
@@ -16,7 +22,7 @@ class S02DataPermissionsPage extends ConsumerWidget {
   Future<void> _confirmRevoke(BuildContext context, WidgetRef ref) async {
     final ok = await showDialog<bool>(
       context: context,
-      builder: (_) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         title: const Text('Revoke MTN MoMo access?'),
         content: const Text(
           'Staki fund will stop reading your MoMo data. Your score may '
@@ -24,11 +30,11 @@ class S02DataPermissionsPage extends ConsumerWidget {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
+            onPressed: () => Navigator.of(dialogContext).pop(false),
             child: const Text('Keep access'),
           ),
           TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
+            onPressed: () => Navigator.of(dialogContext).pop(true),
             child: const Text('Revoke'),
           ),
         ],
@@ -57,15 +63,26 @@ class S02DataPermissionsPage extends ConsumerWidget {
     }
   }
 
+  /// Opens the real MoMo consent flow, then re-reads the ledger.
+  Future<void> _connectMomo(BuildContext context, WidgetRef ref) async {
+    await context.push(AppRoutes.consent);
+    await ref.read(dataPermissionsProvider.notifier).refreshMomo();
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final p = ref.watch(dataPermissionsProvider);
+    final uploadedDocs = (ref.watch(documentsControllerProvider).valueOrNull ??
+            const <DocumentItem>[])
+        .where((d) => d.status != DocumentStatus.notUploaded)
+        .length;
     final n = ref.read(dataPermissionsProvider.notifier);
 
     return Scaffold(
       body: SafeArea(
         child: ListView(
           children: [
+            const _LoadMomoOnOpen(),
             ScreenHeader(
               title: 'Data Permissions',
               onBack: () => Navigator.of(context).maybePop(),
@@ -107,7 +124,7 @@ class S02DataPermissionsPage extends ConsumerWidget {
                     isDestructive: p.momoConnected,
                     onAction: p.momoConnected
                         ? () => _confirmRevoke(context, ref)
-                        : () => n.setMomo(connected: true),
+                        : () => _connectMomo(context, ref),
                   ),
                   _SourceCard(
                     icon: AppIcons.bank,
@@ -128,15 +145,15 @@ class S02DataPermissionsPage extends ConsumerWidget {
                     tint: AppColors.primarySoft,
                     iconColor: AppColors.primary,
                     title: 'Documents',
-                    status: p.documentsUploaded > 0
-                        ? 'Available (${p.documentsUploaded} uploaded)'
+                    status: uploadedDocs > 0
+                        ? 'Available ($uploadedDocs uploaded)'
                         : 'None uploaded',
-                    isOk: p.documentsUploaded > 0,
+                    isOk: uploadedDocs > 0,
                     description: 'RDB Certificates and tax clearance are used '
                         'for identity and business verification.',
                     actionLabel: 'Manage Documents',
-                    // TODO(Chris): open the document list (Section 04).
-                    onAction: null,
+                    onAction: () =>
+                        unawaited(context.push(AppRoutes.documents)),
                   ),
                 ],
               ),
@@ -235,4 +252,24 @@ class _SourceCard extends StatelessWidget {
       ),
     );
   }
+}
+
+/// Reads the MoMo consent from Firestore each time S02 opens. Shows
+/// nothing itself.
+class _LoadMomoOnOpen extends ConsumerStatefulWidget {
+  const _LoadMomoOnOpen();
+
+  @override
+  ConsumerState<_LoadMomoOnOpen> createState() => _LoadMomoOnOpenState();
+}
+
+class _LoadMomoOnOpenState extends ConsumerState<_LoadMomoOnOpen> {
+  @override
+  void initState() {
+    super.initState();
+    unawaited(ref.read(dataPermissionsProvider.notifier).refreshMomo());
+  }
+
+  @override
+  Widget build(BuildContext context) => const SizedBox.shrink();
 }

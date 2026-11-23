@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:staki_mobile/core/utils/validators.dart';
+import 'package:staki_mobile/presentation/shared_providers/preferences_providers.dart';
 
 /// Field values and error display for the auth forms. Errors only show
 /// after the first tap on the button, so people are not scolded mid-typing.
@@ -82,10 +83,24 @@ class AuthFormNotifier extends AutoDisposeNotifier<AuthFormState> {
   void markResetSent() => state = state.copyWith(resetSent: true);
 }
 
+/// Login starts with the email of the last successful login, if any.
+class LoginFormNotifier extends AuthFormNotifier {
+  @override
+  AuthFormState build() {
+    try {
+      final last = ref.read(preferencesProvider).lastLoginEmail;
+      return AuthFormState(email: last ?? '');
+    } on Object {
+      // No SharedPreferences (for example a page tested on its own).
+      return const AuthFormState();
+    }
+  }
+}
+
 // One provider per screen so the forms do not share values.
 final loginFormProvider =
-    NotifierProvider.autoDispose<AuthFormNotifier, AuthFormState>(
-  AuthFormNotifier.new,
+    NotifierProvider.autoDispose<LoginFormNotifier, AuthFormState>(
+  LoginFormNotifier.new,
 );
 
 final registerFormProvider =

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:staki_mobile/core/router/main_shell.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
 import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/marketplace/market_routes.dart';
@@ -65,7 +66,8 @@ class MarketScaffold extends StatelessWidget {
           children: [
             ScreenHeader(
               title: title,
-              onBack: () => _back(context),
+              // Bottom tab screens have no back arrow.
+              onBack: isTabRoot(context) ? null : () => _back(context),
               trailing: trailing,
             ),
             const Divider(height: 1, color: AppColors.border),

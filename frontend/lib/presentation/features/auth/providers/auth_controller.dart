@@ -7,7 +7,7 @@ import 'package:staki_mobile/presentation/features/notifications/providers/push_
 
 // TODO(tolu): confirm the two home routes with Chris and Binthia.
 const _lenderHome = '/marketplace';
-const _borrowerHome = AppRoutes.creditPassport;
+const _borrowerHome = AppRoutes.home;
 
 class AuthActionState {
   const AuthActionState({this.isLoading = false, this.failure});

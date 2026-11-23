@@ -31,6 +31,7 @@ class ScoreFactor {
     required this.helped,
     required this.improve,
     required this.icon,
+    this.points,
   });
 
   final String title;
@@ -40,6 +41,10 @@ class ScoreFactor {
   final String helped;
   final String improve;
   final IconData icon;
+
+  /// Points this factor adds to the score (from the scoring API). Null for
+  /// data that does not have them, like the mock.
+  final int? points;
 }
 
 class CreditScore {

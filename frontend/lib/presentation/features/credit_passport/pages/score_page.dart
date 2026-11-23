@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:staki_mobile/core/router/app_routes.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
 import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/providers/credit_passport_models.dart';
@@ -8,6 +11,7 @@ import 'package:staki_mobile/presentation/features/credit_passport/providers/cre
 import 'package:staki_mobile/presentation/features/credit_passport/widgets/factor_summary_card.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/widgets/passport_app_bar.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/widgets/score_gauge.dart';
+import 'package:staki_mobile/presentation/shared_widgets/shared_widgets.dart';
 
 class ScorePage extends ConsumerWidget {
   const ScorePage({super.key});
@@ -27,6 +31,11 @@ class ScorePage extends ConsumerWidget {
     }
   }
 
+  /// C01 calls the scoring API, which saves scores/{uid}. This page
+  /// listens to that document, so the new score shows up by itself.
+  void _runAssessment(BuildContext context) =>
+      unawaited(context.push(AppRoutes.creditAssessment));
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final score = ref.watch(creditScoreProvider);
@@ -41,7 +50,7 @@ class ScorePage extends ConsumerWidget {
         ),
         data: (s) {
           if (s == null) {
-            return const Center(child: Text('Your score is being prepared.'));
+            return _NoScoreYet(onRun: () => _runAssessment(context));
           }
           return SingleChildScrollView(
             child: Column(
@@ -144,12 +153,26 @@ class ScorePage extends ConsumerWidget {
                           Expanded(
                             child: _PillButton(
                               label: 'Improve my score',
-                              // TODO(chris): confirm the target in Figma.
                               onTap: () =>
-                                  context.push('/credit-passport/breakdown'),
+                                  context.push(AppRoutes.creditImprove),
                             ),
                           ),
                         ],
+                      ),
+                      const SizedBox(height: 12),
+                      AppOutlinedButton(
+                        label: 'Refresh my score',
+                        onPressed: () => _runAssessment(context),
+                      ),
+                      const SizedBox(height: 6),
+                      const Center(
+                        child: Text(
+                          'Runs a new assessment with your latest data.',
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: AppColors.textMuted,
+                          ),
+                        ),
                       ),
                       const SizedBox(height: 28),
                       const Text(
@@ -194,6 +217,47 @@ class _PillButton extends StatelessWidget {
         label,
         textAlign: TextAlign.center,
         style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+      ),
+    );
+  }
+}
+
+/// Shown when scores/{uid} does not exist yet (or the last run needed
+/// more data).
+class _NoScoreYet extends StatelessWidget {
+  const _NoScoreYet({required this.onRun});
+
+  final VoidCallback onRun;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(AppIcons.gauge, size: 48, color: AppColors.textMuted),
+            const SizedBox(height: 16),
+            const Text(
+              'No Credit Passport yet',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+                color: AppColors.primary,
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Run an assessment to build your score from the data you have '
+              'connected.',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
+            ),
+            const SizedBox(height: 24),
+            AppButton(label: 'Run my assessment', onPressed: onRun),
+          ],
+        ),
       ),
     );
   }

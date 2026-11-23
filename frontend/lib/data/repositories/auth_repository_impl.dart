@@ -67,6 +67,28 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
+  /// A wrong current password gets its own message instead of the
+  /// login wording "Incorrect email or password".
+  @override
+  Future<void> changePassword(
+    String currentPassword,
+    String newPassword,
+  ) async {
+    try {
+      await _auth.changePassword(currentPassword, newPassword);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'wrong-password' || e.code == 'invalid-credential') {
+        throw const AuthFailure(
+          AuthFailureCode.invalidCredentials,
+          'Your current password is incorrect.',
+        );
+      }
+      throw mapAuthError(e);
+    } catch (e) {
+      throw mapAuthError(e);
+    }
+  }
+
   @override
   Future<void> resendVerificationEmail() => _guard(_auth.sendVerificationEmail);
 

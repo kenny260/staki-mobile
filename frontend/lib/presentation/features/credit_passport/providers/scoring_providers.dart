@@ -56,6 +56,10 @@ final scoringDatasourceProvider = Provider<ScoringDatasource>((ref) {
   );
 });
 
+/// True after the debug-only "Next" on C01 skipped a paused assessment.
+/// The loan screens then use sample data, since no real score exists.
+final assessmentSkippedProvider = StateProvider<bool>((ref) => false);
+
 /// Calls the API once when C01 opens. Retry = ref.invalidate(this provider).
 final scoringResultProvider = FutureProvider.autoDispose<ScoringResult>((
   ref,
