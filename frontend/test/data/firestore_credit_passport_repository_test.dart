@@ -57,6 +57,8 @@ void main() {
       expect(cash.summary, 'Money comes in steadily.');
       expect(cash.improve, 'Keep income flowing in.');
       expect(cash.icon, AppIcons.chartLineUp);
+      expect(cash.points, 164);
+      expect(score.factors.last.points, 14);
       expect(score.factors.last.icon, AppIcons.shieldCheck);
     });
 

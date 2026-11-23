@@ -88,6 +88,7 @@ ScoreFactor _factorFrom(Map<String, dynamic> f) => ScoreFactor(
       helped: f['helped'] as String? ?? '',
       improve: f['improve'] as String? ?? '',
       icon: factorIcon(f['id'] as String?),
+      points: (f['points'] as num?)?.toInt(),
     );
 
 /// Icon for each scorecard factor id (backend/api/src/scoring).
