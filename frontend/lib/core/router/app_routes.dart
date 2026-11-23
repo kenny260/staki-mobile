@@ -27,6 +27,12 @@ abstract final class AppRoutes {
   static const salariedIncome = '/profile/salaried/income'; // P31
   static const otherInfo = '/profile/other'; // P40
 
+  // Bottom tab bar (signed-in users)
+  static const home = '/home'; // borrower: Home tab
+  static const myLoans = '/my-loans'; // borrower: Loans tab
+  static const profile = '/profile'; // borrower: Profile tab
+  static const lenderProfile = '/lender/profile'; // lender: Profile tab
+
   // Section 10: Profile and settings
   static const settings = '/settings'; // S01_Settings
   static const dataPermissions = '/settings/data'; // S02_DataPermissions

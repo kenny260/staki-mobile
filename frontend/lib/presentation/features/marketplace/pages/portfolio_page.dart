@@ -112,7 +112,7 @@ class PortfolioPage extends ConsumerWidget {
                 child: MarketHeading('Active Allocations', size: 14),
               ),
               TextButton(
-                onPressed: () => unawaited(context.push(MarketRoutes.ledger)),
+                onPressed: () => context.go(MarketRoutes.ledger),
                 child: const Text(
                   'VIEW LEDGER',
                   style: TextStyle(
