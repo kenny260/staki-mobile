@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:staki_mobile/core/router/app_routes.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
 import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/providers/credit_passport_models.dart';
@@ -144,9 +145,8 @@ class ScorePage extends ConsumerWidget {
                           Expanded(
                             child: _PillButton(
                               label: 'Improve my score',
-                              // TODO(chris): confirm the target in Figma.
                               onTap: () =>
-                                  context.push('/credit-passport/breakdown'),
+                                  context.push(AppRoutes.creditImprove),
                             ),
                           ),
                         ],

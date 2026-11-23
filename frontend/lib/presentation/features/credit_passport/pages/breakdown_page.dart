@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:staki_mobile/core/router/app_routes.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
 import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/providers/credit_passport_provider.dart';
@@ -51,8 +55,8 @@ class BreakdownPage extends ConsumerWidget {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(24, 8, 24, 16),
                 child: FilledButton(
-                  // TODO(chris): confirm the target screen in Figma.
-                  onPressed: () {},
+                  onPressed: () =>
+                      unawaited(context.push(AppRoutes.creditImprove)),
                   style: FilledButton.styleFrom(
                     minimumSize: const Size.fromHeight(52),
                     backgroundColor: AppColors.primary,
