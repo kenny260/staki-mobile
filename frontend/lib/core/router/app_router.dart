@@ -20,6 +20,7 @@ import 'package:staki_mobile/presentation/features/consent/pages/momo_error_page
 import 'package:staki_mobile/presentation/features/consent/pages/momo_not_eligible_page.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/pages/assessment_page.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/pages/breakdown_page.dart';
+import 'package:staki_mobile/presentation/features/credit_passport/pages/improve_page.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/pages/score_page.dart';
 import 'package:staki_mobile/presentation/features/documents/pages/document_preview_page.dart';
 import 'package:staki_mobile/presentation/features/documents/pages/documents_page.dart';
@@ -136,6 +137,10 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: 'breakdown', // C03_Breakdown
             builder: (context, state) => const BreakdownPage(),
+          ),
+          GoRoute(
+            path: 'improve', // C04_Improve
+            builder: (context, state) => const ImprovePage(),
           ),
           GoRoute(
             path: 'assessment', // C01 states

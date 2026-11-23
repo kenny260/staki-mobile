@@ -48,5 +48,6 @@ abstract final class AppRoutes {
   // Section 05: Credit Passport (Chris)
   static const creditPassport = '/credit-passport'; // C02_Score
   static const creditBreakdown = '/credit-passport/breakdown'; // C03_Breakdown
+  static const creditImprove = '/credit-passport/improve'; // C04_Improve
   static const creditAssessment = '/credit-passport/assessment'; // C01 states
 }
