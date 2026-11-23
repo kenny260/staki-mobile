@@ -1,11 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/constants/spacing.dart';
 import 'package:staki_mobile/core/router/app_routes.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
 import 'package:staki_mobile/core/theme/text_styles.dart';
+import 'package:staki_mobile/presentation/features/auth/providers/auth_providers.dart';
 import 'package:staki_mobile/presentation/shared_widgets/shared_widgets.dart';
 
 /// A01_Splash
@@ -23,7 +25,17 @@ class _A01SplashPageState extends State<A01SplashPage> {
   void initState() {
     super.initState();
     _timer = Timer(const Duration(milliseconds: 1800), () {
-      if (mounted) context.go(AppRoutes.welcome);
+      if (!mounted) return;
+      // Signed in: let the router redirect to the right home instead.
+      final signedIn = ProviderScope.containerOf(context, listen: false)
+              .read(authRepositoryProvider)
+              .currentUser !=
+          null;
+      if (signedIn) {
+        GoRouter.of(context).refresh();
+      } else {
+        context.go(AppRoutes.welcome);
+      }
     });
   }
 

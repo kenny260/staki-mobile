@@ -12,6 +12,7 @@ import 'package:staki_mobile/presentation/features/loan_lifecycle/lifecycle_rout
 import 'package:staki_mobile/presentation/features/loan_lifecycle/providers/lifecycle_models.dart';
 import 'package:staki_mobile/presentation/features/loan_lifecycle/providers/lifecycle_providers.dart';
 import 'package:staki_mobile/presentation/features/loans/loan_routes.dart';
+import 'package:staki_mobile/presentation/features/loans/providers/loan_providers.dart';
 import 'package:staki_mobile/presentation/shared_widgets/shared_widgets.dart';
 
 /// Borrower Loans tab: the current loan, or a way to apply for one.
@@ -48,6 +49,13 @@ class MyLoansPage extends ConsumerWidget {
                         onPressed: () =>
                             unawaited(context.push(LifecycleRoutes.base)),
                       ),
+                      if (l.stage == LoanStage.submitted) ...[
+                        const SizedBox(height: AppSpacing.s3),
+                        AppOutlinedButton(
+                          label: 'Cancel application',
+                          onPressed: () => unawaited(_cancel(context, ref)),
+                        ),
+                      ],
                       if (l.stage == LoanStage.active ||
                           l.stage == LoanStage.repaymentDue) ...[
                         const SizedBox(height: AppSpacing.s3),
@@ -72,6 +80,41 @@ class MyLoansPage extends ConsumerWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _cancel(BuildContext context, WidgetRef ref) async {
+    final messenger = ScaffoldMessenger.of(context);
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Cancel application?'),
+        content: const Text(
+          'Your application will be withdrawn. You can apply again later.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: const Text('Keep it'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: const Text('Cancel application'),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true) return;
+    final ok = await ref.read(loanFlowProvider.notifier).cancelApplication();
+    ref.invalidate(loanAccountProvider);
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text(
+          ok
+              ? 'Application cancelled.'
+              : "We couldn't cancel it. Please try again.",
         ),
       ),
     );
