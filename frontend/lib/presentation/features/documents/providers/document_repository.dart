@@ -5,6 +5,10 @@ abstract class DocumentRepository {
   /// READ the user's documents.
   Future<List<DocumentItem>> fetchAll();
 
+  /// READ, live: emits again whenever a record changes (an upload, a
+  /// remove, or a change made in the Firebase Console).
+  Stream<List<DocumentItem>> watchAll();
+
   /// CREATE / UPDATE: upload a file and save its record.
   Future<DocumentItem> upload(String id, PickedDocument file);
 
@@ -82,6 +86,9 @@ class MockDocumentRepository implements DocumentRepository {
     _items[index] = saved;
     return saved;
   }
+
+  @override
+  Stream<List<DocumentItem>> watchAll() => Stream.fromFuture(fetchAll());
 
   @override
   Future<void> delete(String id) async {
