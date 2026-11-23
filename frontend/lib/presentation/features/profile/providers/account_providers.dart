@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:staki_mobile/core/utils/validators.dart';
 import 'package:staki_mobile/presentation/features/auth/providers/auth_providers.dart';
 
 /// What the Home and Profile tabs show about the signed-in user.
@@ -85,4 +87,24 @@ final accountProfileProvider =
     borrowerType: profile?['borrowerType'] as String?,
     answers: (profile?['answers'] as Map?)?.cast<String, dynamic>() ?? const {},
   );
+});
+
+/// Saves the editable personal details on users/{uid}. The phone is
+/// stored as 9 national digits ("788000111"), like the seed data.
+/// Firestore rules allow the owner to change anything except role.
+final saveAccountDetailsProvider = Provider<
+    Future<void> Function({
+      required String displayName,
+      required String phone,
+    })>((ref) {
+  return ({required displayName, required phone}) async {
+    final user = ref.read(authStateProvider).valueOrNull;
+    if (user == null) throw StateError('No signed-in user.');
+    await ref.read(firestoreProvider).collection('users').doc(user.uid).update({
+      'displayName': displayName.trim(),
+      'phone': Validators.normalizeRwandaPhone(phone),
+      'updatedAt': FieldValue.serverTimestamp(),
+    });
+    ref.invalidate(accountProfileProvider);
+  };
 });

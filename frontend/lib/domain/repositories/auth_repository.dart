@@ -13,6 +13,9 @@ abstract class AuthRepository {
   Future<AppUser?> signInWithGoogle();
 
   Future<void> sendPasswordReset(String email);
+
+  /// For email accounts: checks [currentPassword], then sets [newPassword].
+  Future<void> changePassword(String currentPassword, String newPassword);
   Future<void> resendVerificationEmail();
   Future<bool> reloadAndCheckVerified();
   Future<void> signOut();

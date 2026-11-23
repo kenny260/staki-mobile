@@ -10,6 +10,7 @@ import 'package:staki_mobile/data/repositories/firebase_user_repository.dart';
 import 'package:staki_mobile/domain/entities/app_user.dart';
 import 'package:staki_mobile/domain/repositories/auth_repository.dart';
 import 'package:staki_mobile/domain/repositories/user_repository.dart';
+import 'package:staki_mobile/domain/usecases/change_password.dart';
 import 'package:staki_mobile/domain/usecases/check_email_verified.dart';
 import 'package:staki_mobile/domain/usecases/ensure_user_document.dart';
 import 'package:staki_mobile/domain/usecases/get_user_account.dart';
@@ -60,6 +61,9 @@ final signOutProvider = Provider(
 );
 final sendPasswordResetProvider = Provider(
   (ref) => SendPasswordReset(ref.watch(authRepositoryProvider)),
+);
+final changePasswordProvider = Provider(
+  (ref) => ChangePassword(ref.watch(authRepositoryProvider)),
 );
 final sendEmailVerificationProvider = Provider(
   (ref) => ResendVerificationEmail(ref.watch(authRepositoryProvider)),
