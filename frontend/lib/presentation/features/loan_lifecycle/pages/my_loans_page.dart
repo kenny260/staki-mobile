@@ -49,6 +49,13 @@ class MyLoansPage extends ConsumerWidget {
                         onPressed: () =>
                             unawaited(context.push(LifecycleRoutes.base)),
                       ),
+                      if (l.stage == LoanStage.submitted) ...[
+                        const SizedBox(height: AppSpacing.s3),
+                        AppOutlinedButton(
+                          label: 'Cancel application',
+                          onPressed: () => unawaited(_cancel(context, ref)),
+                        ),
+                      ],
                       if (l.stage == LoanStage.active ||
                           l.stage == LoanStage.repaymentDue) ...[
                         const SizedBox(height: AppSpacing.s3),
@@ -57,14 +64,6 @@ class MyLoansPage extends ConsumerWidget {
                           onPressed: () => unawaited(
                             context.push(LifecycleRoutes.repay),
                           ),
-                        ),
-                      ],
-                      if (l.stage == LoanStage.submitted) ...[
-                        const SizedBox(height: AppSpacing.s3),
-                        AppOutlinedButton(
-                          label: 'Cancel application',
-                          onPressed: () =>
-                              unawaited(_cancelApplication(context, ref)),
                         ),
                       ],
                       if (l.stage == LoanStage.declined ||
@@ -86,11 +85,7 @@ class MyLoansPage extends ConsumerWidget {
     );
   }
 
-  /// Withdraws a loan that is still "submitted". The repository checks
-  /// the stage again, so a loan already in review cannot be removed.
-  Future<void> _cancelApplication(BuildContext context, WidgetRef ref) async {
-    // Captured first: cancelApplication reloads the loan, so the tab
-    // rebuilds once it is gone.
+  Future<void> _cancel(BuildContext context, WidgetRef ref) async {
     final messenger = ScaffoldMessenger.of(context);
     final confirmed = await showDialog<bool>(
       context: context,
@@ -113,6 +108,7 @@ class MyLoansPage extends ConsumerWidget {
     );
     if (confirmed != true) return;
     final ok = await ref.read(loanFlowProvider.notifier).cancelApplication();
+    ref.invalidate(loanAccountProvider);
     messenger.showSnackBar(
       SnackBar(
         content: Text(

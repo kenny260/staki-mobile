@@ -10,18 +10,18 @@ import 'package:staki_mobile/presentation/features/onboarding/providers/onboardi
 Future<void> confirmLogOut(BuildContext context, WidgetRef ref) async {
   final ok = await showDialog<bool>(
     context: context,
-    builder: (_) => AlertDialog(
+    builder: (dialogContext) => AlertDialog(
       title: const Text('Log out?'),
       content: const Text(
         'You will need to log in again with your email or Google account.',
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.of(context).pop(false),
+          onPressed: () => Navigator.of(dialogContext).pop(false),
           child: const Text('Cancel'),
         ),
         TextButton(
-          onPressed: () => Navigator.of(context).pop(true),
+          onPressed: () => Navigator.of(dialogContext).pop(true),
           child: const Text('Log out'),
         ),
       ],
