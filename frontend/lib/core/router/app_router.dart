@@ -89,6 +89,7 @@ import 'package:staki_mobile/presentation/features/settings/pages/s03_privacy_pa
 import 'package:staki_mobile/presentation/features/settings/pages/s04_support_page.dart';
 import 'package:staki_mobile/presentation/features/settings/pages/s05_personal_info_page.dart';
 import 'package:staki_mobile/presentation/features/settings/pages/s06_change_pin_page.dart';
+import 'package:staki_mobile/presentation/features/settings/pages/s07_change_password_page.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   ref.read(pushSyncProvider);
@@ -367,6 +368,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       route(AppRoutes.support, () => const S04SupportPage()),
       route(AppRoutes.personalInfo, () => const S05PersonalInfoPage()),
       route(AppRoutes.changePin, () => const S06ChangePinPage()),
+      route(
+        AppRoutes.changePassword,
+        () => const S07ChangePasswordPage(),
+      ),
       route(AppRoutes.edgeCases, () => const EdgeCaseGalleryPage()),
     ],
     errorBuilder: (context, state) =>

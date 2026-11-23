@@ -137,6 +137,10 @@ class S01SettingsPage extends ConsumerWidget {
                         onTap: () => context.push(AppRoutes.changePin),
                       ),
                       SettingsRow(
+                        label: 'Change password',
+                        onTap: () => context.push(AppRoutes.changePassword),
+                      ),
+                      SettingsRow(
                         label: 'Biometrics',
                         value: biometrics ? 'On' : 'Off',
                         onTap: () => ref

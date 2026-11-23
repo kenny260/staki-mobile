@@ -40,6 +40,7 @@ abstract final class AppRoutes {
   static const support = '/settings/support'; // S04_Support
   static const personalInfo = '/settings/personal'; // S05_PersonalInfo
   static const changePin = '/settings/pin'; // S06_ChangePIN
+  static const changePassword = '/settings/password'; // S07
 
   /// Developer gallery of all 34 edge-case states (E01-E34).
   static const edgeCases = '/dev/edge-cases';

@@ -33,6 +33,22 @@ class FirebaseAuthDatasource {
   Future<void> sendPasswordReset(String email) =>
       _auth.sendPasswordResetEmail(email: email.trim());
 
+  /// Firebase only lets a signed-in user change the password right after
+  /// proving the current one, so re-authenticate first.
+  Future<void> changePassword(
+    String currentPassword,
+    String newPassword,
+  ) async {
+    final user = _auth.currentUser!;
+    await user.reauthenticateWithCredential(
+      EmailAuthProvider.credential(
+        email: user.email!,
+        password: currentPassword,
+      ),
+    );
+    await user.updatePassword(newPassword);
+  }
+
   Future<User?> reload() async {
     await _auth.currentUser?.reload();
     return _auth.currentUser;
