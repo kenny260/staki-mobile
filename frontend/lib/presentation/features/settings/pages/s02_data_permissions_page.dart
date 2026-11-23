@@ -22,7 +22,7 @@ class S02DataPermissionsPage extends ConsumerWidget {
   Future<void> _confirmRevoke(BuildContext context, WidgetRef ref) async {
     final ok = await showDialog<bool>(
       context: context,
-      builder: (_) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         title: const Text('Revoke MTN MoMo access?'),
         content: const Text(
           'Staki fund will stop reading your MoMo data. Your score may '
@@ -30,11 +30,11 @@ class S02DataPermissionsPage extends ConsumerWidget {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
+            onPressed: () => Navigator.of(dialogContext).pop(false),
             child: const Text('Keep access'),
           ),
           TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
+            onPressed: () => Navigator.of(dialogContext).pop(true),
             child: const Text('Revoke'),
           ),
         ],

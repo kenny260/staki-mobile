@@ -10,6 +10,8 @@ import 'package:staki_mobile/presentation/features/onboarding/providers/onboardi
 Future<void> confirmLogOut(BuildContext context, WidgetRef ref) async {
   final ok = await showDialog<bool>(
     context: context,
+    // Close with the dialog's own context: on a bottom tab the page has its
+    // own navigator, and popping that one would remove the tab's only page.
     builder: (dialogContext) => AlertDialog(
       title: const Text('Log out?'),
       content: const Text(
