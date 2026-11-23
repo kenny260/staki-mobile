@@ -41,7 +41,7 @@ void main() {
   group('A03RoleSelectPage CTA gating', () {
     testWidgets('Continue is disabled before a role is picked', (tester) async {
       await tester.binding.setSurfaceSize(const Size(390, 844));
-      addTearDown(tester.binding.setSurfaceSize);
+      addTearDown(() => tester.binding.setSurfaceSize(null));
 
       final log = <String>[];
       await tester.pumpWidget(_wrap(_makeRouter(log: log)));
@@ -61,7 +61,7 @@ void main() {
     testWidgets('selecting Borrower changes CTA to Continue as Borrower',
         (tester) async {
       await tester.binding.setSurfaceSize(const Size(390, 844));
-      addTearDown(tester.binding.setSurfaceSize);
+      addTearDown(() => tester.binding.setSurfaceSize(null));
 
       final log = <String>[];
       await tester.pumpWidget(_wrap(_makeRouter(log: log)));
@@ -76,7 +76,7 @@ void main() {
     testWidgets('selecting Lender changes CTA to Continue as Lender',
         (tester) async {
       await tester.binding.setSurfaceSize(const Size(390, 844));
-      addTearDown(tester.binding.setSurfaceSize);
+      addTearDown(() => tester.binding.setSurfaceSize(null));
 
       final log = <String>[];
       await tester.pumpWidget(_wrap(_makeRouter(log: log)));
@@ -91,7 +91,7 @@ void main() {
     testWidgets('tapping Continue as Borrower navigates to borrower confirmed',
         (tester) async {
       await tester.binding.setSurfaceSize(const Size(390, 844));
-      addTearDown(tester.binding.setSurfaceSize);
+      addTearDown(() => tester.binding.setSurfaceSize(null));
 
       final log = <String>[];
       await tester.pumpWidget(_wrap(_makeRouter(log: log)));
@@ -109,7 +109,7 @@ void main() {
     testWidgets('tapping Continue as Lender navigates to lender confirmed',
         (tester) async {
       await tester.binding.setSurfaceSize(const Size(390, 844));
-      addTearDown(tester.binding.setSurfaceSize);
+      addTearDown(() => tester.binding.setSurfaceSize(null));
 
       final log = <String>[];
       await tester.pumpWidget(_wrap(_makeRouter(log: log)));
