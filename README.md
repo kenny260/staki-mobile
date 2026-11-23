@@ -7,3 +7,14 @@ Small businesses in Rwanda earn and transact through mobile money but have no co
 
 Screenshots
 
+Features
+Onboarding flow with borrower and lender role selection
+Email/password and Google sign-in with email verification
+Borrower profile supporting five borrower types (salaried, self-employed, trader, farmer, student)
+Data consent screen and MoMo connection with revocable access
+Document upload for PDFs and images, stored via Cloudinary
+Credit Passport score (300–1000) with factor breakdown
+Loan eligibility check, application flow, and repayment tracking
+Lender onboarding, borrower marketplace, and portfolio management
+Push notifications via Firebase Cloud Messaging
+Device settings for theme, language, and last-used role (SharedPreferences)
