@@ -89,8 +89,7 @@ void main() {
       expect(log, contains(AppRoutes.roleSelect));
     });
 
-    testWidgets(
-        'I already have an account navigates to login', (tester) async {
+    testWidgets('I already have an account navigates to login', (tester) async {
       final log = <String>[];
       await tester.pumpWidget(_wrap(_makeRouter(log: log)));
       await tester.pumpAndSettle();

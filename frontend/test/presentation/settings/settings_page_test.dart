@@ -77,8 +77,7 @@ void main() {
   });
 
   group('S01SettingsPage theme change', () {
-    testWidgets('tapping Dark updates the theme preference',
-        (tester) async {
+    testWidgets('tapping Dark updates the theme preference', (tester) async {
       await tester.binding.setSurfaceSize(const Size(390, 844));
       addTearDown(tester.binding.setSurfaceSize);
 
@@ -128,8 +127,7 @@ void main() {
   });
 
   group('S01SettingsPage sign-out', () {
-    testWidgets('tapping Sign out shows a confirmation dialog',
-        (tester) async {
+    testWidgets('tapping Sign out shows a confirmation dialog', (tester) async {
       await tester.binding.setSurfaceSize(const Size(390, 844));
       addTearDown(tester.binding.setSurfaceSize);
 
@@ -150,8 +148,7 @@ void main() {
       );
     });
 
-    testWidgets(
-        'confirming sign-out navigates to the welcome screen',
+    testWidgets('confirming sign-out navigates to the welcome screen',
         (tester) async {
       await tester.binding.setSurfaceSize(const Size(390, 844));
       addTearDown(tester.binding.setSurfaceSize);

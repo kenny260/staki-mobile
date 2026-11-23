@@ -39,8 +39,7 @@ Widget _wrap(GoRouter router) => ProviderScope(
 
 void main() {
   group('A03RoleSelectPage CTA gating', () {
-    testWidgets('Continue is disabled before a role is picked',
-        (tester) async {
+    testWidgets('Continue is disabled before a role is picked', (tester) async {
       await tester.binding.setSurfaceSize(const Size(390, 844));
       addTearDown(tester.binding.setSurfaceSize);
 
@@ -59,8 +58,7 @@ void main() {
       expect(log, isEmpty);
     });
 
-    testWidgets(
-        'selecting Borrower changes CTA to Continue as Borrower',
+    testWidgets('selecting Borrower changes CTA to Continue as Borrower',
         (tester) async {
       await tester.binding.setSurfaceSize(const Size(390, 844));
       addTearDown(tester.binding.setSurfaceSize);
@@ -75,8 +73,7 @@ void main() {
       expect(find.text('Continue as Borrower'), findsOneWidget);
     });
 
-    testWidgets(
-        'selecting Lender changes CTA to Continue as Lender',
+    testWidgets('selecting Lender changes CTA to Continue as Lender',
         (tester) async {
       await tester.binding.setSurfaceSize(const Size(390, 844));
       addTearDown(tester.binding.setSurfaceSize);
@@ -91,8 +88,7 @@ void main() {
       expect(find.text('Continue as Lender'), findsOneWidget);
     });
 
-    testWidgets(
-        'tapping Continue as Borrower navigates to borrower confirmed',
+    testWidgets('tapping Continue as Borrower navigates to borrower confirmed',
         (tester) async {
       await tester.binding.setSurfaceSize(const Size(390, 844));
       addTearDown(tester.binding.setSurfaceSize);
@@ -110,8 +106,7 @@ void main() {
       expect(log, contains(AppRoutes.borrowerConfirmed));
     });
 
-    testWidgets(
-        'tapping Continue as Lender navigates to lender confirmed',
+    testWidgets('tapping Continue as Lender navigates to lender confirmed',
         (tester) async {
       await tester.binding.setSurfaceSize(const Size(390, 844));
       addTearDown(tester.binding.setSurfaceSize);
