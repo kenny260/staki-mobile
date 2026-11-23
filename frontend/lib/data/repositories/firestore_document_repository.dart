@@ -79,6 +79,20 @@ class FirestoreDocumentRepository implements DocumentRepository {
     ];
   }
 
+  /// Live listener: it may first give Firestore's offline cache, then
+  /// corrects itself as soon as the server answers, so a record deleted in
+  /// the Console disappears from the screen.
+  @override
+  Stream<List<DocumentItem>> watchAll() async* {
+    final collection = await _collection();
+    yield* collection.snapshots().map((snapshot) {
+      final records = {for (final doc in snapshot.docs) doc.id: doc.data()};
+      return [
+        for (final item in documentCatalog) _merge(item, records[item.id]),
+      ];
+    });
+  }
+
   @override
   Future<DocumentItem> upload(String id, PickedDocument file) async {
     final item = _catalogItem(id);

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:staki_mobile/data/repositories/firestore_document_repository.dart';
 import 'package:staki_mobile/presentation/features/documents/providers/document_models.dart';
@@ -21,8 +23,30 @@ final pendingUploadProvider = StateProvider<PendingUpload?>((ref) => null);
 class DocumentsController extends AsyncNotifier<List<DocumentItem>> {
   DocumentRepository get _repository => ref.read(documentRepositoryProvider);
 
+  /// Listens to the documents: the first list fills the screen, later
+  /// ones (an upload, a remove, a change in the Console) replace it.
   @override
-  Future<List<DocumentItem>> build() => _repository.fetchAll();
+  Future<List<DocumentItem>> build() {
+    final first = Completer<List<DocumentItem>>();
+    final subscription = _repository.watchAll().listen(
+      (items) {
+        if (first.isCompleted) {
+          state = AsyncData(items);
+        } else {
+          first.complete(items);
+        }
+      },
+      onError: (Object error, StackTrace stack) {
+        if (first.isCompleted) {
+          state = AsyncError(error, stack);
+        } else {
+          first.completeError(error, stack);
+        }
+      },
+    );
+    ref.onDispose(subscription.cancel);
+    return first.future;
+  }
 
   void _replace(String id, DocumentItem Function(DocumentItem) change) {
     final current = state.valueOrNull;
