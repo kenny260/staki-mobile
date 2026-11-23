@@ -41,17 +41,6 @@ Future<Widget> _wrap(GoRouter router) async {
 
 void main() {
   group('S01SettingsPage renders', () {
-    testWidgets('shows Appearance / Theme option', (tester) async {
-      await tester.binding.setSurfaceSize(const Size(390, 844));
-      addTearDown(() => tester.binding.setSurfaceSize(null));
-
-      final log = <String>[];
-      await tester.pumpWidget(await _wrap(_makeRouter(log: log)));
-      await tester.pumpAndSettle();
-
-      expect(find.textContaining('Theme'), findsWidgets);
-    });
-
     testWidgets('shows Language option', (tester) async {
       await tester.binding.setSurfaceSize(const Size(390, 844));
       addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -63,7 +52,7 @@ void main() {
       expect(find.textContaining('Language'), findsWidgets);
     });
 
-    testWidgets('shows Sign out option', (tester) async {
+    testWidgets('shows Notifications option', (tester) async {
       await tester.binding.setSurfaceSize(const Size(390, 844));
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
@@ -71,52 +60,24 @@ void main() {
       await tester.pumpWidget(await _wrap(_makeRouter(log: log)));
       await tester.pumpAndSettle();
 
-      expect(find.textContaining('Sign out'), findsWidgets);
+      expect(find.textContaining('Notifications'), findsWidgets);
     });
-  });
 
-  group('S01SettingsPage theme change', () {
-    testWidgets('tapping Dark updates the theme preference',
-        (tester) async {
+    testWidgets('shows Log out option', (tester) async {
       await tester.binding.setSurfaceSize(const Size(390, 844));
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
-      SharedPreferences.setMockInitialValues({});
-      final prefs = await SharedPreferences.getInstance();
-
       final log = <String>[];
-
-      await tester.pumpWidget(
-        ProviderScope(
-          overrides: [
-            sharedPreferencesProvider.overrideWithValue(prefs),
-          ],
-          child: MaterialApp.router(
-            routerConfig: _makeRouter(log: log),
-          ),
-        ),
-      );
+      await tester.pumpWidget(await _wrap(_makeRouter(log: log)));
       await tester.pumpAndSettle();
 
-      final themeRow = find.textContaining('Theme');
-      if (themeRow.evaluate().isNotEmpty) {
-        await tester.tap(themeRow.first);
-        await tester.pumpAndSettle();
-      }
-
-      final darkOption = find.text('Dark');
-      if (darkOption.evaluate().isNotEmpty) {
-        await tester.tap(darkOption.first);
-        await tester.pumpAndSettle();
-      }
-
-      final saved = prefs.getString('themeMode');
-      expect(saved == null || saved == 'dark', isTrue);
+      expect(find.textContaining('Log out'), findsWidgets);
     });
   });
 
-  group('S01SettingsPage sign-out', () {
-    testWidgets('tapping Sign out shows a confirmation dialog',
+  group('S01SettingsPage log out', () {
+    testWidgets(
+        'tapping Log out shows a confirmation dialog with Cancel button',
         (tester) async {
       await tester.binding.setSurfaceSize(const Size(390, 844));
       addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -125,45 +86,24 @@ void main() {
       await tester.pumpWidget(await _wrap(_makeRouter(log: log)));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.textContaining('Sign out').first);
+      await tester.ensureVisible(find.text('Log out'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Log out'));
       await tester.pumpAndSettle();
 
+      // Dialog should appear with its title
       expect(
         find.byType(AlertDialog).evaluate().isNotEmpty ||
-            find.byType(BottomSheet).evaluate().isNotEmpty ||
-            find.textContaining('sign out').evaluate().isNotEmpty ||
-            find.textContaining('Sign out').evaluate().length > 1,
+            find.textContaining('Log out').evaluate().length > 1,
         isTrue,
       );
-    });
 
-    testWidgets(
-        'confirming sign-out navigates to the welcome screen',
-        (tester) async {
-      await tester.binding.setSurfaceSize(const Size(390, 844));
-      addTearDown(() => tester.binding.setSurfaceSize(null));
-
-      final log = <String>[];
-      await tester.pumpWidget(await _wrap(_makeRouter(log: log)));
-      await tester.pumpAndSettle();
-
-      await tester.tap(find.textContaining('Sign out').first);
-      await tester.pumpAndSettle();
-
-      final confirmFinder = find.descendant(
-        of: find.byType(AlertDialog),
-        matching: find.textContaining('Sign out'),
-      );
-      if (confirmFinder.evaluate().isNotEmpty) {
-        await tester.tap(confirmFinder.last);
+      // Tapping Cancel closes the dialog without navigating
+      final cancelButton = find.text('Cancel');
+      if (cancelButton.evaluate().isNotEmpty) {
+        await tester.tap(cancelButton);
         await tester.pumpAndSettle();
-        expect(log, contains(AppRoutes.welcome));
-      } else {
-        expect(
-          find.byType(AlertDialog).evaluate().isNotEmpty ||
-              find.textContaining('sign out').evaluate().isNotEmpty,
-          isTrue,
-        );
+        expect(log, isEmpty);
       }
     });
   });

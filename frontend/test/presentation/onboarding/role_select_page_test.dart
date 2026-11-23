@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:staki_mobile/core/router/app_routes.dart';
 import 'package:staki_mobile/presentation/features/onboarding/pages/a03_role_select_page.dart';
+import 'package:staki_mobile/presentation/shared_providers/preferences_providers.dart';
+import 'package:staki_mobile/presentation/shared_widgets/app_button.dart';
 
 GoRouter _makeRouter({required List<String> log}) => GoRouter(
       initialLocation: AppRoutes.roleSelect,
@@ -31,11 +34,18 @@ GoRouter _makeRouter({required List<String> log}) => GoRouter(
       ],
     );
 
-Widget _wrap(GoRouter router) => ProviderScope(
-      child: MaterialApp.router(
-        routerConfig: router,
-      ),
-    );
+Future<Widget> _wrap(GoRouter router) async {
+  SharedPreferences.setMockInitialValues({});
+  final prefs = await SharedPreferences.getInstance();
+  return ProviderScope(
+    overrides: [
+      sharedPreferencesProvider.overrideWithValue(prefs),
+    ],
+    child: MaterialApp.router(
+      routerConfig: router,
+    ),
+  );
+}
 
 void main() {
   group('A03RoleSelectPage CTA gating', () {
@@ -44,13 +54,11 @@ void main() {
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
       final log = <String>[];
-      await tester.pumpWidget(_wrap(_makeRouter(log: log)));
+      await tester.pumpWidget(await _wrap(_makeRouter(log: log)));
       await tester.pumpAndSettle();
 
-      // The CTA button text at start has no role-specific label
-      // — it is simply disabled; verify no navigation fires when tapped
       await tester.tap(
-        find.byType(ElevatedButton).last,
+        find.byType(AppButton).last,
         warnIfMissed: false,
       );
       await tester.pumpAndSettle();
@@ -64,10 +72,10 @@ void main() {
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
       final log = <String>[];
-      await tester.pumpWidget(_wrap(_makeRouter(log: log)));
+      await tester.pumpWidget(await _wrap(_makeRouter(log: log)));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Borrower'));
+      await tester.tap(find.text('I need funding'));
       await tester.pumpAndSettle();
 
       expect(find.text('Continue as Borrower'), findsOneWidget);
@@ -79,10 +87,10 @@ void main() {
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
       final log = <String>[];
-      await tester.pumpWidget(_wrap(_makeRouter(log: log)));
+      await tester.pumpWidget(await _wrap(_makeRouter(log: log)));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Lender'));
+      await tester.tap(find.text('I want to fund'));
       await tester.pumpAndSettle();
 
       expect(find.text('Continue as Lender'), findsOneWidget);
@@ -94,10 +102,10 @@ void main() {
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
       final log = <String>[];
-      await tester.pumpWidget(_wrap(_makeRouter(log: log)));
+      await tester.pumpWidget(await _wrap(_makeRouter(log: log)));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Borrower'));
+      await tester.tap(find.text('I need funding'));
       await tester.pumpAndSettle();
 
       await tester.tap(find.text('Continue as Borrower'));
@@ -112,10 +120,10 @@ void main() {
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
       final log = <String>[];
-      await tester.pumpWidget(_wrap(_makeRouter(log: log)));
+      await tester.pumpWidget(await _wrap(_makeRouter(log: log)));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Lender'));
+      await tester.tap(find.text('I want to fund'));
       await tester.pumpAndSettle();
 
       await tester.tap(find.text('Continue as Lender'));
