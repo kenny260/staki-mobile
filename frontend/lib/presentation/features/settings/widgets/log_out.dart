@@ -31,12 +31,15 @@ Future<void> confirmLogOut(BuildContext context, WidgetRef ref) async {
   );
   if (!(ok ?? false) || !context.mounted) return;
 
+  // Grab the router first: signing out makes the router leave this page,
+  // so this context is gone by the time we want to navigate.
+  final router = GoRouter.of(context);
   final signedOut = await ref.read(authControllerProvider.notifier).signOut();
-  if (!signedOut || !context.mounted) return;
+  if (!signedOut) return;
 
   // Forget the previous person's choices so a new account starts clean.
   ref
     ..invalidate(selectedRoleProvider)
     ..invalidate(phoneNumberProvider);
-  context.go(AppRoutes.welcome);
+  router.go(AppRoutes.welcome);
 }
