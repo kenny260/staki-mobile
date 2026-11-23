@@ -4,7 +4,7 @@ import 'package:staki_mobile/core/router/app_routes.dart';
 import 'package:staki_mobile/presentation/features/auth/providers/auth_providers.dart';
 
 const lenderHome = '/marketplace';
-const borrowerHome = AppRoutes.creditPassport;
+const borrowerHome = AppRoutes.home;
 
 /// Where the signed-in user belongs right now. Uses the current Firebase
 /// user directly, because the auth stream may not have emitted yet.
