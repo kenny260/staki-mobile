@@ -18,3 +18,14 @@ Loan eligibility check, application flow, and repayment tracking
 Lender onboarding, borrower marketplace, and portfolio management
 Push notifications via Firebase Cloud Messaging
 Device settings for theme, language, and last-used role (SharedPreferences)
+
+Tech stack
+Layer	Tools
+UI	Flutter 3 / Dart 3
+State management	Riverpod
+Navigation	go_router
+Auth & database	Firebase Auth, Cloud Firestore, Cloud Messaging
+File storage	Cloudinary
+Scoring API	Vercel serverless functions
+Local storage	SharedPreferences
+Testing	mocktail, flutter_test
