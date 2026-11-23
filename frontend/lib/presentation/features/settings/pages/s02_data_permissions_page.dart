@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/constants/spacing.dart';
+import 'package:staki_mobile/core/router/app_routes.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
 import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/core/theme/text_styles.dart';
@@ -57,6 +61,12 @@ class S02DataPermissionsPage extends ConsumerWidget {
     }
   }
 
+  /// Opens the real MoMo consent flow, then re-reads the ledger.
+  Future<void> _connectMomo(BuildContext context, WidgetRef ref) async {
+    await context.push(AppRoutes.consent);
+    await ref.read(dataPermissionsProvider.notifier).refreshMomo();
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final p = ref.watch(dataPermissionsProvider);
@@ -66,6 +76,7 @@ class S02DataPermissionsPage extends ConsumerWidget {
       body: SafeArea(
         child: ListView(
           children: [
+            const _LoadMomoOnOpen(),
             ScreenHeader(
               title: 'Data Permissions',
               onBack: () => Navigator.of(context).maybePop(),
@@ -107,7 +118,7 @@ class S02DataPermissionsPage extends ConsumerWidget {
                     isDestructive: p.momoConnected,
                     onAction: p.momoConnected
                         ? () => _confirmRevoke(context, ref)
-                        : () => n.setMomo(connected: true),
+                        : () => _connectMomo(context, ref),
                   ),
                   _SourceCard(
                     icon: AppIcons.bank,
@@ -235,4 +246,24 @@ class _SourceCard extends StatelessWidget {
       ),
     );
   }
+}
+
+/// Reads the MoMo consent from Firestore each time S02 opens. Shows
+/// nothing itself.
+class _LoadMomoOnOpen extends ConsumerStatefulWidget {
+  const _LoadMomoOnOpen();
+
+  @override
+  ConsumerState<_LoadMomoOnOpen> createState() => _LoadMomoOnOpenState();
+}
+
+class _LoadMomoOnOpenState extends ConsumerState<_LoadMomoOnOpen> {
+  @override
+  void initState() {
+    super.initState();
+    unawaited(ref.read(dataPermissionsProvider.notifier).refreshMomo());
+  }
+
+  @override
+  Widget build(BuildContext context) => const SizedBox.shrink();
 }
