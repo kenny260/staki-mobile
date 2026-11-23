@@ -159,4 +159,3 @@ Feature branches are created from `staging` and merged back via pull request wit
 
 - [Figma prototype](https://www.figma.com/design/xggLWgTvOM5EErLe6kJGDt)
 - [Figma design system](https://www.figma.com/design/JksKsdPrH82niGSvQT3U0K)
-- Demo video: TBA
