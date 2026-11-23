@@ -8,6 +8,7 @@ import 'package:staki_mobile/core/theme/app_icons.dart';
 import 'package:staki_mobile/core/theme/text_styles.dart';
 import 'package:staki_mobile/core/utils/validators.dart';
 import 'package:staki_mobile/presentation/features/onboarding/providers/onboarding_providers.dart';
+import 'package:staki_mobile/presentation/features/profile/providers/account_providers.dart';
 import 'package:staki_mobile/presentation/features/settings/providers/settings_providers.dart';
 import 'package:staki_mobile/presentation/features/settings/widgets/log_out.dart';
 import 'package:staki_mobile/presentation/features/settings/widgets/settings_widgets.dart';
@@ -44,7 +45,10 @@ class S01SettingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final phone = ref.watch(phoneNumberProvider);
+    final account = ref.watch(accountProfileProvider).valueOrNull;
+    // Saved phone first; the sign-up draft until the profile loads.
+    final draftPhone = ref.watch(phoneNumberProvider);
+    final phone = account?.phone ?? draftPhone;
     final notifications = ref.watch(notificationsEnabledProvider);
     final biometrics = ref.watch(biometricsEnabledProvider);
     final language =
@@ -89,9 +93,8 @@ class S01SettingsPage extends ConsumerWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // TODO(Uche): show the real name from the profile.
                             Text(
-                              'Your account',
+                              account?.displayName ?? 'Your account',
                               style: AppTextStyles.title.copyWith(
                                 color: AppColors.primary,
                                 fontWeight: FontWeight.w800,
@@ -114,10 +117,13 @@ class S01SettingsPage extends ConsumerWidget {
                     tone: BadgeTone.success,
                   ),
                   const SizedBox(height: AppSpacing.md),
-                  const SettingsGroup(
+                  SettingsGroup(
                     children: [
-                      SettingsRow(label: 'Personal information'),
                       SettingsRow(
+                        label: 'Personal information',
+                        onTap: () => context.push(AppRoutes.personalInfo),
+                      ),
+                      const SettingsRow(
                         label: 'Verification status',
                         value: 'Verified',
                       ),
