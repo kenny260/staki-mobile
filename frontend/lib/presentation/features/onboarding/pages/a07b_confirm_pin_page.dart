@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:staki_mobile/core/router/app_routes.dart';
+import 'package:staki_mobile/data/datasources/pin_store.dart';
+import 'package:staki_mobile/presentation/features/auth/providers/auth_providers.dart';
 import 'package:staki_mobile/presentation/features/onboarding/providers/onboarding_providers.dart';
 import 'package:staki_mobile/presentation/features/onboarding/widgets/pin_entry_view.dart';
 
@@ -16,12 +20,14 @@ class A07bConfirmPinPage extends ConsumerStatefulWidget {
 class _A07bConfirmPinPageState extends ConsumerState<A07bConfirmPinPage> {
   String? _error;
 
-  void _onCompleted(String pin) {
+  Future<void> _onCompleted(String pin) async {
     final draft = ref.read(pinDraftProvider);
     if (pin == draft) {
-      // TODO(Tolu): save a hash of the PIN with flutter_secure_storage.
+      // Saves a salted hash on this phone (never the PIN itself).
+      final uid = ref.read(authRepositoryProvider).currentUser?.uid;
+      if (uid != null) await ref.read(pinStoreProvider).save(uid, pin);
       ref.read(pinDraftProvider.notifier).clear();
-      context.push(AppRoutes.biometric);
+      if (mounted) unawaited(context.push(AppRoutes.biometric));
     } else {
       setState(() => _error = 'PINs do not match. Please try again.');
     }

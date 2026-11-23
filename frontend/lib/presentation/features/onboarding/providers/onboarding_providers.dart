@@ -24,8 +24,8 @@ class PhoneNumberNotifier extends Notifier<String> {
   void set(String value) => state = value;
 }
 
-/// First PIN entry, kept in memory only until it is confirmed.
-// TODO(Tolu): store the confirmed PIN hash with flutter_secure_storage.
+/// First PIN entry, kept in memory only until it is confirmed. A07b then
+/// saves a hash of it with PinStore.
 class PinDraftNotifier extends Notifier<String> {
   @override
   String build() => '';
