@@ -132,7 +132,10 @@ class S01SettingsPage extends ConsumerWidget {
                   const SettingsSectionLabel('SECURITY'),
                   SettingsGroup(
                     children: [
-                      const SettingsRow(label: 'Change PIN'),
+                      SettingsRow(
+                        label: 'Change PIN',
+                        onTap: () => context.push(AppRoutes.changePin),
+                      ),
                       SettingsRow(
                         label: 'Biometrics',
                         value: biometrics ? 'On' : 'Off',
