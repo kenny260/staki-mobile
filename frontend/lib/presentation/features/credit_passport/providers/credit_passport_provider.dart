@@ -1,8 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:staki_mobile/core/theme/app_icons.dart';
+import 'package:staki_mobile/data/repositories/firestore_credit_passport_repository.dart';
+import 'package:staki_mobile/presentation/features/auth/providers/auth_providers.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/providers/credit_passport_models.dart';
 
-// TEMP: swap the implementation when the backend repository is ready.
 abstract class CreditPassportRepository {
   Stream<AssessmentStatus> watchAssessmentStatus();
   Stream<CreditScore?> watchScore();
@@ -69,8 +70,13 @@ class MockCreditPassportRepository implements CreditPassportRepository {
       );
 }
 
+/// Real score from Firestore scores/{uid}. Widget tests override this with
+/// [MockCreditPassportRepository] so they do not need Firebase.
 final creditPassportRepositoryProvider = Provider<CreditPassportRepository>(
-  (ref) => const MockCreditPassportRepository(),
+  (ref) => FirestoreCreditPassportRepository.firestore(
+    ref.watch(firestoreProvider),
+    uid: ref.watch(authStateProvider).valueOrNull?.uid,
+  ),
 );
 
 final assessmentStatusProvider = StreamProvider<AssessmentStatus>(

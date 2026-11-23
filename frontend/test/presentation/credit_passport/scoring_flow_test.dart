@@ -6,6 +6,7 @@ import 'package:staki_mobile/core/router/app_routes.dart';
 import 'package:staki_mobile/data/datasources/scoring_datasource.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/pages/assessment_page.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/providers/credit_passport_models.dart';
+import 'package:staki_mobile/presentation/features/credit_passport/providers/credit_passport_provider.dart';
 import 'package:staki_mobile/presentation/features/credit_passport/providers/scoring_providers.dart';
 
 class _FakeDatasource implements ScoringDatasource {
@@ -49,7 +50,11 @@ Future<void> _show(WidgetTester tester, _FakeDatasource datasource) async {
   );
   await tester.pumpWidget(
     ProviderScope(
-      overrides: [scoringDatasourceProvider.overrideWithValue(datasource)],
+      overrides: [
+        scoringDatasourceProvider.overrideWithValue(datasource),
+        creditPassportRepositoryProvider
+            .overrideWithValue(const MockCreditPassportRepository()),
+      ],
       child: MaterialApp.router(routerConfig: router),
     ),
   );
