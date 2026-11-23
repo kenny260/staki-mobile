@@ -29,3 +29,15 @@ File storage	Cloudinary
 Scoring API	Vercel serverless functions
 Local storage	SharedPreferences
 Testing	mocktail, flutter_test
+
+Architecture
+
+The app follows Clean Architecture with a strict one-way dependency rule: presentation calls domain, domain defines interfaces, and data implements them. This keeps business logic independent of Flutter and Firebase, making each layer testable in isolation.
+
+frontend/lib/
+├── core/          # Router, theme, constants, shared providers
+├── data/          # Repository implementations, remote and local data sources
+├── domain/        # Entities, repository interfaces, use cases
+└── presentation/  # Pages, widgets, Riverpod notifiers
+
+Architecture diagram 
