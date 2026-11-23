@@ -92,33 +92,38 @@ class HomePage extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: AppSpacing.sm),
-              Row(
-                children: [
-                  Expanded(
-                    child: QuickAction(
-                      icon: AppIcons.folderOpen,
-                      label: 'My documents',
-                      onTap: () => unawaited(context.push(AppRoutes.documents)),
+              // Same height for all three shortcuts.
+              IntrinsicHeight(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(
+                      child: QuickAction(
+                        icon: AppIcons.folderOpen,
+                        label: 'My documents',
+                        onTap: () =>
+                            unawaited(context.push(AppRoutes.documents)),
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: AppSpacing.s3),
-                  Expanded(
-                    child: QuickAction(
-                      icon: AppIcons.shieldCheck,
-                      label: 'Data permissions',
-                      onTap: () =>
-                          unawaited(context.push(AppRoutes.dataPermissions)),
+                    const SizedBox(width: AppSpacing.s3),
+                    Expanded(
+                      child: QuickAction(
+                        icon: AppIcons.shieldCheck,
+                        label: 'Data permissions',
+                        onTap: () =>
+                            unawaited(context.push(AppRoutes.dataPermissions)),
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: AppSpacing.s3),
-                  Expanded(
-                    child: QuickAction(
-                      icon: AppIcons.trendUp,
-                      label: 'Improve my score',
-                      onTap: () => context.go(AppRoutes.creditPassport),
+                    const SizedBox(width: AppSpacing.s3),
+                    Expanded(
+                      child: QuickAction(
+                        icon: AppIcons.trendUp,
+                        label: 'Improve my score',
+                        onTap: () => context.go(AppRoutes.creditImprove),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),

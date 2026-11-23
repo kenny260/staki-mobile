@@ -135,6 +135,7 @@ class QuickAction extends StatelessWidget {
             horizontal: AppSpacing.sm,
           ),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(icon, size: 22, color: AppColors.primary),
               const SizedBox(height: AppSpacing.sm),
