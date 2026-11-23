@@ -117,7 +117,9 @@ void main() {
       expect(emailOnly.firstName, 'amina');
       expect(emailOnly.initials, 'A');
       expect(
-          const AccountProfile(uid: 'u5', role: 'lender').firstName, 'there',);
+        const AccountProfile(uid: 'u5', role: 'lender').firstName,
+        'there',
+      );
     });
 
     test('borrower type labels', () {
