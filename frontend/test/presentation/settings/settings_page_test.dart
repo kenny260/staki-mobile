@@ -43,19 +43,18 @@ void main() {
   group('S01SettingsPage renders', () {
     testWidgets('shows Appearance / Theme option', (tester) async {
       await tester.binding.setSurfaceSize(const Size(390, 844));
-      addTearDown(tester.binding.setSurfaceSize);
+      addTearDown(() => tester.binding.setSurfaceSize(null));
 
       final log = <String>[];
       await tester.pumpWidget(await _wrap(_makeRouter(log: log)));
       await tester.pumpAndSettle();
 
-      // The page has a "Theme" row (or the word appears in the UI)
       expect(find.textContaining('Theme'), findsWidgets);
     });
 
     testWidgets('shows Language option', (tester) async {
       await tester.binding.setSurfaceSize(const Size(390, 844));
-      addTearDown(tester.binding.setSurfaceSize);
+      addTearDown(() => tester.binding.setSurfaceSize(null));
 
       final log = <String>[];
       await tester.pumpWidget(await _wrap(_makeRouter(log: log)));
@@ -66,7 +65,7 @@ void main() {
 
     testWidgets('shows Sign out option', (tester) async {
       await tester.binding.setSurfaceSize(const Size(390, 844));
-      addTearDown(tester.binding.setSurfaceSize);
+      addTearDown(() => tester.binding.setSurfaceSize(null));
 
       final log = <String>[];
       await tester.pumpWidget(await _wrap(_makeRouter(log: log)));
@@ -77,14 +76,14 @@ void main() {
   });
 
   group('S01SettingsPage theme change', () {
-    testWidgets('tapping Dark updates the theme preference', (tester) async {
+    testWidgets('tapping Dark updates the theme preference',
+        (tester) async {
       await tester.binding.setSurfaceSize(const Size(390, 844));
-      addTearDown(tester.binding.setSurfaceSize);
+      addTearDown(() => tester.binding.setSurfaceSize(null));
 
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
 
-      late ProviderContainer container;
       final log = <String>[];
 
       await tester.pumpWidget(
@@ -92,44 +91,35 @@ void main() {
           overrides: [
             sharedPreferencesProvider.overrideWithValue(prefs),
           ],
-          child: Builder(
-            builder: (context) {
-              container = ProviderScope.containerOf(context);
-              return MaterialApp.router(
-                routerConfig: _makeRouter(log: log),
-              );
-            },
+          child: MaterialApp.router(
+            routerConfig: _makeRouter(log: log),
           ),
         ),
       );
       await tester.pumpAndSettle();
 
-      // Open the theme picker if it is behind a row tap
       final themeRow = find.textContaining('Theme');
       if (themeRow.evaluate().isNotEmpty) {
         await tester.tap(themeRow.first);
         await tester.pumpAndSettle();
       }
 
-      // Tap "Dark" if it appears (bottom sheet or inline)
       final darkOption = find.text('Dark');
       if (darkOption.evaluate().isNotEmpty) {
         await tester.tap(darkOption.first);
         await tester.pumpAndSettle();
       }
 
-      // The preference was changed (dark = ThemeMode.dark)
       final saved = prefs.getString('themeMode');
-      // Accept either the string 'dark' or null (picker may not be open)
-      // — the important thing is no exception was thrown
       expect(saved == null || saved == 'dark', isTrue);
     });
   });
 
   group('S01SettingsPage sign-out', () {
-    testWidgets('tapping Sign out shows a confirmation dialog', (tester) async {
+    testWidgets('tapping Sign out shows a confirmation dialog',
+        (tester) async {
       await tester.binding.setSurfaceSize(const Size(390, 844));
-      addTearDown(tester.binding.setSurfaceSize);
+      addTearDown(() => tester.binding.setSurfaceSize(null));
 
       final log = <String>[];
       await tester.pumpWidget(await _wrap(_makeRouter(log: log)));
@@ -138,7 +128,6 @@ void main() {
       await tester.tap(find.textContaining('Sign out').first);
       await tester.pumpAndSettle();
 
-      // A dialog or bottom sheet should appear
       expect(
         find.byType(AlertDialog).evaluate().isNotEmpty ||
             find.byType(BottomSheet).evaluate().isNotEmpty ||
@@ -148,20 +137,19 @@ void main() {
       );
     });
 
-    testWidgets('confirming sign-out navigates to the welcome screen',
+    testWidgets(
+        'confirming sign-out navigates to the welcome screen',
         (tester) async {
       await tester.binding.setSurfaceSize(const Size(390, 844));
-      addTearDown(tester.binding.setSurfaceSize);
+      addTearDown(() => tester.binding.setSurfaceSize(null));
 
       final log = <String>[];
       await tester.pumpWidget(await _wrap(_makeRouter(log: log)));
       await tester.pumpAndSettle();
 
-      // Tap the sign-out row to open the dialog
       await tester.tap(find.textContaining('Sign out').first);
       await tester.pumpAndSettle();
 
-      // Confirm — look for a "Sign out" or "Confirm" button inside the dialog
       final confirmFinder = find.descendant(
         of: find.byType(AlertDialog),
         matching: find.textContaining('Sign out'),
@@ -171,8 +159,6 @@ void main() {
         await tester.pumpAndSettle();
         expect(log, contains(AppRoutes.welcome));
       } else {
-        // Dialog opened but confirm button label differs — still passes
-        // (navigation assertion is skipped, not failed)
         expect(
           find.byType(AlertDialog).evaluate().isNotEmpty ||
               find.textContaining('sign out').evaluate().isNotEmpty,
