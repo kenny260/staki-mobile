@@ -144,7 +144,10 @@ class S01SettingsPage extends ConsumerWidget {
                         label: 'Data permissions',
                         onTap: () => context.push(AppRoutes.dataPermissions),
                       ),
-                      const SettingsRow(label: 'Documents'),
+                      SettingsRow(
+                        label: 'Documents',
+                        onTap: () => context.push(AppRoutes.documents),
+                      ),
                     ],
                   ),
                   const SettingsSectionLabel('PREFERENCES & SUPPORT'),
