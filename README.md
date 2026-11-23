@@ -41,3 +41,52 @@ frontend/lib/
 └── presentation/  # Pages, widgets, Riverpod notifiers
 
 Architecture diagram 
+Getting started
+Prerequisites
+Flutter 3.x (stable channel)
+Android Studio with an Android emulator, or a physical Android device
+Node.js 22 — only needed for backend scripts
+Firebase CLI — only needed for backend deployment
+Steps
+bash
+git clone https://github.com/your-org/staki-mobile.git
+cd staki-mobile/frontend
+flutter pub get
+flutter run -t lib/main_dev.dart
+Demo accounts
+Role	Email
+Borrower	borrower@staki.demo
+Lender	lender@staki.demo
+
+Passwords are in backend/seed/data.js.
+
+Backend
+
+The backend has three parts. Firestore security rules and indexes live in backend/firestore.rules; deploy them with:
+
+bash
+firebase deploy --only firestore:rules,firestore:indexes
+
+Demo seed data is in backend/seed/; run it with:
+
+bash
+node seed.js
+
+The Credit Passport scoring API is in backend/api/ and is live at https://staki-api.vercel.app/api/credit-passport (POST with a Firebase ID token in the Authorization header). See backend/README.md for integration details and backend/scoring-research/MODEL_CARD.md for the scoring model documentation.
+
+Testing
+bash
+# Static analysis
+flutter analyze
+
+# Formatting check
+dart format --set-exit-if-changed lib test
+
+# Widget and unit tests
+flutter test
+
+# Test coverage
+flutter test --coverage
+
+# Scoring engine (Node)
+cd backend/api && npm test
