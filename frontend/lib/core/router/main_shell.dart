@@ -31,8 +31,10 @@ const tabRootPaths = {
   AppRoutes.lenderProfile,
 };
 
-/// True when [context] is the first screen of a bottom tab.
+/// True when [context] is the first screen of a bottom tab. False when
+/// there is no router (for example a page tested on its own).
 bool isTabRoot(BuildContext context) =>
+    GoRouter.maybeOf(context) != null &&
     tabRootPaths.contains(GoRouterState.of(context).uri.path);
 
 /// Frame around the signed-in screens: the current tab plus the bottom bar.

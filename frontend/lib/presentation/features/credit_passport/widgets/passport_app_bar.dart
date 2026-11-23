@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:staki_mobile/core/router/main_shell.dart';
 import 'package:staki_mobile/core/theme/app_colors.dart';
 import 'package:staki_mobile/core/theme/app_icons.dart';
 
@@ -34,11 +35,15 @@ class PassportAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: AppColors.surface,
       surfaceTintColor: AppColors.surface,
       elevation: 0,
-      leading: IconButton(
-        tooltip: 'Back',
-        icon: const Icon(AppIcons.caretLeft, color: AppColors.primary),
-        onPressed: () => _goBack(context),
-      ),
+      // The score screen is a bottom tab: no back arrow there.
+      automaticallyImplyLeading: false,
+      leading: isTabRoot(context)
+          ? null
+          : IconButton(
+              tooltip: 'Back',
+              icon: const Icon(AppIcons.caretLeft, color: AppColors.primary),
+              onPressed: () => _goBack(context),
+            ),
     );
   }
 }
