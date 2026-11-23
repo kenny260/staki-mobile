@@ -1,89 +1,162 @@
-# Staki Fund (Credit Passport)
+# Staki Fund
 
-Staki Fund is the product; the Credit Passport is the 300 to 1000 score it issues.
-Flutter mobile app on Firebase, built screen-for-screen from the approved Figma.
+A Flutter app that turns mobile money history into a Credit Passport score (300–1000) that regulated lenders can use.
 
-- Figma prototype: https://www.figma.com/design/xggLWgTvOM5EErLe6kJGDt
-- Design specs and tokens: https://www.figma.com/design/JksKsdPrH82niGSvQT3U0K
+## Overview
 
-## Repository layout
+Small businesses in Rwanda earn and transact through mobile money but have no collateral or credit history that formal lenders recognise. Staki Fund bridges that gap by analysing a borrower's MoMo transaction history and generating a Credit Passport score that BNR-regulated lenders can use to make lending decisions. Borrowers build a profile, connect their MoMo data with revocable consent, and receive a scored passport they can share with any lender on the platform. Lenders access a marketplace of pre-scored borrowers and manage their loan portfolio in one place. The app does not lend money itself.
+
+## Screenshots
+
+<table>
+  <tr>
+    <td><img src="docs/screenshots/welcome.png" width="240" alt="Welcome"></td>
+    <td><img src="docs/screenshots/role-select.png" width="240" alt="Role select"></td>
+    <td><img src="docs/screenshots/profile-setup.png" width="240" alt="Profile setup"></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/documents.png" width="240" alt="Documents"></td>
+    <td><img src="docs/screenshots/credit-passport.png" width="240" alt="Credit Passport score"></td>
+    <td><img src="docs/screenshots/score-breakdown.png" width="240" alt="Score breakdown"></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/loan-application.png" width="240" alt="Loan application"></td>
+    <td><img src="docs/screenshots/lender-marketplace.png" width="240" alt="Lender marketplace"></td>
+    <td></td>
+  </tr>
+</table>
+
+## Features
+
+- Onboarding flow with borrower and lender role selection
+- Email/password and Google sign-in with email verification
+- Borrower profile supporting five borrower types (business, startup, student, salaried, other)
+- Data consent screen and MoMo connection with revocable access
+- Document upload for PDFs and images, stored via Cloudinary
+- Credit Passport score (300–1000) with factor breakdown
+- Loan eligibility check, application flow, and repayment tracking
+- Lender onboarding, borrower marketplace, and portfolio management
+- Push notifications via Firebase Cloud Messaging
+- Device settings for theme, language, and last-used role (SharedPreferences)
+
+## Tech stack
+
+| Layer | Tools |
+|---|---|
+| UI | Flutter 3 / Dart 3 |
+| State management | Riverpod |
+| Navigation | go_router |
+| Auth & database | Firebase Auth, Cloud Firestore, Cloud Messaging |
+| File storage | Cloudinary |
+| Scoring API | Vercel serverless functions |
+| Local storage | SharedPreferences |
+| Testing | mocktail, flutter_test |
+
+## Architecture
+
+The app follows Clean Architecture with a strict one-way dependency rule: `presentation` calls `domain`, `domain` defines interfaces, and `data` implements them. This keeps business logic independent of Flutter and Firebase, making each layer testable in isolation.
 
 ```
-frontend/   Flutter app (Clean Architecture: core / data / domain / presentation)
-backend/    Firebase: Firestore and Storage rules, indexes, Cloud Functions, seed data
-.github/    CI, PR template, CODEOWNERS
+frontend/lib/
+├── core/          # Router, theme, constants, shared providers
+├── data/          # Repository implementations, remote and local data sources
+├── domain/        # Entities, repository interfaces, use cases
+└── presentation/  # Pages, widgets, Riverpod notifiers
 ```
 
-- Frontend work happens in `frontend/lib/presentation` and `frontend/lib/core`.
-- Backend work happens in `backend/` and in `frontend/lib/data` and
-  `frontend/lib/domain` (the code the app uses to talk to Firebase).
+![Architecture diagram](docs/architecture.png)
 
-See `frontend/README.md` and `backend/README.md` for how to run each part.
+## Getting started
 
-## How to run
+### Prerequisites
 
-### Frontend (Flutter app)
+- Flutter 3.x (stable channel)
+- Android Studio with an Android emulator, or a physical Android device
+- Node.js 22 — only needed for backend scripts
+- Firebase CLI — only needed for backend deployment
 
-Needs Flutter 3 and an Android emulator or a phone (Android Studio).
+### Steps
 
 ```bash
-cd frontend
+git clone https://github.com/kenny260/staki-mobile.git
+cd staki-mobile/frontend
 flutter pub get
-flutter run
+flutter run -t lib/main_dev.dart
 ```
 
-`flutter run` starts the dev version (`lib/main.dart`). To pick a version:
+### Demo accounts
+
+| Role | Email |
+|---|---|
+| Borrower | borrower@staki.demo |
+| Lender | lender@staki.demo |
+
+Passwords are in `backend/seed/data.js`.
+
+## Backend
+
+The backend has three parts. Firestore security rules and indexes live in `backend/firestore.rules`; deploy them with:
 
 ```bash
-flutter run -t lib/main_dev.dart       # dev
-flutter run -t lib/main_staging.dart   # staging
-flutter run -t lib/main_prod.dart      # prod
+firebase deploy --only firestore:rules,firestore:indexes
 ```
 
-Checks to run before every PR:
+Demo seed data is in `backend/seed/`; run it with:
 
 ```bash
-dart format .
+cd backend/seed
+npm install
+node seed.js
+```
+
+The Credit Passport scoring API is in `backend/api/` and is live at `https://staki-api.vercel.app/api/credit-passport` (POST with a Firebase ID token in the `Authorization` header). See [backend/README.md](backend/README.md) for integration details and [backend/scoring-research/MODEL_CARD.md](backend/scoring-research/MODEL_CARD.md) for the scoring model documentation.
+
+## Testing
+
+```bash
+# Static analysis
 flutter analyze
+
+# Formatting check
+dart format --set-exit-if-changed lib test
+
+# Widget and unit tests
 flutter test
+
+# Test coverage
+flutter test --coverage
+
+# Scoring engine (Node)
+cd backend/api && npm test
 ```
 
-### Backend (Firebase)
+## Project structure
 
-Needs Node.js, the Firebase CLI and Java 21 or newer (the emulators need it).
-
-```bash
-cd backend
-npm install -g firebase-tools   # once
-firebase login                  # once
-firebase use --add              # once, pick the Staki Firebase project
-firebase emulators:start        # run Firestore, Auth and Storage locally
+```
+staki-mobile/
+├── frontend/                  # Flutter app (this repo's main codebase)
+├── backend/api/               # Vercel serverless scoring API
+├── backend/seed/              # Firestore demo data scripts
+├── backend/scoring-research/  # Model research and MODEL_CARD.md
+└── .github/                   # CI workflows
 ```
 
-The emulator dashboard opens at http://localhost:4000. To try the emulators
-before the real Firebase project exists, use a demo project:
-`firebase emulators:start --project demo-staki`.
+## Branching
 
-Deploy rules and indexes (Uche):
-
-```bash
-firebase deploy --only firestore:rules,firestore:indexes,storage
-```
-
-## Branching and PRs
-
-- `main` and `staging` are protected. Nobody pushes to them directly.
-- Branch off `staging`, open a PR into `staging`, request a review from
-  Abdull-Kudus or Binthia, with Uche (@EucTech) as backup. One approval is
-  needed, and nobody merges their own PR. CI must be green.
-- `main` only receives `staging` at release.
-- Branch names: `<type>/<ticket>-<short-description>` (feature, fix, chore,
-  docs, test, refactor). Example: `feature/STK-12-login-email-password`.
-- Commits: conventional commits, small and often. Example:
-  `feat(auth): add email/password login form`.
+Feature branches are created from `staging` and merged back via pull request with at least one review. The `main` branch is for releases only.
 
 ## Team
 
-Frontend: Binthia (lead, repo, design system), Chris.
-Backend: Uche (Firestore, rules), Tolu (auth, notifications),
-Abdull-Kudus (credit scoring engine, report lead).
+| Name | Role | GitHub |
+|---|---|---|
+| Abdul Kudus Zakaria Mukhtaru | Credit scoring and financial engine, project lead | [@Abdull-Kudus](https://github.com/Abdull-Kudus) |
+| Uchechukwu Ezeibe | Firebase data model, ERD and security rules | [@EucTech](https://github.com/EucTech) |
+| Chris Hakizimana | Feature screens and Firestore wiring | [@Chris12908](https://github.com/Chris12908) |
+| Nitonde Binthia | Frontend lead: architecture, design system, onboarding and settings | [@kenny260](https://github.com/kenny260) |
+| Toluwani Oladeji | Authentication and notifications | [@ToluwaniOladeji](https://github.com/ToluwaniOladeji) |
+
+## Links
+
+- [Figma prototype](https://www.figma.com/design/xggLWgTvOM5EErLe6kJGDt)
+- [Figma design system](https://www.figma.com/design/JksKsdPrH82niGSvQT3U0K)
+- Demo video: TBA
