@@ -89,7 +89,8 @@ class MyLoansPage extends ConsumerWidget {
   /// Withdraws a loan that is still "submitted". The repository checks
   /// the stage again, so a loan already in review cannot be removed.
   Future<void> _cancelApplication(BuildContext context, WidgetRef ref) async {
-    // Captured first: the tab rebuilds once the loan is gone.
+    // Captured first: cancelApplication reloads the loan, so the tab
+    // rebuilds once it is gone.
     final messenger = ScaffoldMessenger.of(context);
     final confirmed = await showDialog<bool>(
       context: context,
@@ -121,7 +122,6 @@ class MyLoansPage extends ConsumerWidget {
         ),
       ),
     );
-    if (ok) ref.invalidate(loanAccountProvider);
   }
 
   void _apply(BuildContext context) => unawaited(context.push(LoanRoutes.base));
